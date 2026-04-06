@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M35+ Meistrivõistlused · Saalihoki.ee</title>
+    <link rel="stylesheet" href="saalihoki.css">
+</head>
+<body>
+<nav class="sh-nav">
+    <div class="sh-nav-left">
+        <img class="sh-site-logo" src="logo.png" alt="Logo">
+        <a href="index.html" class="sh-logo">SAALIHOKI<span>.</span>EE</a>
+    </div>
+    <div class="sh-nav-links">
+        <a href="index.html">Uudised</a>
+        <a href="league.html" class="active">Liigad</a>
+        <a href="index.html">Ajakavad</a>
+        <a href="index.html">Koondis</a>
+        <a href="index.html">Liit</a>
+        <a href="index.html">Galerii</a>
+        <a href="index.html">Koolitused</a>
+    </div>
+    <div class="sh-nav-right">
+        <div class="sh-search">
+            <input type="text" placeholder="Otsi mängijat...">
+            <button type="button">🔍</button>
+        </div>
+        <div class="sh-social">
+            <a href="#" title="Facebook"><img height="75%" src="https://www.saalihoki.ee/fb.png" alt="Facebook"></a>
+            <a href="#" title="Instagram"><img height="75%" src="https://www.saalihoki.ee/instagram.png" alt="Instagram"></a>
+            <a href="#" title="YouTube"><img height="75%" src="https://www.saalihoki.ee/youtube.png" alt="YouTube"></a>
+        </div>
+    </div>
+</nav>
+<div class="league-body-wrap">
+    <div class="sh-hero-inner">
+        <div class="sh-breadcrumb">
+            <a href="index.html">Avaleht</a> › <a href="league.html">Liigad</a> › M35+ meistrivõistlused
+        </div>
+        <div class="league-hero-inner">
+            <div class="league-title">M35+ Meistrivõistlused</div>
+            <div class="league-meta">
+                <span>📅 Hooaeg 2025 / 2026</span>
+                <span>👥 9 meeskonda</span>
+                <span>🏒 72 mängu</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="sub-tabs">
+        <div class="sub-tab active" onclick="switchSub('league','standings',this)">Tabel</div>
+        <div class="sub-tab" onclick="switchSub('league','results',this)">Tulemused</div>
+        <div class="sub-tab" onclick="switchSub('league','scorers',this)">Statistika</div>
+        <div class="sub-tab" onclick="switchSub('league','goalies',this)">Väravavahid</div>
+        <div class="sub-tab" onclick="switchSub('league','playoff',this)">Kohamängud</div>
+    </div>
+
+    <!-- STANDINGS -->
+    <div class="sub-panel active" id="league-standings">
+        <div class="sh-section-title">Põhiturniiri tabel — M35+</div>
+        <div class="sh-card" style="padding:0;overflow:hidden;">
+            <table class="standings-table">
+                <tr>
+                    <th style="width:32px;">#</th>
+                    <th class="l">Meeskond</th>
+                    <th title="Mänge">M</th>
+                    <th title="Võite">V</th>
+                    <th title="Võite lisaajal">VL</th>
+                    <th title="Kaotusi">K</th>
+                    <th title="Kaotusi lisaajal">KL</th>
+                    <th title="Väravate suhe">VS</th>
+                    <th title="Punkte">Pts</th>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-1">1</span></td>
+                    <td class="team-cell"><a href="team.html">Drinkgeld</a></td>
+                    <td>8</td><td>8</td><td>0</td><td>0</td><td>0</td>
+                    <td><span class="result-w">52–7</span></td>
+                    <td class="pts">24</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-2">2</span></td>
+                    <td class="team-cell"><a href="team.html">Lauka Kolhoos</a></td>
+                    <td>8</td><td>7</td><td>0</td><td>1</td><td>0</td>
+                    <td><span class="result-w">51–19</span></td>
+                    <td class="pts">21</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-3">3</span></td>
+                    <td class="team-cell"><a href="team.html">Rapla Kepiklubi</a></td>
+                    <td>8</td><td>4</td><td>1</td><td>2</td><td>1</td>
+                    <td>46–34</td>
+                    <td class="pts">15</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-n">4</span></td>
+                    <td class="team-cell"><a href="team.html">Kadrina</a></td>
+                    <td>8</td><td>3</td><td>1</td><td>4</td><td>0</td>
+                    <td>24–44</td>
+                    <td class="pts">11</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-n">5</span></td>
+                    <td class="team-cell"><a href="team.html">Prosura</a></td>
+                    <td>8</td><td>3</td><td>0</td><td>4</td><td>1</td>
+                    <td>27–34</td>
+                    <td class="pts">10</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-n">6</span></td>
+                    <td class="team-cell"><a href="team.html">Tabajad</a></td>
+                    <td>8</td><td>3</td><td>0</td><td>5</td><td>0</td>
+                    <td>21–35</td>
+                    <td class="pts">9</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-n">7</span></td>
+                    <td class="team-cell"><a href="team.html">Tallinn United</a></td>
+                    <td>8</td><td>3</td><td>0</td><td>5</td><td>0</td>
+                    <td>41–26</td>
+                    <td class="pts">9</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-n">8</span></td>
+                    <td class="team-cell"><a href="team.html">SH Mehed Metsast</a></td>
+                    <td>8</td><td>3</td><td>0</td><td>5</td><td>0</td>
+                    <td>38–43</td>
+                    <td class="pts">9</td>
+                </tr>
+                <tr>
+                    <td><span class="rank-badge rank-n">9</span></td>
+                    <td class="team-cell"><a href="team.html">Märjamaa</a></td>
+                    <td>8</td><td>0</td><td>0</td><td>8</td><td>0</td>
+                    <td><span class="result-l">7–65</span></td>
+                    <td class="pts">0</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- RESULTS GRID -->
+    <div class="sub-panel" id="league-results">
+        <div class="sh-section-title">Tulemuste tabel</div>
+        <div class="results-wrap">
+            <table class="results-grid sh-card" style="padding:0;">
+                <tr>
+                    <th class="team-col">Meeskond</th>
+                    <th>DRK</th><th>LK</th><th>RK</th><th>KAD</th>
+                    <th>PRO</th><th>TAB</th><th>TU</th><th>SHM</th><th>MÄR</th>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">Drinkgeld</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-w">4–3</a></td>
+                    <td><a href="match.html" class="result-w">5–1</a></td>
+                    <td><a href="match.html" class="result-w">10–0</a></td>
+                    <td><a href="match.html" class="result-w">9–0</a></td>
+                    <td><a href="match.html" class="result-w">3–0</a></td>
+                    <td><a href="match.html" class="result-w">6–1</a></td>
+                    <td><a href="match.html" class="result-w">10–2</a></td>
+                    <td><a href="match.html" class="result-w">5–0</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">Lauka Kolhoos</a></td>
+                    <td><a href="match.html" class="result-l">3–4</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-w">7–5</a></td>
+                    <td><a href="match.html" class="result-w">6–0</a></td>
+                    <td><a href="match.html" class="result-w">7–1</a></td>
+                    <td><a href="match.html" class="result-w">9–3</a></td>
+                    <td><a href="match.html" class="result-w">5–3</a></td>
+                    <td><a href="match.html" class="result-w">5–2</a></td>
+                    <td><a href="match.html" class="result-w">9–1</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">Rapla Kepiklubi</a></td>
+                    <td><a href="match.html" class="result-l">1–5</a></td>
+                    <td><a href="match.html" class="result-l">5–7</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-l">4–5</a></td>
+                    <td><a href="match.html" class="result-w">5–4</a></td>
+                    <td><a href="match.html" class="result-w">5–2</a></td>
+                    <td><a href="match.html" class="result-w">9–4</a></td>
+                    <td><a href="match.html" class="result-w">7–6</a></td>
+                    <td><a href="match.html" class="result-w">10–1</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">Kadrina</a></td>
+                    <td><a href="match.html" class="result-l">0–10</a></td>
+                    <td><a href="match.html" class="result-l">0–6</a></td>
+                    <td><a href="match.html" class="result-w">5–4</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-w">4–2</a></td>
+                    <td><a href="match.html" class="result-w">5–2</a></td>
+                    <td><a href="match.html" class="result-l">0–13</a></td>
+                    <td><a href="match.html" class="result-l">5–7</a></td>
+                    <td><a href="match.html" class="result-w">5–0</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">Prosura</a></td>
+                    <td><a href="match.html" class="result-l">0–9</a></td>
+                    <td><a href="match.html" class="result-l">1–7</a></td>
+                    <td><a href="match.html" class="result-l">4–5</a></td>
+                    <td><a href="match.html" class="result-l">2–4</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-l">3–4</a></td>
+                    <td><a href="match.html" class="result-w">3–1</a></td>
+                    <td><a href="match.html" class="result-w">5–4</a></td>
+                    <td><a href="match.html" class="result-w">9–0</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">Tabajad</a></td>
+                    <td><a href="match.html" class="result-l">0–3</a></td>
+                    <td><a href="match.html" class="result-l">3–9</a></td>
+                    <td><a href="match.html" class="result-l">2–5</a></td>
+                    <td><a href="match.html" class="result-l">2–5</a></td>
+                    <td><a href="match.html" class="result-w">4–3</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-w">1–0</a></td>
+                    <td><a href="match.html" class="result-l">3–6</a></td>
+                    <td><a href="match.html" class="result-w">6–4</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="match.html">Tallinn United</a></td>
+                    <td><a href="match.html" class="result-l">1–6</a></td>
+                    <td><a href="match.html" class="result-l">3–5</a></td>
+                    <td><a href="match.html" class="result-l">4–9</a></td>
+                    <td><a href="match.html" class="result-w">13–0</a></td>
+                    <td><a href="match.html" class="result-l">1–3</a></td>
+                    <td><a href="match.html" class="result-l">0–1</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-w">7–2</a></td>
+                    <td><a href="match.html" class="result-w">12–0</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">SH Mehed Metsast</a></td>
+                    <td><a href="match.html" class="result-l">2–10</a></td>
+                    <td><a href="match.html" class="result-l">2–5</a></td>
+                    <td><a href="match.html" class="result-l">6–7</a></td>
+                    <td><a href="match.html" class="result-w">7–5</a></td>
+                    <td><a href="match.html" class="result-l">4–5</a></td>
+                    <td><a href="match.html" class="result-w">6–3</a></td>
+                    <td><a href="match.html" class="result-l">2–7</a></td>
+                    <td class="self">—</td>
+                    <td><a href="match.html" class="result-w">9–1</a></td>
+                </tr>
+                <tr>
+                    <td class="team-name-cell"><a href="team.html">Märjamaa</a></td>
+                    <td><a href="match.html" class="result-l">0–5</a></td>
+                    <td><a href="match.html" class="result-l">1–9</a></td>
+                    <td><a href="match.html" class="result-l">1–10</a></td>
+                    <td><a href="match.html" class="result-l">0–5</a></td>
+                    <td><a href="match.html" class="result-l">0–9</a></td>
+                    <td><a href="match.html" class="result-l">4–6</a></td>
+                    <td><a href="match.html" class="result-l">0–12</a></td>
+                    <td><a href="match.html" class="result-l">1–9</a></td>
+                    <td class="self">—</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- SCORERS -->
+    <div class="sub-panel" id="league-scorers">
+        <div class="sh-section-title">Mängijate statistika (Top 20)</div>
+        <div class="sh-card" style="padding:0;overflow:hidden;">
+            <table class="scorers-table">
+                <tr>
+                    <th style="width:32px;">#</th>
+                    <th class="l">Mängija</th>
+                    <th class="l">Meeskond</th>
+                    <th title="Mänge">M</th>
+                    <th title="Väravaid">G</th>
+                    <th title="Sööte">A</th>
+                    <th title="Kokku">Pts</th>
+                </tr>
+                <tr><td class="jrk-num">1</td><td class="l"><a href="player.html">Taavi Sau</a></td><td class="l">Rapla Kepiklubi</td><td>8</td><td>20</td><td>4</td><td class="pts">24</td></tr>
+                <tr><td class="jrk-num">2</td><td class="l"><a href="player.html">Sergei Burov</a></td><td class="l">Tallinn United</td><td>7</td><td>10</td><td>8</td><td class="pts">18</td></tr>
+                <tr><td class="jrk-num">3</td><td class="l"><a href="player.html">Tauno Sau</a></td><td class="l">Rapla Kepiklubi</td><td>8</td><td>4</td><td>12</td><td class="pts">16</td></tr>
+                <tr><td class="jrk-num">4</td><td class="l"><a href="player.html">Ilmar Niitov</a></td><td class="l">Drinkgeld</td><td>7</td><td>7</td><td>8</td><td class="pts">15</td></tr>
+                <tr><td class="jrk-num">5</td><td class="l"><a href="player.html">Tanel Soidla</a></td><td class="l">SH Mehed Metsast</td><td>6</td><td>12</td><td>2</td><td class="pts">14</td></tr>
+                <tr><td class="jrk-num">6</td><td class="l"><a href="player.html">Tiit Tammeveski</a></td><td class="l">Lauka Kolhoos</td><td>6</td><td>3</td><td>11</td><td class="pts">14</td></tr>
+                <tr><td class="jrk-num">7</td><td class="l"><a href="player.html">Siim Romanov</a></td><td class="l">Lauka Kolhoos</td><td>6</td><td>10</td><td>3</td><td class="pts">13</td></tr>
+                <tr><td class="jrk-num">8</td><td class="l"><a href="player.html">Uno Kraam</a></td><td class="l">Prosura</td><td>7</td><td>7</td><td>5</td><td class="pts">12</td></tr>
+                <tr><td class="jrk-num">9</td><td class="l"><a href="player.html">Ivan Dubkov</a></td><td class="l">Tallinn United</td><td>6</td><td>6</td><td>5</td><td class="pts">11</td></tr>
+                <tr><td class="jrk-num">10</td><td class="l"><a href="player.html">Margus Guss</a></td><td class="l">Drinkgeld</td><td>7</td><td>9</td><td>2</td><td class="pts">11</td></tr>
+                <tr><td class="jrk-num">11</td><td class="l"><a href="player.html">Raido Moor</a></td><td class="l">Drinkgeld</td><td>7</td><td>5</td><td>6</td><td class="pts">11</td></tr>
+                <tr><td class="jrk-num">12</td><td class="l"><a href="player.html">Kaspar Jõgar</a></td><td class="l">Drinkgeld</td><td>5</td><td>7</td><td>3</td><td class="pts">10</td></tr>
+                <tr><td class="jrk-num">13</td><td class="l"><a href="player.html">Karel Loik</a></td><td class="l">Lauka Kolhoos</td><td>5</td><td>5</td><td>5</td><td class="pts">10</td></tr>
+                <tr><td class="jrk-num">14</td><td class="l"><a href="player.html">Rannar Malk</a></td><td class="l">Lauka Kolhoos</td><td>5</td><td>5</td><td>5</td><td class="pts">10</td></tr>
+                <tr><td class="jrk-num">15</td><td class="l"><a href="player.html">Aleksandr Ponomarjov</a></td><td class="l">Tallinn United</td><td>7</td><td>7</td><td>3</td><td class="pts">10</td></tr>
+                <tr><td class="jrk-num">16</td><td class="l"><a href="player.html">Alo Mäesalu</a></td><td class="l">Lauka Kolhoos</td><td>8</td><td>5</td><td>5</td><td class="pts">10</td></tr>
+                <tr><td class="jrk-num">17</td><td class="l"><a href="player.html">Andres Aamisepp</a></td><td class="l">SH Mehed Metsast</td><td>3</td><td>4</td><td>5</td><td class="pts">9</td></tr>
+                <tr><td class="jrk-num">18</td><td class="l"><a href="player.html">Toomas Peterson</a></td><td class="l">Drinkgeld</td><td>6</td><td>3</td><td>6</td><td class="pts">9</td></tr>
+                <tr><td class="jrk-num">19</td><td class="l"><a href="player.html">Künter Põldmaa</a></td><td class="l">Tabajad</td><td>7</td><td>7</td><td>2</td><td class="pts">9</td></tr>
+                <tr><td class="jrk-num">20</td><td class="l"><a href="player.html">Jaanus Läätsim</a></td><td class="l">Rapla Kepiklubi</td><td>8</td><td>6</td><td>3</td><td class="pts">9</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- GOALIES -->
+    <div class="sub-panel" id="league-goalies">
+        <div class="sh-section-title">Väravavahi statistika</div>
+        <div class="sh-card" style="padding:0;overflow:hidden;overflow-x:auto;">
+            <table class="goalie-table" style="min-width:520px;">
+                <tr>
+                    <th class="l">#</th>
+                    <th class="l">Väravavahid</th>
+                    <th class="l">Meeskond</th>
+                    <th>Min</th>
+                    <th>Visked</th>
+                    <th>Tõrjutud</th>
+                    <th>Tõrje %</th>
+                    <th style="min-width:80px;"></th>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">1.</td>
+                    <td class="l"><a href="player.html">Ivo Lepik</a></td>
+                    <td class="l">Drinkgeld</td>
+                    <td>45</td><td>18</td><td>18</td>
+                    <td><strong>100.0%</strong></td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:100%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">2.</td>
+                    <td class="l"><a href="player.html">Siim Stokkeby</a></td>
+                    <td class="l">Lauka Kolhoos</td>
+                    <td>90</td><td>38</td><td>34</td>
+                    <td>89.5%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:89.5%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">3.</td>
+                    <td class="l"><a href="player.html">Sergei Kirillov</a></td>
+                    <td class="l">Tallinn United</td>
+                    <td>75</td><td>36</td><td>32</td>
+                    <td>88.9%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:88.9%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">4.</td>
+                    <td class="l"><a href="player.html">Taavi Lepik</a></td>
+                    <td class="l">Drinkgeld</td>
+                    <td>45</td><td>15</td><td>13</td>
+                    <td>86.7%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:86.7%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">5.</td>
+                    <td class="l"><a href="player.html">Elari Vool</a></td>
+                    <td class="l">Kadrina</td>
+                    <td>45</td><td>14</td><td>11</td>
+                    <td>78.6%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:78.6%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">6.</td>
+                    <td class="l"><a href="player.html">Mihhail Jakovlev</a></td>
+                    <td class="l">Prosura</td>
+                    <td>90</td><td>41</td><td>31</td>
+                    <td>75.6%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:75.6%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">7.</td>
+                    <td class="l"><a href="player.html">Erti Suurtalu</a></td>
+                    <td class="l">Rapla Kepiklubi</td>
+                    <td>30</td><td>11</td><td>8</td>
+                    <td>72.7%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:72.7%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">8.</td>
+                    <td class="l"><a href="player.html">Tiivo Vaigurand</a></td>
+                    <td class="l">SH Mehed Metsast</td>
+                    <td>45</td><td>29</td><td>21</td>
+                    <td>72.4%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:72.4%"></div></div></td>
+                </tr>
+                <tr>
+                    <td class="l" style="color:#9aaac0;font-size:11px;">9.</td>
+                    <td class="l"><a href="player.html">Toomas Joonas</a></td>
+                    <td class="l">Tabajad</td>
+                    <td>45</td><td>26</td><td>14</td>
+                    <td>53.9%</td>
+                    <td><div class="save-pct-bar"><div class="save-pct-fill" style="width:53.9%"></div></div></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- PLAYOFF BRACKET -->
+    <div class="sub-panel" id="league-playoff">
+        <div class="sh-section-title">Kohamängud — playoff</div>
+        <div class="bracket-wrap">
+            <div class="bracket">
+                <!-- SEMI FINALS -->
+                <div class="bracket-round">
+                    <div class="bracket-round-title">1/2 finaal</div>
+                    <div class="bracket-matches">
+                        <div class="bracket-match">
+                            <div class="bracket-team winner">
+                                <span>Drinkgeld</span>
+                                <span class="bracket-score">3</span>
+                            </div>
+                            <div class="bracket-team loser">
+                                <span>Rapla Kepiklubi</span>
+                                <span class="bracket-score loser">1</span>
+                            </div>
+                        </div>
+                        <div class="bracket-match">
+                            <div class="bracket-team winner">
+                                <span>Lauka Kolhoos</span>
+                                <span class="bracket-score">2</span>
+                            </div>
+                            <div class="bracket-team loser">
+                                <span>Kadrina</span>
+                                <span class="bracket-score loser">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FINALS + 3RD PLACE -->
+                <div class="bracket-round">
+                    <div class="bracket-round-title">Finaal</div>
+                    <div class="bracket-matches">
+                        <div style="display:flex;flex-direction:column;gap:16px;">
+                            <div>
+                                <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1a6fe8;margin:0 8px 6px;padding:4px 10px;background:#eef4fd;border-radius:4px;display:inline-block;">🏆 1. koht</div>
+                                <div class="bracket-match">
+                                    <div class="bracket-team winner">
+                                        <span>Lauka Kolhoos</span>
+                                        <span class="bracket-score">4</span>
+                                    </div>
+                                    <div class="bracket-team loser">
+                                        <span>Drinkgeld</span>
+                                        <span class="bracket-score loser">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9a5c1a;margin:0 8px 6px;padding:4px 10px;background:#fdf0e8;border-radius:4px;display:inline-block;">🥉 3. koht</div>
+                                <div class="bracket-match">
+                                    <div class="bracket-team winner">
+                                        <span>Rapla Kepiklubi</span>
+                                        <span class="bracket-score">3</span>
+                                    </div>
+                                    <div class="bracket-team loser">
+                                        <span>Kadrina</span>
+                                        <span class="bracket-score loser">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FINAL STANDINGS -->
+                <div class="bracket-round">
+                    <div class="bracket-round-title">Lõplik koht</div>
+                    <div class="bracket-matches">
+                        <div style="display:flex;flex-direction:column;gap:8px;padding:0 8px;">
+                            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border:0.5px solid #dde4ef;border-radius:8px;border-left:3px solid #f59e0b;">
+                                <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#f59e0b;">1</span>
+                                <span style="font-size:13px;font-weight:600;color:#1a2540;">Lauka Kolhoos</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border:0.5px solid #dde4ef;border-radius:8px;border-left:3px solid #9aaac0;">
+                                <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#9aaac0;">2</span>
+                                <span style="font-size:13px;font-weight:600;color:#1a2540;">Drinkgeld</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border:0.5px solid #dde4ef;border-radius:8px;border-left:3px solid #cd7c4a;">
+                                <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#cd7c4a;">3</span>
+                                <span style="font-size:13px;font-weight:600;color:#1a2540;">Rapla Kepiklubi</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border:0.5px solid #dde4ef;border-radius:8px;">
+                                <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#c8d0dc;">4</span>
+                                <span style="font-size:13px;color:#6b7a99;">Kadrina</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5TH-9TH PLACE -->
+        <div style="margin-top:20px;">
+            <div class="sh-section-title">5.–9. koht</div>
+            <div class="sh-card" style="padding:0;overflow:hidden;">
+                <table class="standings-table">
+                    <tr><th style="width:32px;">#</th><th class="l">Meeskond</th><th>M</th><th>V</th><th>K</th><th>VS</th><th>Pts</th></tr>
+                    <tr><td><span class="rank-badge rank-n">5</span></td><td class="team-cell"><a href="team.html">Prosura</a></td><td>2</td><td>2</td><td>0</td><td class="result-w">8–4</td><td class="pts">6</td></tr>
+                    <tr><td><span class="rank-badge rank-n">6</span></td><td class="team-cell"><a href="team.html">Tallinn United</a></td><td>2</td><td>1</td><td>1</td><td>7–6</td><td class="pts">3</td></tr>
+                    <tr><td><span class="rank-badge rank-n">7</span></td><td class="team-cell"><a href="team.html">Tabajad</a></td><td>2</td><td>1</td><td>1</td><td>5–7</td><td class="pts">3</td></tr>
+                    <tr><td><span class="rank-badge rank-n">8</span></td><td class="team-cell"><a href="team.html">SH Mehed Metsast</a></td><td>2</td><td>0</td><td>2</td><td class="result-l">4–9</td><td class="pts">0</td></tr>
+                    <tr><td><span class="rank-badge rank-n">9</span></td><td class="team-cell"><a href="team.html">Märjamaa</a></td><td>0</td><td>—</td><td>—</td><td>—</td><td class="pts">—</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="sh-footer">
+    <div class="sh-footer-logo">SAALIHOKI.EE</div>
+    <div>Kadaka tee 42a, 12915 Tallinn · <a href="/cdn-cgi/l/email-protection#eb82858d84ab988a8a878283848082c58e8e"><span class="__cf_email__" data-cfemail="5831363e37182b3939343130373331763d3d">[email&#160;protected]</span></a> · +372 566 21 873</div>
+    <div>© 2026 Eesti Saalihoki Liit</div>
+</footer>
+<script>
+    function switchSub(page, panel, el) {
+        var prefix = page + '-';
+        document.querySelectorAll('[id^="' + prefix + '"]').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(prefix + panel).classList.add('active');
+        el.classList.add('active');
+    }
+</script>
+</body>
+</html>

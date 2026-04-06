@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparta Team Automaailm · Saalihoki.ee</title>
+    <link rel="stylesheet" href="saalihoki.css">
+</head>
+<body>
+<nav class="sh-nav">
+    <div class="sh-nav-left">
+        <img class="sh-site-logo" src="logo.png" alt="Logo">
+        <a href="index.html" class="sh-logo">SAALIHOKI<span>.</span>EE</a>
+    </div>
+    <div class="sh-nav-links">
+        <a href="index.html">Uudised</a>
+        <a href="league.html">Liigad</a>
+        <a href="index.html">Ajakavad</a>
+        <a href="index.html">Koondis</a>
+        <a href="index.html">Liit</a>
+        <a href="index.html">Galerii</a>
+        <a href="index.html">Koolitused</a>
+    </div>
+    <div class="sh-nav-right">
+        <div class="sh-search">
+            <input type="text" placeholder="Otsi mängijat...">
+            <button type="button">🔍</button>
+        </div>
+        <div class="sh-social">
+            <a href="#" title="Facebook"><img height="75%" src="https://www.saalihoki.ee/fb.png" alt="Facebook"></a>
+            <a href="#" title="Instagram"><img height="75%" src="https://www.saalihoki.ee/instagram.png" alt="Instagram"></a>
+            <a href="#" title="YouTube"><img height="75%" src="https://www.saalihoki.ee/youtube.png" alt="YouTube"></a>
+        </div>
+    </div>
+</nav>
+
+<div class="team-body-wrap">
+    <div class="sh-hero-inner">
+        <div class="sh-breadcrumb">
+            <a href="#">Avaleht</a> › <a href="#">Meeskonnad</a> › Sparta Team Automaailm
+        </div>
+        <div class="team-hero-inner">
+            <div class="team-logo-box">
+                <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="35" cy="35" r="32" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                    <text x="35" y="28" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="18" fill="#fff" letter-spacing="1">SPA</text>
+                    <line x1="14" y1="34" x2="56" y2="34" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
+                    <text x="35" y="48" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="10" font-weight="700" fill="rgba(255,255,255,0.65)" letter-spacing="1.5">SPARTA</text>
+                </svg>
+            </div>
+            <div>
+                <div class="team-name">Sparta Team Automaailm</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:4px;">Asutatud · Tallinn, Eesti</div>
+                <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+                    <span class="team-league-tag">Meeste MV</span>
+                    <span class="team-league-tag">EST-LAT M</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEAM QUICK STATS -->
+    <div class="team-stats-bar">
+        <div class="team-stat-cell"><div class="team-stat-num">28</div><div class="team-stat-lbl">Mängijaid</div></div>
+        <div class="team-stat-cell"><div class="team-stat-num">2</div><div class="team-stat-lbl">Liigad</div></div>
+        <div class="team-stat-cell"><div class="team-stat-num">2025</div><div class="team-stat-lbl">Hooaeg</div></div>
+        <div class="team-stat-cell"><div class="team-stat-num">14+</div><div class="team-stat-lbl">Hooaegasid</div></div>
+    </div>
+
+    <!-- SEASON SUB TABS -->
+    <div class="sub-tabs">
+        <div class="sub-tab active" onclick="switchSub('team','roster',this)">Mängijad 2025/26</div>
+        <div class="sub-tab" onclick="switchSub('team','info',this)">Info</div>
+        <div class="sub-tab" onclick="switchSub('team','history',this)">Ajalugu</div>
+    </div>
+
+    <!-- ROSTER PANEL -->
+    <div class="sub-panel active" id="team-roster">
+        <div class="team-body">
+            <!-- LEFT SIDEBAR -->
+            <div>
+                <div class="team-photo-placeholder">
+                    <span>📸</span>
+                    <span class="team-photo-label">Meeskonna foto</span>
+                </div>
+
+                <div class="sh-card" style="margin-bottom:14px;">
+                    <div class="sh-section-title" style="font-size:15px;margin-bottom:10px;">Vormi värvid</div>
+                    <div class="team-info-row">
+                        <span class="team-info-label">Vorm A</span>
+                        <span class="team-info-val"><span class="color-swatch" style="background:#111;"></span>Must</span>
+                    </div>
+                    <div class="team-info-row">
+                        <span class="team-info-label">Vorm B</span>
+                        <span class="team-info-val"><span class="color-swatch" style="background:#fff;"></span>Valge</span>
+                    </div>
+                </div>
+
+                <div class="sh-card">
+                    <div class="sh-section-title" style="font-size:15px;margin-bottom:10px;">Kodusaal</div>
+                    <div class="team-info-row">
+                        <span class="team-info-label">Saal</span>
+                        <span class="team-info-val" style="font-size:12px;">Märjamaa valla spordikeskus</span>
+                    </div>
+                    <div class="team-info-row">
+                        <span class="team-info-label">Aadress</span>
+                        <span class="team-info-val" style="font-size:12px;">Staadioni 3, Märjamaa</span>
+                    </div>
+                    <div class="team-info-row">
+                        <span class="team-info-label">Tel</span>
+                        <span class="team-info-val">666 2660</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAYER LIST -->
+            <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                    <div class="sh-section-title" style="margin-bottom:0;">Meeste MV 2025/2026 mängijad</div>
+                    <span class="sh-tag sh-tag-blue">28 mängijat</span>
+                </div>
+                <select class="season-select" onchange="alert('Hooaja vahetus: '+this.value)">
+                    <option>Meeste MV 2025 / 2026</option>
+                    <option>EST-LAT M 2025 / 2026</option>
+                    <option>Meeste MV 2024 / 2025</option>
+                    <option>Meeste MV 2023 / 2024</option>
+                    <option>PAF Meeste meistriliiga 2021 / 2022</option>
+                </select>
+
+                <div class="sh-card" style="padding:0;overflow:hidden;">
+                    <table class="player-table">
+                        <colgroup><col class="c-jrk"><col class="c-nr"><col class="c-name"></colgroup>
+                        <tr><th class="r">Jrk</th><th class="r">Nr</th><th>Mängija</th></tr>
+                        <tr><td class="jrk">1.</td><td class="nr">2</td><td><a href="#">Henry-Haidor Hõrak</a></td></tr>
+                        <tr><td class="jrk">2.</td><td class="nr">4</td><td><a href="#">Mihkel Tasa</a></td></tr>
+                        <tr><td class="jrk">3.</td><td class="nr">6</td><td><a href="#">Sander Suurtalu</a></td></tr>
+                        <tr><td class="jrk">4.</td><td class="nr">8</td><td><a href="#">Anton Fjodorov</a></td></tr>
+                        <tr><td class="jrk">5.</td><td class="nr">9</td><td><a href="#">Joosep Perandi</a></td></tr>
+                        <tr><td class="jrk">6.</td><td class="nr">10</td><td><a href="#">Sander Savi</a></td></tr>
+                        <tr><td class="jrk">7.</td><td class="nr">12</td><td><a href="#">Remo Merimaa</a></td></tr>
+                        <tr><td class="jrk">8.</td><td class="nr">14</td><td><a href="#">Rene Kärner</a></td></tr>
+                        <tr><td class="jrk">9.</td><td class="nr">15</td><td><a href="#">Artjom Kuznetsov</a></td></tr>
+                        <tr><td class="jrk">10.</td><td class="nr">18</td><td><a href="#">Mats Tamme</a></td></tr>
+                        <tr><td class="jrk">11.</td><td class="nr">20</td><td><a href="#">Kennet Vaha</a></td></tr>
+                        <tr><td class="jrk">12.</td><td class="nr">21</td><td><a href="#">Kristian Tikerpäe</a></td></tr>
+                        <tr><td class="jrk">13.</td><td class="nr">27</td><td><a href="#">Kermo Uue</a></td></tr>
+                        <tr><td class="jrk">14.</td><td class="nr">28</td><td><a href="#">Martin Tikerpäe</a></td></tr>
+                        <tr><td class="jrk">15.</td><td class="nr">29</td><td><a href="#">Stenver Savi</a></td></tr>
+                        <tr><td class="jrk">16.</td><td class="nr">31</td><td><a href="#">Niko Tauno Petteri Impiö</a></td></tr>
+                        <tr><td class="jrk">17.</td><td class="nr">33</td><td><a href="#">Risto Heapost</a></td></tr>
+                        <tr><td class="jrk">18.</td><td class="nr">44</td><td><a href="#">Oliver Savi</a></td></tr>
+                        <tr><td class="jrk">19.</td><td class="nr">52</td><td><a href="#">Morten Talviste</a></td></tr>
+                        <tr><td class="jrk">20.</td><td class="nr">54</td><td><a href="#">Jarl Gustsin</a></td></tr>
+                        <tr><td class="jrk">21.</td><td class="nr">55</td><td><a href="#">Rasmus Rannula</a></td></tr>
+                        <tr><td class="jrk">22.</td><td class="nr">60</td><td><a href="#">Gustav Salm</a></td></tr>
+                        <tr><td class="jrk">23.</td><td class="nr">64</td><td><a href="#">Kaspar Kallion</a></td></tr>
+                        <tr><td class="jrk">24.</td><td class="nr">77</td><td><a href="#">Gerdo Unga</a></td></tr>
+                        <tr><td class="jrk">25.</td><td class="nr">87</td><td><a href="#">Tanel Kasenurm</a></td></tr>
+                        <tr><td class="jrk">26.</td><td class="nr">95</td><td><a href="#">Arseni Suhharnikov</a></td></tr>
+                        <tr><td class="jrk">27.</td><td class="nr">96</td><td><a href="#">Karl Oskar Vikk</a></td></tr>
+                        <tr><td class="jrk">28.</td><td class="nr">99</td><td><a href="#">Kristen Kurval</a></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFO PANEL -->
+    <div class="sub-panel" id="team-info" style="max-width:560px;">
+        <div class="sh-card">
+            <div class="sh-section-title" style="margin-bottom:14px;">Kontaktandmed</div>
+            <div class="team-info-row"><span class="team-info-label">Kontakt</span><span class="team-info-val">Sander Savi</span></div>
+            <div class="team-info-row"><span class="team-info-label">E-post</span><span class="team-info-val" style="color:#1a6fe8;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2a1b3bcb6b7a092a1b3bebdbfb7fcb7b7">[email&#160;protected]</a></span></div>
+            <div class="team-info-row"><span class="team-info-label">Aadress</span><span class="team-info-val">Pärnu mnt 139C, Tallinn</span></div>
+            <div class="team-info-row"><span class="team-info-label">Vorm A</span><span class="team-info-val"><span class="color-swatch" style="background:#111;"></span>Must</span></div>
+            <div class="team-info-row"><span class="team-info-label">Vorm B</span><span class="team-info-val"><span class="color-swatch" style="background:#fff;"></span>Valge</span></div>
+            <div class="team-info-row"><span class="team-info-label">Kodusaal</span><span class="team-info-val" style="font-size:12px;">Märjamaa valla spordikeskus</span></div>
+            <div class="team-info-row"><span class="team-info-label">Saali tel</span><span class="team-info-val">666 2660</span></div>
+            <div class="team-info-row"><span class="team-info-label">Saali aadress</span><span class="team-info-val" style="font-size:12px;">Staadioni tn 3, Märjamaa</span></div>
+        </div>
+    </div>
+
+    <!-- HISTORY PANEL -->
+    <div class="sub-panel" id="team-history">
+        <div class="sh-section-title">Hooajad</div>
+        <div class="sh-card" style="padding:0;overflow:hidden;">
+            <table class="player-table">
+                <tr><th>Hooaeg</th><th>Liiga</th></tr>
+                <tr><td>2025 / 2026</td><td><a href="#">Meeste MV · EST-LAT M</a></td></tr>
+                <tr><td>2024 / 2025</td><td><a href="#">Meeste MV · EST-LAT M</a></td></tr>
+                <tr><td>2023 / 2024</td><td><a href="#">Meeste MV · EST-LAT M</a></td></tr>
+                <tr><td>2022 / 2023</td><td><a href="#">Saalihokiliiga põhjagrupp</a></td></tr>
+                <tr><td>2021 / 2022</td><td><a href="#">PAF Meeste meistriliiga</a></td></tr>
+                <tr><td>2020 / 2021</td><td><a href="#">PAF Saalihokiliiga</a></td></tr>
+                <tr><td>2019 / 2020</td><td><a href="#">PAF Saalihokiliiga</a></td></tr>
+                <tr><td>2018 / 2019</td><td><a href="#">Meistriliiga</a></td></tr>
+                <tr><td>2017 / 2018</td><td><a href="#">Meistriliiga</a></td></tr>
+                <tr><td>2016 / 2017</td><td><a href="#">Meistriliiga</a></td></tr>
+                <tr><td>2011 / 2012</td><td><a href="#">Meistriliiga</a></td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+<footer class="sh-footer">
+    <div class="sh-footer-logo">SAALIHOKI.EE</div>
+    <div>Kadaka tee 42a, 12915 Tallinn · <a href="/cdn-cgi/l/email-protection#5a33343c351a293b3b363332353133743f3f"><span class="__cf_email__" data-cfemail="fc95929a93bc8f9d9d909594939795d29999">[email&#160;protected]</span></a> · +372 566 21 873</div>
+    <div>© 2026 Eesti Saalihoki Liit</div>
+</footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+    function switchSub(page, panel, el) {
+        var prefix = page + '-';
+        document.querySelectorAll('[id^="' + prefix + '"]').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(prefix + panel).classList.add('active');
+        el.classList.add('active');
+    }
+</script>
+</body>
+</html>
