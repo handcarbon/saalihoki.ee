@@ -1,0 +1,109 @@
+<div class="sh-hero">
+    <img class="sh-hero-img" src="hero.jpg" alt="" aria-hidden="true">
+    <div class="sh-hero-overlay"></div>
+    <div class="sh-hero-content">
+        <h1>EESTI<br><span>SAALIHOKI</span><br>LIIT</h1>
+        <p class="sh-hero-sub">Eesti Olümpiakomitee liige · IFF liige</p>
+        <div class="sh-live-card">
+            <div>
+                <div class="sh-live-badge"><span class="sh-live-dot"></span> {{ featuredMatchStatus }}</div>
+                <div class="sh-match-teams">Sparta <span class="sh-match-vs">vs</span> Eesti Maaülikool</div>
+                <div class="sh-match-time">Naiste MV · {{ featuredMatchDateLabel }}</div>
+            </div>
+            <a [routerLink]="featuredMatchLink" class="sh-watch-btn">{{ featuredMatchCta }} →</a>
+        </div>
+    </div>
+</div>
+
+<nav class="quick-actions" aria-label="Kiirlingid">
+    <a routerLink="/schedule"><span aria-hidden="true">▦</span><strong>Tänased mängud</strong><small>Ajad ja saalid</small></a>
+    <a routerLink="/league"><span aria-hidden="true">≡</span><strong>Liigatabelid</strong><small>Tulemused ja statistika</small></a>
+    <a routerLink="/search"><span aria-hidden="true">⌕</span><strong>Leia mängija</strong><small>Otsi andmebaasist</small></a>
+    <a routerLink="/news"><span aria-hidden="true">◫</span><strong>Viimased uudised</strong><small>Lood ja teated</small></a>
+</nav>
+
+<div class="sh-grid">
+    <div>
+        <div class="sh-section-head">
+            <h2 class="sh-section-title">Uudised</h2>
+            <a class="sh-see-all" routerLink="/news">Kõik uudised →</a>
+        </div>
+        <div class="sh-news-main">
+            <div class="sh-news-main-img">
+                <img src="news_photo.jpg" alt="U16 tüdrukute meistermeeskond karikaga">
+                <span class="sh-news-date-pill">04.04.2026</span>
+            </div>
+            <div class="sh-news-main-body">
+                <h3><a routerLink="/news">Kehtna/Rapla SHKV krooniti U16T vanuseklassi Eesti meistriks</a></h3>
+                <p>U16 tüdrukute vanuseklassi saalihoki Eesti meistrivõistlustel tuli meistriks Kehtna/Rapla SHKV, kes alistas ülipõnevas finaalmängus Kuusalu võistkonna karistusvisete seerias.</p>
+            </div>
+        </div>
+        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">30<br>MÄR</div><div class="sh-news-item-title">Raplamaa saalihoki meistrivõistluste hooaeg sai põneva lõpu</div></a>
+        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">29<br>MÄR</div><div class="sh-news-item-title">Kehtna SK krooniti U10 vanuseklassi Eesti meistriks</div></a>
+        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">24<br>MÄR</div><div class="sh-news-item-title">Kehtna SK krooniti U9 vanuseklassi Eesti meistriks</div></a>
+        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">22<br>MÄR</div><div class="sh-news-item-title">Jõgeva SK Tähe/Olivia krooniti U8 vanuseklassi Eesti meistriks</div></a>
+        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">10<br>MÄR</div><div class="sh-news-item-title">Möödunud nädalavahetusel toimus Ääsmäel naiste LAT–EST ühisliiga Final Four turniir</div></a>
+    </div>
+
+    <div class="sh-sidebar">
+        <div class="sh-widget">
+            <h2 class="sh-widget-title">Tulevased üritused</h2>
+            <a class="sh-event-item" routerLink="/schedule"><div class="sh-event-date-block"><div class="sh-event-day">06</div><div class="sh-event-month">SEPT</div></div><div class="sh-event-name">Naiste MV Sparta — Eesti Maaülikool</div></a>
+            <a class="sh-event-item" routerLink="/schedule"><div class="sh-event-date-block"><div class="sh-event-day">12</div><div class="sh-event-month">SEPT</div></div><div class="sh-event-name">M35+ Lauka Kolhoos — Drinkgeld</div></a>
+            <a class="sh-event-item" routerLink="/schedule"><div class="sh-event-date-block"><div class="sh-event-day">19</div><div class="sh-event-month">SEPT</div></div><div class="sh-event-name">Treenerite baaskoolitus</div></a>
+            <a class="sh-see-all" routerLink="/schedule" style="display:block;text-align:center;margin-top:10px;font-size:12px;">Vaata kõiki üritusi →</a>
+        </div>
+        <div class="sh-widget">
+            <h2 class="sh-widget-title">Lõppenud mängud</h2>
+            <div class="sh-result-item"><div><div class="sh-result-teams">Sparta vs EMÜ</div><div class="sh-result-date">05.04.2026</div></div><a routerLink="/match" style="font-size:11px;color:#1a6fe8;font-weight:600;">Protokoll →</a></div>
+            <div class="sh-result-item"><div><div class="sh-result-teams">Kehtna/Rapla vs EMÜ</div><div class="sh-result-date">03.04.2026</div></div><a routerLink="/match" style="font-size:11px;color:#1a6fe8;font-weight:600;">Protokoll →</a></div>
+            <div class="sh-result-item"><div><div class="sh-result-teams">Puhja Kool vs TVSK</div><div class="sh-result-date">03.04.2026</div></div><a routerLink="/match" style="font-size:11px;color:#1a6fe8;font-weight:600;">Protokoll →</a></div>
+        </div>
+    </div>
+</div>
+
+<div class="sh-sponsors-section">
+    <div class="sh-sponsors-inner">
+        <div class="sh-sponsors-header">
+            <div>
+                <p class="sh-sponsors-kicker">Koos kasvatame Eesti saalihokit</p>
+                <h2 class="sh-sponsors-label">Koostööpartnerid</h2>
+            </div>
+            <div class="sh-sponsors-line"></div>
+            <a class="sh-see-all" routerLink="/partners" style="white-space:nowrap;">Kõik partnerid →</a>
+        </div>
+        <div class="sh-sponsors-tiers">
+            <section aria-labelledby="featured-partners-title">
+                <h3 id="featured-partners-title" class="sh-tier-label">Peapartnerid</h3>
+                <div class="sh-sponsor-row sh-sponsor-row--featured">
+                    <a *ngFor="let partner of featuredPartners" class="sh-sponsor-logo sh-sponsor-main" [href]="partner.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
+                        <span class="sh-sponsor-inner">
+                            <img [src]="partner.image" [alt]="partner.name" loading="lazy">
+                            <span class="sh-sponsor-name">{{ partner.name }}</span>
+                        </span>
+                    </a>
+                </div>
+            </section>
+            <section aria-labelledby="official-partners-title">
+                <h3 id="official-partners-title" class="sh-tier-label">Ametlikud partnerid</h3>
+                <div class="sh-sponsor-row sh-sponsor-row--official">
+                    <a *ngFor="let partner of officialPartners" class="sh-sponsor-logo sh-sponsor-med" [href]="partner.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
+                        <span class="sh-sponsor-inner">
+                            <img [src]="partner.image" [alt]="partner.name" loading="lazy">
+                            <span class="sh-sponsor-name">{{ partner.name }}</span>
+                        </span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div class="sh-partners-row">
+    <span class="sh-partner-label">Kuulume:</span>
+    <a *ngFor="let membership of memberships" class="sh-partner-badge" [href]="membership.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="membership.name + ' veebileht (avaneb uuel vahelehel)'">
+        <img [src]="membership.image" [alt]="membership.shortName" loading="lazy">
+        <span>{{ membership.name }}</span>
+    </a>
+    <div class="sh-partner-badge"><strong>AUS</strong> AUS Sport</div>
+</div>

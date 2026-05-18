@@ -1,0 +1,75 @@
+<a class="skip-link" href="#main-content">Liigu põhisisu juurde</a>
+
+<nav class="sh-nav" aria-label="Põhinavigatsioon">
+  <div class="sh-nav-left">
+    <img class="sh-site-logo" src="logo.png" alt="Eesti Saalihoki Liit">
+    <a routerLink="/" class="sh-logo">SAALIHOKI<span>.</span>EE</a>
+  </div>
+  <div class="sh-nav-links" id="mobile-navigation" [class.mobile-open]="mobileMenuOpen">
+    <a routerLink="/news" routerLinkActive="active">Uudised</a>
+    <a routerLink="/league" routerLinkActive="active">Liigad</a>
+    <a routerLink="/schedule" routerLinkActive="active">Ajakavad</a>
+    <a routerLink="/national-team" routerLinkActive="active">Koondis</a>
+    <a routerLink="/association" routerLinkActive="active">Liit</a>
+    <a routerLink="/gallery" routerLinkActive="active">Galerii</a>
+    <a routerLink="/training" routerLinkActive="active">Koolitused</a>
+    <div class="sh-social sh-social-mobile" aria-label="Sotsiaalmeedia">
+      <a href="https://www.facebook.com/saalihoki.ee" aria-label="Facebook" target="_blank" rel="noreferrer"><img src="https://www.saalihoki.ee/fb.png" alt=""></a>
+      <a href="https://www.instagram.com/saalihoki.ee/" aria-label="Instagram" target="_blank" rel="noreferrer"><img src="https://www.saalihoki.ee/instagram.png" alt=""></a>
+      <a href="https://www.youtube.com/" aria-label="YouTube" target="_blank" rel="noreferrer"><img src="https://www.saalihoki.ee/youtube.png" alt=""></a>
+    </div>
+  </div>
+  <div class="sh-nav-right">
+    <form class="sh-search" [class.mobile-open]="mobileSearchOpen" (ngSubmit)="searchPlayer()" role="search">
+      <label class="sr-only" for="player-search">Otsi mängijat</label>
+      <input
+        id="player-search"
+        type="search"
+        name="search"
+        placeholder="Otsi mängijat..."
+        autocomplete="off"
+        [(ngModel)]="searchTerm"
+        (focus)="searchFocused = true"
+        (blur)="deferSearchBlur()"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-controls="player-search-suggestions"
+        [attr.aria-expanded]="showSuggestions"
+      >
+      <button type="submit" aria-label="Otsi mängijat">Otsi</button>
+      <div class="search-suggestions" id="player-search-suggestions" role="listbox" *ngIf="showSuggestions">
+        <button
+          type="button"
+          role="option"
+          class="search-suggestion"
+          *ngFor="let player of suggestions"
+          (mousedown)="$event.preventDefault()"
+          (click)="selectPlayer(player)"
+        >
+          <span><strong>{{ player.name }}</strong><small>{{ player.team }}</small></span>
+          <span aria-hidden="true">→</span>
+        </button>
+        <div class="search-suggestion-empty" *ngIf="!suggestions.length">Vasteid ei leitud. Vajuta Enter täisotsinguks.</div>
+      </div>
+    </form>
+    <div class="sh-social sh-social-desktop" aria-label="Sotsiaalmeedia">
+      <a href="https://www.facebook.com/saalihoki.ee" aria-label="Facebook" target="_blank" rel="noreferrer"><img src="https://www.saalihoki.ee/fb.png" alt=""></a>
+      <a href="https://www.instagram.com/saalihoki.ee/" aria-label="Instagram" target="_blank" rel="noreferrer"><img src="https://www.saalihoki.ee/instagram.png" alt=""></a>
+      <a href="https://www.youtube.com/" aria-label="YouTube" target="_blank" rel="noreferrer"><img src="https://www.saalihoki.ee/youtube.png" alt=""></a>
+    </div>
+    <button type="button" class="sh-mobile-action" aria-label="Ava mängija otsing" [attr.aria-expanded]="mobileSearchOpen" (click)="toggleMobileSearch()">⌕</button>
+    <button type="button" class="sh-mobile-action sh-menu-button" aria-label="Ava menüü" aria-controls="mobile-navigation" [attr.aria-expanded]="mobileMenuOpen" (click)="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main id="main-content" tabindex="-1">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="sh-footer">
+  <div class="sh-footer-logo">SAALIHOKI.EE</div>
+  <div>Kadaka tee 42a, 12915 Tallinn · <a href="mailto:info@saalihoki.ee">info&#64;saalihoki.ee</a> · +372 566 21 873</div>
+  <div>© 2026 Eesti Saalihoki Liit</div>
+</footer>
