@@ -1,0 +1,44 @@
+<section class="section-page">
+  <header class="section-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › Mängija otsing</div>
+    <p class="section-kicker">Andmebaas</p>
+    <h1>Mängija otsing</h1>
+    <p>Leia mängija nime või meeskonna järgi.</p>
+  </header>
+
+  <div class="section-content search-results" aria-live="polite">
+    <div class="section-heading-row">
+      <h2 *ngIf="query">Tulemused otsingule „{{ query }}”</h2>
+      <h2 *ngIf="!query">Sisesta mängija nimi</h2>
+      <span class="result-count" *ngIf="query">{{ results.length }} tulemust</span>
+    </div>
+
+    <div class="search-result-list" *ngIf="results.length; else emptyState">
+      <a
+        class="search-result-card"
+        *ngFor="let player of results"
+        routerLink="/player"
+        [queryParams]="{ name: player.name }"
+      >
+        <span class="search-result-avatar" aria-hidden="true">{{ initials(player.name) }}</span>
+        <span>
+          <strong>{{ player.name }}</strong>
+          <small>{{ player.position }} · {{ player.team }}</small>
+        </span>
+        <span class="search-result-stats">{{ player.games }} M · {{ player.goals + player.assists }} P</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <span class="empty-state-icon" aria-hidden="true">⌕</span>
+        <h3 *ngIf="query">Mängijat ei leitud</h3>
+        <h3 *ngIf="!query">Otsing on valmis</h3>
+        <p *ngIf="query">Kontrolli kirjapilti või proovi ainult ees- või perekonnanime.</p>
+        <p *ngIf="!query">Kasuta lehe ülaosas olevat otsingut.</p>
+        <a routerLink="/league" class="sh-primary-link">Vaata liiga statistikat →</a>
+      </div>
+    </ng-template>
+  </div>
+</section>

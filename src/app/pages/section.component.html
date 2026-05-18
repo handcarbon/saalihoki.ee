@@ -1,0 +1,51 @@
+<section class="section-page">
+  <header class="section-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › {{ content.title }}</div>
+    <p class="section-kicker">{{ content.kicker }}</p>
+    <h1>{{ content.title }}</h1>
+    <p>{{ content.lead }}</p>
+  </header>
+
+  <div class="section-content">
+    <div *ngIf="isPartnerSection; else standardCards" class="partner-directory">
+      <div class="partner-directory-grid">
+        <a *ngFor="let partner of partners" class="partner-directory-card" [href]="partner.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
+          <span class="partner-directory-logo"><img [src]="partner.image" [alt]="partner.name" loading="lazy"></span>
+          <span class="partner-directory-copy">
+            <span class="section-card-eyebrow">{{ partner.tier }}</span>
+            <strong>{{ partner.name }}</strong>
+            <span>{{ partner.description }}</span>
+            <span class="partner-directory-link">Ava veebileht ↗</span>
+          </span>
+        </a>
+      </div>
+
+      <section class="membership-panel" aria-labelledby="membership-title">
+        <div>
+          <p class="section-card-eyebrow">Liikmelisus</p>
+          <h2 id="membership-title">Kuulume spordiorganisatsioonidesse</h2>
+        </div>
+        <div class="membership-grid">
+          <a *ngFor="let membership of memberships" [href]="membership.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="membership.name + ' veebileht (avaneb uuel vahelehel)'">
+            <img [src]="membership.image" [alt]="membership.shortName" loading="lazy">
+            <span>{{ membership.name }}</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <ng-template #standardCards>
+      <div class="section-card-grid">
+      <article class="section-card" *ngFor="let card of content.cards; let i = index">
+        <img *ngIf="card.image" [src]="card.image" [alt]="card.title" [attr.loading]="i === 0 ? 'eager' : 'lazy'">
+        <div class="section-card-body">
+          <p class="section-card-eyebrow">{{ card.eyebrow }}</p>
+          <h2>{{ card.title }}</h2>
+          <p>{{ card.text }}</p>
+          <a *ngIf="card.link" [routerLink]="card.link" class="sh-primary-link">{{ card.linkLabel }} →</a>
+        </div>
+      </article>
+      </div>
+    </ng-template>
+  </div>
+</section>
