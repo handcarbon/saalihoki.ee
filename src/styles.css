@@ -151,6 +151,9 @@ body {
     border-bottom: 1px solid #dde4ef; overflow-x: auto;
 }
 .sub-tab {
+    appearance: none;
+    background: transparent;
+    border: 0;
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 12px; font-weight: 700; letter-spacing: 0.6px;
     text-transform: uppercase; color: #9aaac0;
@@ -159,6 +162,10 @@ body {
     transition: color .15s, border-color .15s;
 }
 .sub-tab.active { color: #1a6fe8; border-color: #1a6fe8; }
+.sub-tab:focus-visible {
+    outline: 2px solid rgba(26,111,232,0.35);
+    outline-offset: -2px;
+}
 .sub-panel { display: none; padding: 20px 24px; }
 .sub-panel.active { display: block; }
 

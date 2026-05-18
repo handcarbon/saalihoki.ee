@@ -1,0 +1,34 @@
+<nav class="sh-nav">
+  <div class="sh-nav-left">
+    <img class="sh-site-logo" src="logo.png" alt="Logo">
+    <a routerLink="/" class="sh-logo">SAALIHOKI<span>.</span>EE</a>
+  </div>
+  <div class="sh-nav-links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Uudised</a>
+    <a routerLink="/league" routerLinkActive="active">Liigad</a>
+    <a routerLink="/">Ajakavad</a>
+    <a routerLink="/">Koondis</a>
+    <a routerLink="/">Liit</a>
+    <a routerLink="/">Galerii</a>
+    <a routerLink="/">Koolitused</a>
+  </div>
+  <div class="sh-nav-right">
+    <form class="sh-search" (ngSubmit)="searchPlayer()">
+      <input type="text" name="search" placeholder="Otsi mängijat..." [(ngModel)]="searchTerm" (keydown.enter)="$event.preventDefault(); searchPlayer()">
+      <button type="submit" aria-label="Otsi mängijat">Otsi</button>
+    </form>
+    <div class="sh-social">
+      <a href="https://www.facebook.com/saalihoki.ee" title="Facebook" target="_blank" rel="noreferrer"><img height="75%" src="https://www.saalihoki.ee/fb.png" alt="Facebook"></a>
+      <a href="https://www.instagram.com/saalihoki.ee/" title="Instagram" target="_blank" rel="noreferrer"><img height="75%" src="https://www.saalihoki.ee/instagram.png" alt="Instagram"></a>
+      <a href="https://www.youtube.com/" title="YouTube" target="_blank" rel="noreferrer"><img height="75%" src="https://www.saalihoki.ee/youtube.png" alt="YouTube"></a>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<footer class="sh-footer">
+  <div class="sh-footer-logo">SAALIHOKI.EE</div>
+  <div>Kadaka tee 42a, 12915 Tallinn · <a href="mailto:info@saalihoki.ee">info&#64;saalihoki.ee</a> · +372 566 21 873</div>
+  <div>© 2026 Eesti Saalihoki Liit</div>
+</footer>
