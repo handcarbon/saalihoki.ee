@@ -6,6 +6,32 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Eesti Saalihoki Liidu uudised, liigad, mängud ja statistika.">
+  <meta name="theme-color" content="#0F2A6E">
+  <link rel="canonical" href="https://www.saalihoki.ee/">
+
+  <!-- Fonts: moved out of an @import inside styles.css, which serialised the
+       request behind the stylesheet and blocked rendering. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap">
+
+  <!-- LCP element: give the browser the hero before it parses the template. -->
+  <link rel="preload" as="image" href="hero-1200.webp" type="image/webp"
+        imagesrcset="hero-800.webp 800w, hero-1200.webp 1200w, hero-2048.webp 2048w"
+        imagesizes="100vw" fetchpriority="high">
+
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Saalihoki.ee">
+  <meta property="og:locale" content="et_EE">
+  <meta property="og:title" content="Saalihoki.ee — Eesti Saalihoki Liit">
+  <meta property="og:description" content="Eesti Saalihoki Liidu uudised, liigad, mängud ja statistika.">
+  <meta property="og:image" content="https://www.saalihoki.ee/hero-1200.jpg">
+  <meta property="og:url" content="https://www.saalihoki.ee/">
+  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
   <app-root></app-root>

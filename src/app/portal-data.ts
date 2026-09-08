@@ -190,3 +190,223 @@ export function findTeam(name: string | null): PortalTeam {
   return PORTAL_TEAMS.find((team) => team.name.toLocaleLowerCase('et') === normalized)
     ?? PORTAL_TEAMS[0];
 }
+
+/* ============================================================
+   HOMEPAGE MODULES
+   Match strip, featured story, news list and standings snapshot.
+   Team names live here rather than in templates so that a fixture's
+   status can never disagree with the teams shown beside it.
+   ============================================================ */
+
+export type MatchState = 'live' | 'upcoming' | 'finished';
+
+export interface PortalMatch {
+  id: string;
+  league: string;
+  home: string;
+  away: string;
+  homeShort: string;
+  awayShort: string;
+  /** ISO 8601 with offset. Drives state, so never hardcode a status string. */
+  startsAt: string;
+  venue: string;
+  homeScore?: number;
+  awayScore?: number;
+  /** Set only while the match is in progress. */
+  period?: string;
+  stream?: boolean;
+}
+
+export interface PortalNewsItem {
+  id: string;
+  date: string;
+  category: string;
+  title: string;
+  summary: string;
+  image?: string;
+}
+
+export interface PortalStandingsRow {
+  rank: number;
+  team: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  points: number;
+}
+
+export interface PortalStandingsTable {
+  id: string;
+  league: string;
+  rows: PortalStandingsRow[];
+}
+
+/**
+ * DEMO SEED DATA. Kick-off times are anchored to page-load time so the match
+ * strip always demonstrates all three states (live / upcoming / finished),
+ * whenever the demo happens to run.
+ *
+ * When the real fixture feed lands, replace `hoursFromNow(n)` with the literal
+ * ISO 8601 timestamps from the source and delete the two helpers below.
+ */
+const LOAD_TIME = Date.now();
+const HOUR_MS = 60 * 60 * 1000;
+const hoursFromNow = (hours: number): string =>
+  new Date(LOAD_TIME + hours * HOUR_MS).toISOString();
+const daysFromNow = (days: number): string => hoursFromNow(days * 24);
+
+export const PORTAL_MATCHES: PortalMatch[] = [
+  {
+    // Started ~40 minutes ago, so inside the two-hour live window.
+    id: 'm-lk-drk',
+    league: 'M35+ MV',
+    home: 'Lauka Kolhoos', away: 'Drinkgeld',
+    homeShort: 'LK', awayShort: 'DRK',
+    startsAt: hoursFromNow(-0.7),
+    venue: 'Aruküla spordihoone',
+    homeScore: 2, awayScore: 1, period: '2. periood',
+    stream: true
+  },
+  {
+    id: 'm-tu-pro',
+    league: 'M35+ MV',
+    home: 'Tallinn United', away: 'Prosura',
+    homeShort: 'TU', awayShort: 'PRO',
+    startsAt: hoursFromNow(4.5),
+    venue: 'Kristiine spordihall'
+  },
+  {
+    id: 'm-spa-emu',
+    league: 'Naiste MV',
+    home: 'Sparta Team Automaailm', away: 'Eesti Maaülikool',
+    homeShort: 'SPA', awayShort: 'EMÜ',
+    startsAt: daysFromNow(4),
+    venue: 'Kristiine spordihall',
+    stream: true
+  },
+  {
+    id: 'm-rk-kad',
+    league: 'M35+ MV',
+    home: 'Rapla Kepiklubi', away: 'Kadrina',
+    homeShort: 'RK', awayShort: 'KAD',
+    startsAt: daysFromNow(4.15),
+    venue: 'Rapla spordikeskus'
+  },
+  {
+    id: 'm-shm-tab',
+    league: 'M35+ MV',
+    home: 'SH Mehed Metsast', away: 'Tabajad',
+    homeShort: 'SHM', awayShort: 'TAB',
+    startsAt: daysFromNow(11),
+    venue: 'Märjamaa valla spordikeskus'
+  },
+  {
+    id: 'm-drk-tu',
+    league: 'M35+ MV',
+    home: 'Drinkgeld', away: 'Tallinn United',
+    homeShort: 'DRK', awayShort: 'TU',
+    startsAt: daysFromNow(-3),
+    venue: 'Aruküla spordihoone',
+    homeScore: 6, awayScore: 2
+  },
+  {
+    id: 'm-lk-rk',
+    league: 'M35+ MV',
+    home: 'Lauka Kolhoos', away: 'Rapla Kepiklubi',
+    homeShort: 'LK', awayShort: 'RK',
+    startsAt: daysFromNow(-4),
+    venue: 'Kärdla spordihoone',
+    homeScore: 4, awayScore: 4
+  },
+  {
+    id: 'm-pro-tab',
+    league: 'M35+ MV',
+    home: 'Prosura', away: 'Tabajad',
+    homeShort: 'PRO', awayShort: 'TAB',
+    startsAt: daysFromNow(-6),
+    venue: 'Kristiine spordihall',
+    homeScore: 2, awayScore: 5
+  }
+];
+
+export const PORTAL_NEWS: PortalNewsItem[] = [
+  {
+    id: 'n-u16t-meister',
+    date: daysFromNow(-1),
+    category: 'Noored',
+    title: 'Kehtna/Rapla SHKV krooniti U16T vanuseklassi Eesti meistriks',
+    summary: 'U16 tüdrukute saalihoki Eesti meistrivõistlustel tuli meistriks Kehtna/Rapla SHKV, kes alistas ülipõnevas finaalmängus Kuusalu võistkonna karistusvisete seerias.',
+    image: 'news_photo.jpg'
+  },
+  {
+    id: 'n-raplamaa-hooaeg',
+    date: daysFromNow(-3),
+    category: 'Maakonnad',
+    title: 'Raplamaa saalihoki meistrivõistluste hooaeg sai põneva lõpu',
+    summary: 'Hooaja otsustavad mängud tõid väljakule nii noored kui kogenud mängijad.'
+  },
+  {
+    id: 'n-u10-meister',
+    date: daysFromNow(-5),
+    category: 'Noored',
+    title: 'Kehtna SK krooniti U10 vanuseklassi Eesti meistriks',
+    summary: 'Noortesarja finaalpäev pakkus kiiret mängu ja tasavägiseid kohtumisi.'
+  },
+  {
+    id: 'n-u9-meister',
+    date: daysFromNow(-7),
+    category: 'Noored',
+    title: 'Kehtna SK krooniti U9 vanuseklassi Eesti meistriks',
+    summary: 'Kolmas järjestikune tiitel Kehtna noortele sel hooajal.'
+  },
+  {
+    id: 'n-final-four',
+    date: daysFromNow(-11),
+    category: 'Naised',
+    title: 'Ääsmäel toimus naiste LAT–EST ühisliiga Final Four turniir',
+    summary: 'Nädalavahetuse turniir tõi kokku nelja parima naiskonna Eestist ja Lätist.'
+  }
+];
+
+export const PORTAL_STANDINGS: PortalStandingsTable[] = [
+  {
+    id: 'm35',
+    league: 'M35+ Meistrivõistlused',
+    rows: [
+      { rank: 1, team: 'Drinkgeld',        played: 7, won: 6, drawn: 0, lost: 1, goalsFor: 41, goalsAgainst: 22, points: 18 },
+      { rank: 2, team: 'Lauka Kolhoos',    played: 8, won: 5, drawn: 1, lost: 2, goalsFor: 38, goalsAgainst: 27, points: 16 },
+      { rank: 3, team: 'Rapla Kepiklubi',  played: 8, won: 5, drawn: 0, lost: 3, goalsFor: 40, goalsAgainst: 31, points: 15 },
+      { rank: 4, team: 'Tallinn United',   played: 7, won: 4, drawn: 1, lost: 2, goalsFor: 33, goalsAgainst: 26, points: 13 },
+      { rank: 5, team: 'Prosura',          played: 7, won: 3, drawn: 0, lost: 4, goalsFor: 26, goalsAgainst: 30, points: 9 }
+    ]
+  },
+  {
+    id: 'naised',
+    league: 'Naiste Meistrivõistlused',
+    rows: [
+      { rank: 1, team: 'Sparta Team Automaailm', played: 6, won: 6, drawn: 0, lost: 0, goalsFor: 44, goalsAgainst: 12, points: 18 },
+      { rank: 2, team: 'Eesti Maaülikool',       played: 6, won: 4, drawn: 1, lost: 1, goalsFor: 31, goalsAgainst: 19, points: 13 },
+      { rank: 3, team: 'Kehtna/Rapla SHKV',      played: 6, won: 3, drawn: 1, lost: 2, goalsFor: 24, goalsAgainst: 21, points: 10 },
+      { rank: 4, team: 'Puhja Kool',             played: 6, won: 2, drawn: 0, lost: 4, goalsFor: 18, goalsAgainst: 28, points: 6 },
+      { rank: 5, team: 'TVSK',                   played: 6, won: 0, drawn: 0, lost: 6, goalsFor: 9,  goalsAgainst: 46, points: 0 }
+    ]
+  }
+];
+
+/** A match counts as in progress for two hours from its start time. */
+const MATCH_DURATION_MS = 2 * 60 * 60 * 1000;
+
+export function matchState(match: PortalMatch, now: number = Date.now()): MatchState {
+  const start = new Date(match.startsAt).getTime();
+  if (now < start) {
+    return 'upcoming';
+  }
+  return now <= start + MATCH_DURATION_MS ? 'live' : 'finished';
+}
+
+export function hasScore(match: PortalMatch): boolean {
+  return match.homeScore !== undefined && match.awayScore !== undefined;
+}
