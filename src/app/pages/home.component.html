@@ -1,109 +1,268 @@
-<div class="sh-hero">
-    <img class="sh-hero-img" src="hero.jpg" alt="" aria-hidden="true">
+<!-- ============================================================
+     1. MATCH STRIP — the highest-value module, above the fold.
+        Replaces the old quick-actions row, which duplicated the nav.
+     ============================================================ -->
+<section class="sh-strip" aria-labelledby="strip-title">
+    <div class="sh-strip-inner">
+        <div class="sh-strip-head">
+            <h2 id="strip-title" class="sh-strip-title">Mängud</h2>
+            <a class="sh-see-all" routerLink="/schedule">Kogu ajakava →</a>
+        </div>
+        <ul class="sh-strip-rail">
+            <li *ngFor="let match of matchStrip">
+                <a class="sh-match-card"
+                   [class.is-live]="stateOf(match) === 'live'"
+                   [routerLink]="stateOf(match) === 'upcoming' ? '/schedule' : '/match'">
+                    <span class="sh-match-top">
+                        <span class="sh-match-league">{{ match.league }}</span>
+                        <span class="sh-match-status" [class.is-live]="stateOf(match) === 'live'">
+                            <span class="sh-live-dot" *ngIf="stateOf(match) === 'live'" aria-hidden="true"></span>
+                            {{ statusLabel(match) }}
+                        </span>
+                    </span>
+
+                    <span class="sh-match-side">
+                        <span class="sh-match-abbr">{{ match.homeShort }}</span>
+                        <span class="sh-match-team">{{ match.home }}</span>
+                        <span class="sh-match-score" *ngIf="showsScore(match)">{{ match.homeScore }}</span>
+                    </span>
+                    <span class="sh-match-side">
+                        <span class="sh-match-abbr">{{ match.awayShort }}</span>
+                        <span class="sh-match-team">{{ match.away }}</span>
+                        <span class="sh-match-score" *ngIf="showsScore(match)">{{ match.awayScore }}</span>
+                    </span>
+
+                    <span class="sh-match-foot">
+                        <span class="sh-match-venue">{{ match.venue }}</span>
+                        <span class="sh-match-stream" *ngIf="match.stream">Otseülekanne</span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- ============================================================
+     2. HERO — capped at 400px and bound to the featured story.
+        The federation's name lives in the logo, title and footer;
+        this space now carries information instead.
+     ============================================================ -->
+<section class="sh-hero">
+    <picture>
+        <source type="image/webp" sizes="100vw"
+                srcset="hero-800.webp 800w, hero-1200.webp 1200w, hero-2048.webp 2048w">
+        <img class="sh-hero-img" src="hero.jpg" sizes="100vw"
+             srcset="hero-800.jpg 800w, hero-1200.jpg 1200w, hero.jpg 2048w"
+             width="2048" height="1365"
+             alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+    </picture>
     <div class="sh-hero-overlay"></div>
     <div class="sh-hero-content">
-        <h1>EESTI<br><span>SAALIHOKI</span><br>LIIT</h1>
-        <p class="sh-hero-sub">Eesti Olümpiakomitee liige · IFF liige</p>
-        <div class="sh-live-card">
-            <div>
-                <div class="sh-live-badge"><span class="sh-live-dot"></span> {{ featuredMatchStatus }}</div>
-                <div class="sh-match-teams">Sparta <span class="sh-match-vs">vs</span> Eesti Maaülikool</div>
-                <div class="sh-match-time">Naiste MV · {{ featuredMatchDateLabel }}</div>
-            </div>
-            <a [routerLink]="featuredMatchLink" class="sh-watch-btn">{{ featuredMatchCta }} →</a>
-        </div>
+        <p class="sh-hero-kicker">
+            <span class="sh-hero-cat">{{ featuredStory.category }}</span>
+            <time [attr.datetime]="isoDate(featuredStory.date)">{{ fullDate(featuredStory.date) }}</time>
+        </p>
+        <h1 class="sh-hero-headline">
+            <a routerLink="/news">{{ featuredStory.title }}</a>
+        </h1>
+        <p class="sh-hero-lead">{{ featuredStory.summary }}</p>
+        <a class="sh-btn sh-btn-primary" routerLink="/news">Loe uudist →</a>
     </div>
-</div>
+</section>
 
-<nav class="quick-actions" aria-label="Kiirlingid">
-    <a routerLink="/schedule"><span aria-hidden="true">▦</span><strong>Tänased mängud</strong><small>Ajad ja saalid</small></a>
-    <a routerLink="/league"><span aria-hidden="true">≡</span><strong>Liigatabelid</strong><small>Tulemused ja statistika</small></a>
-    <a routerLink="/search"><span aria-hidden="true">⌕</span><strong>Leia mängija</strong><small>Otsi andmebaasist</small></a>
-    <a routerLink="/news"><span aria-hidden="true">◫</span><strong>Viimased uudised</strong><small>Lood ja teated</small></a>
-</nav>
-
-<div class="sh-grid">
-    <div>
+<!-- ============================================================
+     3. NEWS — 1 lead + 4 secondary, two columns.
+     ============================================================ -->
+<div class="sh-container">
+    <section class="sh-block" aria-labelledby="news-title">
         <div class="sh-section-head">
-            <h2 class="sh-section-title">Uudised</h2>
+            <h2 id="news-title" class="sh-section-title">Uudised</h2>
             <a class="sh-see-all" routerLink="/news">Kõik uudised →</a>
         </div>
-        <div class="sh-news-main">
-            <div class="sh-news-main-img">
-                <img src="news_photo.jpg" alt="U16 tüdrukute meistermeeskond karikaga">
-                <span class="sh-news-date-pill">04.04.2026</span>
-            </div>
-            <div class="sh-news-main-body">
-                <h3><a routerLink="/news">Kehtna/Rapla SHKV krooniti U16T vanuseklassi Eesti meistriks</a></h3>
-                <p>U16 tüdrukute vanuseklassi saalihoki Eesti meistrivõistlustel tuli meistriks Kehtna/Rapla SHKV, kes alistas ülipõnevas finaalmängus Kuusalu võistkonna karistusvisete seerias.</p>
-            </div>
-        </div>
-        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">30<br>MÄR</div><div class="sh-news-item-title">Raplamaa saalihoki meistrivõistluste hooaeg sai põneva lõpu</div></a>
-        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">29<br>MÄR</div><div class="sh-news-item-title">Kehtna SK krooniti U10 vanuseklassi Eesti meistriks</div></a>
-        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">24<br>MÄR</div><div class="sh-news-item-title">Kehtna SK krooniti U9 vanuseklassi Eesti meistriks</div></a>
-        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">22<br>MÄR</div><div class="sh-news-item-title">Jõgeva SK Tähe/Olivia krooniti U8 vanuseklassi Eesti meistriks</div></a>
-        <a class="sh-news-item" routerLink="/news"><div class="sh-news-item-date">10<br>MÄR</div><div class="sh-news-item-title">Möödunud nädalavahetusel toimus Ääsmäel naiste LAT–EST ühisliiga Final Four turniir</div></a>
-    </div>
 
-    <div class="sh-sidebar">
-        <div class="sh-widget">
-            <h2 class="sh-widget-title">Tulevased üritused</h2>
-            <a class="sh-event-item" routerLink="/schedule"><div class="sh-event-date-block"><div class="sh-event-day">06</div><div class="sh-event-month">SEPT</div></div><div class="sh-event-name">Naiste MV Sparta — Eesti Maaülikool</div></a>
-            <a class="sh-event-item" routerLink="/schedule"><div class="sh-event-date-block"><div class="sh-event-day">12</div><div class="sh-event-month">SEPT</div></div><div class="sh-event-name">M35+ Lauka Kolhoos — Drinkgeld</div></a>
-            <a class="sh-event-item" routerLink="/schedule"><div class="sh-event-date-block"><div class="sh-event-day">19</div><div class="sh-event-month">SEPT</div></div><div class="sh-event-name">Treenerite baaskoolitus</div></a>
-            <a class="sh-see-all" routerLink="/schedule" style="display:block;text-align:center;margin-top:10px;font-size:12px;">Vaata kõiki üritusi →</a>
+        <div class="sh-news-grid">
+            <article class="sh-news-lead">
+                <a class="sh-news-lead-media" routerLink="/news" tabindex="-1" aria-hidden="true">
+                    <picture>
+                        <source type="image/webp" srcset="news_photo.webp">
+                        <img [src]="featuredStory.image" alt="" width="450" height="600"
+                             loading="lazy" decoding="async">
+                    </picture>
+                </a>
+                <div class="sh-news-lead-body">
+                    <p class="sh-eyebrow">
+                        <span class="sh-tag sh-tag-blue">{{ featuredStory.category }}</span>
+                        <time [attr.datetime]="isoDate(featuredStory.date)">{{ fullDate(featuredStory.date) }}</time>
+                    </p>
+                    <h3><a routerLink="/news">{{ featuredStory.title }}</a></h3>
+                    <p class="sh-news-summary">{{ featuredStory.summary }}</p>
+                </div>
+            </article>
+
+            <ul class="sh-news-list">
+                <li *ngFor="let item of secondaryNews">
+                    <a class="sh-news-row" routerLink="/news">
+                        <span class="sh-news-date">
+                            <span class="sh-news-day">{{ dayNumber(item.date) }}</span>
+                            <span class="sh-news-month">{{ monthShort(item.date) }}</span>
+                        </span>
+                        <span class="sh-news-row-body">
+                            <span class="sh-news-cat">{{ item.category }}</span>
+                            <span class="sh-news-row-title">{{ item.title }}</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <div class="sh-widget">
-            <h2 class="sh-widget-title">Lõppenud mängud</h2>
-            <div class="sh-result-item"><div><div class="sh-result-teams">Sparta vs EMÜ</div><div class="sh-result-date">05.04.2026</div></div><a routerLink="/match" style="font-size:11px;color:#1a6fe8;font-weight:600;">Protokoll →</a></div>
-            <div class="sh-result-item"><div><div class="sh-result-teams">Kehtna/Rapla vs EMÜ</div><div class="sh-result-date">03.04.2026</div></div><a routerLink="/match" style="font-size:11px;color:#1a6fe8;font-weight:600;">Protokoll →</a></div>
-            <div class="sh-result-item"><div><div class="sh-result-teams">Puhja Kool vs TVSK</div><div class="sh-result-date">03.04.2026</div></div><a routerLink="/match" style="font-size:11px;color:#1a6fe8;font-weight:600;">Protokoll →</a></div>
+    </section>
+
+    <!-- ============================================================
+         4. STANDINGS SNAPSHOT — previously absent from the homepage.
+         ============================================================ -->
+    <section class="sh-block" aria-labelledby="standings-title">
+        <div class="sh-section-head">
+            <h2 id="standings-title" class="sh-section-title">Tabelid</h2>
+            <a class="sh-see-all" routerLink="/league">Täistabel →</a>
         </div>
+
+        <div class="sh-card sh-standings-card">
+            <div class="sh-switch" role="tablist" aria-label="Vali liiga">
+                <button *ngFor="let table of standingsTables"
+                        type="button"
+                        role="tab"
+                        class="sh-switch-btn"
+                        [class.active]="table.id === standingsTableId"
+                        [attr.aria-selected]="table.id === standingsTableId"
+                        [attr.tabindex]="table.id === standingsTableId ? 0 : -1"
+                        (click)="selectStandings(table.id)">
+                    {{ table.league }}
+                </button>
+            </div>
+
+            <div class="sh-table-scroll">
+                <table class="sh-standings-mini">
+                    <caption class="sr-only">{{ activeStandings.league }} — viie parema seis</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="l" colspan="2">Võistkond</th>
+                            <th scope="col"><abbr title="Mängitud">M</abbr></th>
+                            <th scope="col"><abbr title="Võidud">V</abbr></th>
+                            <th scope="col"><abbr title="Viigid">Vi</abbr></th>
+                            <th scope="col"><abbr title="Kaotused">K</abbr></th>
+                            <th scope="col"><abbr title="Väravate vahe">VV</abbr></th>
+                            <th scope="col"><abbr title="Punktid">P</abbr></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of activeStandings.rows">
+                            <td class="rank">
+                                <span class="rank-badge"
+                                      [class.rank-1]="row.rank === 1"
+                                      [class.rank-2]="row.rank === 2"
+                                      [class.rank-3]="row.rank === 3"
+                                      [class.rank-n]="row.rank > 3">{{ row.rank }}</span>
+                            </td>
+                            <td class="team-cell"><a routerLink="/team">{{ row.team }}</a></td>
+                            <td>{{ row.played }}</td>
+                            <td>{{ row.won }}</td>
+                            <td>{{ row.drawn }}</td>
+                            <td>{{ row.lost }}</td>
+                            <td>{{ goalDiff(row) }}</td>
+                            <td class="pts">{{ row.points }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         5. FIXTURES & RESULTS — promoted from the old narrow sidebar.
+         ============================================================ -->
+    <div class="sh-two-col">
+        <section class="sh-block" aria-labelledby="fixtures-title">
+            <div class="sh-section-head">
+                <h2 id="fixtures-title" class="sh-section-title sm">Tulevased mängud</h2>
+                <a class="sh-see-all" routerLink="/schedule">Kõik →</a>
+            </div>
+            <ul class="sh-card sh-list">
+                <li *ngFor="let match of nextFixtures">
+                    <a class="sh-list-row" routerLink="/schedule">
+                        <span class="sh-news-date">
+                            <span class="sh-news-day">{{ dayNumber(match.startsAt) }}</span>
+                            <span class="sh-news-month">{{ monthShort(match.startsAt) }}</span>
+                        </span>
+                        <span class="sh-list-body">
+                            <span class="sh-list-title">{{ match.home }} — {{ match.away }}</span>
+                            <span class="sh-list-meta">{{ match.league }} · {{ kickoffTime(match) }} · {{ match.venue }}</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="sh-block" aria-labelledby="results-title">
+            <div class="sh-section-head">
+                <h2 id="results-title" class="sh-section-title sm">Viimased tulemused</h2>
+                <a class="sh-see-all" routerLink="/league">Kõik →</a>
+            </div>
+            <ul class="sh-card sh-list">
+                <li *ngFor="let match of latestResults">
+                    <a class="sh-list-row" routerLink="/match">
+                        <span class="sh-result-score">
+                            {{ match.homeScore }}<span class="sep">:</span>{{ match.awayScore }}
+                        </span>
+                        <span class="sh-list-body">
+                            <span class="sh-list-title">{{ match.home }} — {{ match.away }}</span>
+                            <span class="sh-list-meta">{{ match.league }} · {{ kickoffDay(match) }}</span>
+                        </span>
+                        <span class="sh-list-cta" aria-hidden="true">Protokoll →</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
     </div>
 </div>
 
-<div class="sh-sponsors-section">
+<!-- ============================================================
+     6. PARTNERS — one calm row. Per-logo name labels removed
+        (the logo is the name) and tile height roughly halved so
+        partners no longer outweigh the sport content above.
+     ============================================================ -->
+<section class="sh-sponsors-section" aria-labelledby="partners-title">
     <div class="sh-sponsors-inner">
         <div class="sh-sponsors-header">
             <div>
                 <p class="sh-sponsors-kicker">Koos kasvatame Eesti saalihokit</p>
-                <h2 class="sh-sponsors-label">Koostööpartnerid</h2>
+                <h2 id="partners-title" class="sh-sponsors-label">Koostööpartnerid</h2>
             </div>
             <div class="sh-sponsors-line"></div>
-            <a class="sh-see-all" routerLink="/partners" style="white-space:nowrap;">Kõik partnerid →</a>
+            <a class="sh-see-all sh-nowrap" routerLink="/partners">Kõik partnerid →</a>
         </div>
+
         <div class="sh-sponsors-tiers">
             <section aria-labelledby="featured-partners-title">
                 <h3 id="featured-partners-title" class="sh-tier-label">Peapartnerid</h3>
                 <div class="sh-sponsor-row sh-sponsor-row--featured">
-                    <a *ngFor="let partner of featuredPartners" class="sh-sponsor-logo sh-sponsor-main" [href]="partner.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
-                        <span class="sh-sponsor-inner">
-                            <img [src]="partner.image" [alt]="partner.name" loading="lazy">
-                            <span class="sh-sponsor-name">{{ partner.name }}</span>
-                        </span>
+                    <a *ngFor="let partner of featuredPartners"
+                       class="sh-sponsor-logo sh-sponsor-main"
+                       [href]="partner.url" target="_blank" rel="noopener noreferrer"
+                       [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
+                        <img [src]="partner.image" [alt]="partner.name" loading="lazy" decoding="async">
                     </a>
                 </div>
             </section>
             <section aria-labelledby="official-partners-title">
                 <h3 id="official-partners-title" class="sh-tier-label">Ametlikud partnerid</h3>
                 <div class="sh-sponsor-row sh-sponsor-row--official">
-                    <a *ngFor="let partner of officialPartners" class="sh-sponsor-logo sh-sponsor-med" [href]="partner.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
-                        <span class="sh-sponsor-inner">
-                            <img [src]="partner.image" [alt]="partner.name" loading="lazy">
-                            <span class="sh-sponsor-name">{{ partner.name }}</span>
-                        </span>
+                    <a *ngFor="let partner of officialPartners"
+                       class="sh-sponsor-logo sh-sponsor-med"
+                       [href]="partner.url" target="_blank" rel="noopener noreferrer"
+                       [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
+                        <img [src]="partner.image" [alt]="partner.name" loading="lazy" decoding="async">
                     </a>
                 </div>
             </section>
         </div>
     </div>
-</div>
-
-<div class="sh-partners-row">
-    <span class="sh-partner-label">Kuulume:</span>
-    <a *ngFor="let membership of memberships" class="sh-partner-badge" [href]="membership.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="membership.name + ' veebileht (avaneb uuel vahelehel)'">
-        <img [src]="membership.image" [alt]="membership.shortName" loading="lazy">
-        <span>{{ membership.name }}</span>
-    </a>
-    <div class="sh-partner-badge"><strong>AUS</strong> AUS Sport</div>
-</div>
+</section>
