@@ -1,16 +1,72 @@
 <section class="league-body-wrap">
-    <div class="sh-hero-inner">
+    <header class="league-official-hero">
         <div class="sh-breadcrumb">
             <a routerLink="/">Avaleht</a> › <a routerLink="/league">Liigad</a> › M35+ meistrivõistlused
         </div>
-        <div class="league-hero-inner">
-            <h1 class="league-title">M35+ Meistrivõistlused</h1>
-            <div class="league-meta">
-                <span>📅 Hooaeg 2025 / 2026</span>
-                <span>👥 9 meeskonda</span>
-                <span>🏒 72 mängu</span>
+        <div class="league-hero-grid">
+            <div class="league-identity-mark" aria-hidden="true">
+                <span>M35+</span>
+                <small>MV</small>
+            </div>
+            <div class="league-hero-copy">
+                <div class="league-official-line">
+                    <span>Eesti Saalihoki Liit · ametlik võistlus</span>
+                    <span class="league-season-status"><i aria-hidden="true"></i> Hooaeg käib</span>
+                </div>
+                <h1 class="league-title">M35+ Meistrivõistlused</h1>
+                <p>Eesti klubisaalihoki ametlik võistluskeskus: tabel, tulemused, mängijate statistika ja kohamängud.</p>
+            </div>
+            <div class="league-hero-actions" aria-label="Liiga kiirlingid">
+                <a class="league-hero-button primary" routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg>
+                    Ajakava
+                </a>
+                <a class="league-hero-button" routerLink="/search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM19 8v6M22 11h-6"/></svg>
+                    Mängijad
+                </a>
             </div>
         </div>
+
+        <dl class="league-facts" aria-label="Võistluse põhiandmed">
+            <div><dt>Hooaeg</dt><dd>2026 / 2027</dd></div>
+            <div><dt>Võistlusetapp</dt><dd>Põhiturniir</dd></div>
+            <div><dt>Meeskondi</dt><dd>9</dd></div>
+            <div><dt>Mänge hooajal</dt><dd>72</dd></div>
+        </dl>
+    </header>
+
+    <div class="league-command-strip" aria-label="Liiga hetkeseis">
+        <a class="league-command-card league-live-card" routerLink="/match" [queryParams]="{ id: liveMatch.id }">
+            <span class="league-card-label is-live"><i aria-hidden="true"></i> Hetkel otse</span>
+            <div class="league-live-score">
+                <span><b>{{ liveMatch.homeShort }}</b><small>{{ liveMatch.home }}</small></span>
+                <strong>{{ liveMatch.homeScore }}<em>:</em>{{ liveMatch.awayScore }}</strong>
+                <span><b>{{ liveMatch.awayShort }}</b><small>{{ liveMatch.away }}</small></span>
+            </div>
+            <span class="league-card-foot">{{ liveMatch.period }} · {{ liveMatch.venue }} <b>Vaata mängu →</b></span>
+        </a>
+
+        <a class="league-command-card" routerLink="/team" [queryParams]="{ name: 'Drinkgeld' }">
+            <span class="league-card-label">Tabeliliider</span>
+            <span class="league-card-rank">1</span>
+            <strong class="league-card-title">Drinkgeld</strong>
+            <span class="league-card-foot">8 mängu · 24 punkti <b>Meeskond →</b></span>
+        </a>
+
+        <a class="league-command-card" routerLink="/player" [queryParams]="{ name: 'Taavi Sau' }">
+            <span class="league-card-label">Punktikuningas</span>
+            <span class="league-card-value">24 <small>P</small></span>
+            <strong class="league-card-title">Taavi Sau</strong>
+            <span class="league-card-foot">20 väravat · 4 söötu <b>Profiil →</b></span>
+        </a>
+
+        <a class="league-command-card league-next-card" routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }">
+            <span class="league-card-label">Järgmine mäng</span>
+            <span class="league-card-kickoff">{{ matchDay(nextMatch) }} <strong>{{ matchTime(nextMatch) }}</strong></span>
+            <strong class="league-card-title">{{ nextMatch.homeShort }} <em>vs</em> {{ nextMatch.awayShort }}</strong>
+            <span class="league-card-foot">{{ nextMatch.venue }} <b>Ajakava →</b></span>
+        </a>
     </div>
 
     <div class="sub-tabs" role="tablist" aria-label="Liiga vaated">
@@ -23,9 +79,15 @@
 
     <!-- STANDINGS -->
     <div class="sub-panel" [class.active]="activeTab === 'standings'" id="league-standings" role="tabpanel" aria-labelledby="league-tab-standings" [attr.aria-hidden]="activeTab !== 'standings'" tabindex="0">
-        <h2 class="sh-section-title">Põhiturniiri tabel — M35+</h2>
+        <div class="league-section-head">
+            <div>
+                <span class="league-section-eyebrow">Põhiturniir · 8. voor</span>
+                <h2 class="sh-section-title">Põhiturniiri tabel — M35+</h2>
+            </div>
+            <span class="league-data-status"><i aria-hidden="true"></i> Ametlik tulemus</span>
+        </div>
         <p class="table-legend"><abbr title="Mänge">M</abbr> mängud · <abbr title="Võite">V</abbr> võidud · <abbr title="Võite lisaajal">VL</abbr> lisaajavõidud · <abbr title="Kaotusi">K</abbr> kaotused · <abbr title="Kaotusi lisaajal">KL</abbr> lisaajakaotused · <abbr title="Väravate suhe">VS</abbr> väravate suhe · <abbr title="Punkte">Pts</abbr> punktid</p>
-        <div class="sh-card" style="padding:0;overflow:hidden;">
+        <div class="sh-card league-standings-shell">
             <table class="standings-table">
                 <tr>
                     <th style="width:32px;">#</th>
@@ -38,28 +100,28 @@
                     <th title="Väravate suhe">VS</th>
                     <th title="Punkte">Pts</th>
                 </tr>
-                <tr>
+                <tr class="qualifies">
                     <td><span class="rank-badge rank-1">1</span></td>
                     <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Drinkgeld' }">Drinkgeld</a></td>
                     <td>8</td><td>8</td><td>0</td><td>0</td><td>0</td>
                     <td><span class="result-w">52–7</span></td>
                     <td class="pts">24</td>
                 </tr>
-                <tr>
+                <tr class="qualifies">
                     <td><span class="rank-badge rank-2">2</span></td>
                     <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Lauka Kolhoos' }">Lauka Kolhoos</a></td>
                     <td>8</td><td>7</td><td>0</td><td>1</td><td>0</td>
                     <td><span class="result-w">51–19</span></td>
                     <td class="pts">21</td>
                 </tr>
-                <tr>
+                <tr class="qualifies">
                     <td><span class="rank-badge rank-3">3</span></td>
                     <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Rapla Kepiklubi' }">Rapla Kepiklubi</a></td>
                     <td>8</td><td>4</td><td>1</td><td>2</td><td>1</td>
                     <td>46–34</td>
                     <td class="pts">15</td>
                 </tr>
-                <tr>
+                <tr class="qualifies">
                     <td><span class="rank-badge rank-n">4</span></td>
                     <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Kadrina' }">Kadrina</a></td>
                     <td>8</td><td>3</td><td>1</td><td>4</td><td>0</td>
@@ -102,6 +164,10 @@
                     <td class="pts">0</td>
                 </tr>
             </table>
+        </div>
+        <div class="league-table-key" aria-label="Tabeli tähised">
+            <span><i class="is-playoff" aria-hidden="true"></i> Pääs kohamängudele</span>
+            <span>Võit 3 p · lisaajavõit 2 p · lisaajakaotus 1 p</span>
         </div>
     </div>
 
