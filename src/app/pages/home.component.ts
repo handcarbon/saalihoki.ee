@@ -4,17 +4,39 @@ import { RouterLink } from '@angular/router';
 
 import {
   MatchState,
+  PORTAL_GOALIES,
   PORTAL_MATCHES,
   PORTAL_MEMBERSHIPS,
   PORTAL_NEWS,
   PORTAL_PARTNERS,
+  PORTAL_PLAYERS,
   PORTAL_STANDINGS,
   PortalMatch,
   PortalNewsItem,
+  PortalPlayer,
   PortalStandingsTable,
   hasScore,
-  matchState
+  matchState,
+  playerInitials
 } from '../portal-data';
+
+type HomeLeaderKey = 'points' | 'goals' | 'assists' | 'goalies';
+
+interface HomeLeaderEntry {
+  name: string;
+  team: string;
+  meta: string;
+  value: number | string;
+  unit: string;
+}
+
+interface HomeLeaderCategory {
+  key: HomeLeaderKey;
+  abbreviation: string;
+  title: string;
+  view: 'scorers' | 'goalies';
+  entries: HomeLeaderEntry[];
+}
 
 @Component({
   selector: 'app-home',
@@ -26,6 +48,7 @@ export class HomeComponent {
   readonly featuredPartners = PORTAL_PARTNERS.filter((partner) => partner.tier === 'Peapartner');
   readonly officialPartners = PORTAL_PARTNERS.filter((partner) => partner.tier === 'Ametlik partner');
   readonly memberships = PORTAL_MEMBERSHIPS;
+  readonly leaderCategories = this.buildLeaderCategories();
 
   /** Selected league in the standings snapshot. */
   standingsTableId = PORTAL_STANDINGS[0].id;
@@ -164,5 +187,59 @@ export class HomeComponent {
   goalDiff(row: { goalsFor: number; goalsAgainst: number }): string {
     const diff = row.goalsFor - row.goalsAgainst;
     return diff > 0 ? `+${diff}` : `${diff}`;
+  }
+
+  initials(name: string): string {
+    return playerInitials(name);
+  }
+
+  private buildLeaderCategories(): HomeLeaderCategory[] {
+    const activeSkaters = PORTAL_PLAYERS.filter((player) => player.games > 0 && player.position !== 'Väravavaht');
+    const topPlayers = (metric: (player: PortalPlayer) => number) => [...activeSkaters]
+      .sort((a, b) =>
+        metric(b) - metric(a) ||
+        (b.goals + b.assists) - (a.goals + a.assists) ||
+        a.name.localeCompare(b.name, 'et')
+      )
+      .slice(0, 3);
+
+    const points = topPlayers((player) => player.goals + player.assists).map((player) => ({
+      name: player.name,
+      team: player.team,
+      meta: `${player.goals} V · ${player.assists} S`,
+      value: player.goals + player.assists,
+      unit: 'P'
+    }));
+    const goals = topPlayers((player) => player.goals).map((player) => ({
+      name: player.name,
+      team: player.team,
+      meta: `${player.games} M · ${player.assists} S`,
+      value: player.goals,
+      unit: 'V'
+    }));
+    const assists = topPlayers((player) => player.assists).map((player) => ({
+      name: player.name,
+      team: player.team,
+      meta: `${player.games} M · ${player.goals} V`,
+      value: player.assists,
+      unit: 'S'
+    }));
+    const goalies = [...PORTAL_GOALIES]
+      .sort((a, b) => (b.saves / b.shots) - (a.saves / a.shots) || b.minutes - a.minutes)
+      .slice(0, 3)
+      .map((goalie) => ({
+        name: goalie.name,
+        team: goalie.team,
+        meta: `${goalie.minutes} min · ${goalie.saves}/${goalie.shots} tõrjet`,
+        value: ((goalie.saves / goalie.shots) * 100).toFixed(1),
+        unit: '%'
+      }));
+
+    return [
+      { key: 'points', abbreviation: 'P', title: 'Punktid', view: 'scorers', entries: points },
+      { key: 'goals', abbreviation: 'V', title: 'Väravad', view: 'scorers', entries: goals },
+      { key: 'assists', abbreviation: 'S', title: 'Söödud', view: 'scorers', entries: assists },
+      { key: 'goalies', abbreviation: '%', title: 'Tõrjeprotsent', view: 'goalies', entries: goalies }
+    ];
   }
 }

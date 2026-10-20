@@ -177,7 +177,55 @@
     </section>
 
     <!-- ============================================================
-         5. FIXTURES & RESULTS — promoted from the old narrow sidebar.
+         5. CATEGORY LEADERS — top performers without leaving home.
+         ============================================================ -->
+    <section class="sh-block" aria-labelledby="home-leaders-title">
+        <div class="sh-section-head sh-leaders-heading">
+            <div>
+                <h2 id="home-leaders-title" class="sh-section-title">Statistika liidrid</h2>
+                <p>M35+ · Põhiturniir</p>
+            </div>
+            <a class="sh-see-all" routerLink="/league" [queryParams]="{ view: 'scorers' }">Kogu statistika →</a>
+        </div>
+
+        <div class="sh-leader-category-grid">
+            <article
+                *ngFor="let category of leaderCategories"
+                [class]="'sh-leader-category sh-leader-category--' + category.key"
+            >
+                <header class="sh-leader-category-head">
+                    <span class="sh-leader-category-mark" aria-hidden="true">{{ category.abbreviation }}</span>
+                    <div>
+                        <p>Top 3</p>
+                        <h3>{{ category.title }}</h3>
+                    </div>
+                    <a
+                        routerLink="/league"
+                        [queryParams]="{ view: category.view }"
+                        [attr.aria-label]="category.title + ' täistabel'"
+                    >→</a>
+                </header>
+
+                <ol class="sh-leader-list">
+                    <li *ngFor="let entry of category.entries; let rank = index" [class.is-first]="rank === 0">
+                        <a routerLink="/player" [queryParams]="{ name: entry.name }">
+                            <span class="sh-leader-rank">{{ rank + 1 }}</span>
+                            <span class="sh-leader-avatar" aria-hidden="true">{{ initials(entry.name) }}</span>
+                            <span class="sh-leader-person">
+                                <strong>{{ entry.name }}</strong>
+                                <small>{{ entry.team }}</small>
+                                <span>{{ entry.meta }}</span>
+                            </span>
+                            <span class="sh-leader-score">{{ entry.value }}<small>{{ entry.unit }}</small></span>
+                        </a>
+                    </li>
+                </ol>
+            </article>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         6. FIXTURES & RESULTS — promoted from the old narrow sidebar.
          ============================================================ -->
     <div class="sh-two-col">
         <section class="sh-block" aria-labelledby="fixtures-title">
@@ -225,7 +273,7 @@
 </div>
 
 <!-- ============================================================
-     6. PARTNERS — one calm row. Per-logo name labels removed
+     7. PARTNERS — one calm row. Per-logo name labels removed
         (the logo is the name) and tile height roughly halved so
         partners no longer outweigh the sport content above.
      ============================================================ -->

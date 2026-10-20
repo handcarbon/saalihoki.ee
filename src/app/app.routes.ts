@@ -6,18 +6,19 @@ import { MatchComponent } from './pages/match.component';
 import { PlayerComponent } from './pages/player.component';
 import { TeamComponent } from './pages/team.component';
 import { SearchComponent } from './pages/search.component';
+import { ScheduleComponent } from './pages/schedule.component';
 import { SectionComponent } from './pages/section.component';
 
 export const routes: Routes = [
   { path: '', title: 'Avaleht · Saalihoki.ee', component: HomeComponent },
   { path: 'news', title: 'Uudised · Saalihoki.ee', component: SectionComponent, data: { section: 'news' } },
-  { path: 'schedule', title: 'Ajakavad ja tulemused · Saalihoki.ee', component: SectionComponent, data: { section: 'schedule' } },
+  { path: 'schedule', title: 'Match Center · Saalihoki.ee', component: ScheduleComponent },
   { path: 'national-team', title: 'Koondis · Saalihoki.ee', component: SectionComponent, data: { section: 'national' } },
   { path: 'association', title: 'Liit · Saalihoki.ee', component: SectionComponent, data: { section: 'association' } },
   { path: 'gallery', title: 'Galerii · Saalihoki.ee', component: SectionComponent, data: { section: 'gallery' } },
   { path: 'training', title: 'Koolitused · Saalihoki.ee', component: SectionComponent, data: { section: 'training' } },
   { path: 'partners', title: 'Partnerid · Saalihoki.ee', component: SectionComponent, data: { section: 'partners' } },
-  { path: 'search', title: 'Mängija otsing · Saalihoki.ee', component: SearchComponent },
+  { path: 'search', title: 'Mängijate andmebaas · Saalihoki.ee', component: SearchComponent },
   { path: 'league', title: 'M35+ Meistrivõistlused · Saalihoki.ee', component: LeagueComponent },
   { path: 'match', title: 'Lauka Kolhoos vs Drinkgeld · Saalihoki.ee', component: MatchComponent },
   { path: 'player', title: 'Mängija profiil · Saalihoki.ee', component: PlayerComponent },

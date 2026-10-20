@@ -7,6 +7,14 @@ export interface PortalPlayer {
   assists: number;
 }
 
+export interface PortalGoalieStats {
+  name: string;
+  team: string;
+  minutes: number;
+  shots: number;
+  saves: number;
+}
+
 export interface PortalTeam {
   name: string;
   short: string;
@@ -150,6 +158,18 @@ export const PORTAL_PLAYERS: PortalPlayer[] = [
   ].map((name) => ({ name, team: 'Sparta Team Automaailm', position: 'Mängija', games: 0, goals: 0, assists: 0 }))
 ];
 
+export const PORTAL_GOALIES: PortalGoalieStats[] = [
+  { name: 'Ivo Lepik', team: 'Drinkgeld', minutes: 45, shots: 18, saves: 18 },
+  { name: 'Siim Stokkeby', team: 'Lauka Kolhoos', minutes: 90, shots: 38, saves: 34 },
+  { name: 'Sergei Kirillov', team: 'Tallinn United', minutes: 75, shots: 36, saves: 32 },
+  { name: 'Taavi Lepik', team: 'Drinkgeld', minutes: 45, shots: 15, saves: 13 },
+  { name: 'Elari Vool', team: 'Kadrina', minutes: 45, shots: 14, saves: 11 },
+  { name: 'Mihhail Jakovlev', team: 'Prosura', minutes: 90, shots: 41, saves: 31 },
+  { name: 'Erti Suurtalu', team: 'Rapla Kepiklubi', minutes: 30, shots: 11, saves: 8 },
+  { name: 'Tiivo Vaigurand', team: 'SH Mehed Metsast', minutes: 45, shots: 29, saves: 21 },
+  { name: 'Toomas Joonas', team: 'Tabajad', minutes: 45, shots: 26, saves: 14 }
+];
+
 export const PORTAL_TEAMS: PortalTeam[] = [
   { name: 'Sparta Team Automaailm', short: 'SPA', location: 'Tallinn, Eesti', leagues: ['Meeste MV', 'EST-LAT M'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' },
   { name: 'Drinkgeld', short: 'DRK', location: 'Eesti', leagues: ['M35+'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' },
@@ -215,6 +235,17 @@ export interface PortalMatch {
   /** Set only while the match is in progress. */
   period?: string;
   stream?: boolean;
+}
+
+export interface PortalPendingMatch {
+  id: string;
+  league: string;
+  round: string;
+  home: string;
+  away: string;
+  homeShort: string;
+  awayShort: string;
+  venue?: string;
 }
 
 export interface PortalNewsItem {
@@ -329,6 +360,47 @@ export const PORTAL_MATCHES: PortalMatch[] = [
     startsAt: daysFromNow(-6),
     venue: 'Kristiine spordihall',
     homeScore: 2, awayScore: 5
+  }
+];
+
+export const PORTAL_PENDING_MATCHES: PortalPendingMatch[] = [
+  {
+    id: 'p-spa-puhja',
+    league: 'Naiste MV',
+    round: 'Põhiturniir · 3. voor',
+    home: 'Sparta Team Automaailm',
+    away: 'Puhja Kool',
+    homeShort: 'SPA',
+    awayShort: 'PUH',
+    venue: 'Kristiine spordihall'
+  },
+  {
+    id: 'p-emu-kehtna',
+    league: 'Naiste MV',
+    round: 'Põhiturniir · 3. voor',
+    home: 'Eesti Maaülikool',
+    away: 'Kehtna/Rapla SHKV',
+    homeShort: 'EMÜ',
+    awayShort: 'KR'
+  },
+  {
+    id: 'p-drk-shm',
+    league: 'M35+ MV',
+    round: 'Põhiturniir · 6. voor',
+    home: 'Drinkgeld',
+    away: 'SH Mehed Metsast',
+    homeShort: 'DRK',
+    awayShort: 'SHM',
+    venue: 'Aruküla spordihoone'
+  },
+  {
+    id: 'p-kad-rk',
+    league: 'M35+ MV',
+    round: 'Põhiturniir · 6. voor',
+    home: 'Kadrina',
+    away: 'Rapla Kepiklubi',
+    homeShort: 'KAD',
+    awayShort: 'RK'
   }
 ];
 

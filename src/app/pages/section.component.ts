@@ -32,16 +32,6 @@ const SECTION_CONTENT: Record<string, SectionContent> = {
       { eyebrow: '29.03.2026 · Noored', title: 'Kehtna SK võitis U10 vanuseklassi', text: 'Noortesarja finaalpäev pakkus kiiret mängu ja tasavägiseid kohtumisi.', link: '/league', linkLabel: 'Tabel ja statistika' }
     ]
   },
-  schedule: {
-    kicker: 'Hooaeg 2026 / 2027',
-    title: 'Ajakavad ja tulemused',
-    lead: 'Leia järgmised mängud, saalid ja lõppenud kohtumiste protokollid.',
-    cards: [
-      { eyebrow: '06.09.2026 · 13:00', title: 'Sparta — Eesti Maaülikool', text: 'Naiste meistrivõistlused · Kristiine spordihall', link: '/match', linkLabel: 'Mängu info' },
-      { eyebrow: '12.09.2026 · 16:00', title: 'Lauka Kolhoos — Drinkgeld', text: 'M35+ meistrivõistlused · Aruküla spordihoone', link: '/league', linkLabel: 'Liiga vaade' },
-      { eyebrow: 'Lõppenud', title: 'Lauka Kolhoos 3 — 4 Drinkgeld', text: '21.02.2026 · Täielik protokoll, sündmused ja koosseisud.', link: '/match', linkLabel: 'Ava protokoll' }
-    ]
-  },
   national: {
     kicker: 'Eesti koondised',
     title: 'Koondis',

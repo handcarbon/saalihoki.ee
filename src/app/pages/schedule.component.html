@@ -1,0 +1,179 @@
+<main class="schedule-page">
+  <header class="schedule-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › Ajakavad ja tulemused</div>
+    <div class="schedule-hero-row">
+      <div>
+        <p class="section-kicker">Hooaeg 2026 / 2027</p>
+        <h1>Match Center</h1>
+        <p>Leia järgmised mängud, saalid, otseülekanded ja lõppenud kohtumiste protokollid.</p>
+      </div>
+      <dl class="schedule-summary" aria-label="Valitud perioodi kokkuvõte">
+        <div><dt>Otse</dt><dd>{{ liveCount }}</dd></div>
+        <div><dt>Tulekul</dt><dd>{{ upcomingCount }}</dd></div>
+        <div><dt>Lõppenud</dt><dd>{{ finishedCount }}</dd></div>
+      </dl>
+    </div>
+  </header>
+
+  <div class="schedule-content">
+    <section class="schedule-control-panel" aria-labelledby="schedule-period-title">
+      <div class="schedule-week-nav">
+        <button type="button" class="schedule-arrow" aria-label="Eelmine nädal" (click)="changeWeek(-1)">←</button>
+        <div class="schedule-week-title">
+          <span id="schedule-period-title">Valitud nädal</span>
+          <strong>{{ weekRangeLabel }}</strong>
+        </div>
+        <button type="button" class="schedule-arrow" aria-label="Järgmine nädal" (click)="changeWeek(1)">→</button>
+        <button *ngIf="!isCurrentWeek" type="button" class="schedule-today" (click)="goToCurrentWeek()">Praegune nädal</button>
+      </div>
+
+      <div class="schedule-filters" aria-label="Mängude filtrid">
+        <label>
+          <span>Liiga</span>
+          <select [(ngModel)]="selectedLeague" (ngModelChange)="filtersChanged()">
+            <option value="all">Kõik liigad</option>
+            <option *ngFor="let league of leagues" [value]="league">{{ league }}</option>
+          </select>
+        </label>
+        <label>
+          <span>Meeskond</span>
+          <select [(ngModel)]="selectedTeam" (ngModelChange)="filtersChanged()">
+            <option value="all">Kõik meeskonnad</option>
+            <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+          </select>
+        </label>
+        <label>
+          <span>Saal</span>
+          <select [(ngModel)]="selectedVenue" (ngModelChange)="filtersChanged()">
+            <option value="all">Kõik saalid</option>
+            <option *ngFor="let venue of venues" [value]="venue">{{ venue }}</option>
+          </select>
+        </label>
+        <button *ngIf="filtersActive" type="button" class="schedule-clear" (click)="clearFilters()">Tühjenda filtrid</button>
+      </div>
+
+      <div class="schedule-days" role="tablist" aria-label="Nädalapäevad">
+        <button
+          type="button"
+          role="tab"
+          class="schedule-day schedule-day-all"
+          [class.active]="selectedDay === 'all'"
+          [attr.aria-selected]="selectedDay === 'all'"
+          (click)="selectDay('all')">
+          <span>Kogu</span>
+          <strong>nädal</strong>
+          <small>{{ matchesInWeekWithFilters.length }} mängu</small>
+        </button>
+        <button
+          *ngFor="let day of weekDays"
+          type="button"
+          role="tab"
+          class="schedule-day"
+          [class.active]="selectedDay === day.key"
+          [class.is-today]="isToday(day.date)"
+          [attr.aria-selected]="selectedDay === day.key"
+          [attr.aria-label]="day.weekday + ' ' + day.dayNumber + '. ' + day.month + ', ' + day.count + ' mängu'"
+          (click)="selectDay(day.key)">
+          <span>{{ day.weekday }}</span>
+          <strong>{{ day.dayNumber }}</strong>
+          <small>{{ day.count }} mängu</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="schedule-results" aria-labelledby="schedule-results-title" aria-live="polite">
+      <div class="schedule-section-head">
+        <div>
+          <p class="schedule-eyebrow">Ajakava</p>
+          <h2 id="schedule-results-title">{{ visibleMatches.length }} mängu</h2>
+        </div>
+        <span>{{ weekRangeLabel }}</span>
+      </div>
+
+      <div *ngIf="matchGroups.length; else noMatches" class="schedule-groups">
+        <section *ngFor="let group of matchGroups" class="schedule-group" [attr.aria-labelledby]="'day-' + group.key">
+          <div class="schedule-group-head">
+            <h3 [id]="'day-' + group.key">{{ group.label }}</h3>
+            <span>{{ group.matches.length }} mängu</span>
+          </div>
+
+          <div class="schedule-match-grid">
+            <article
+              *ngFor="let match of group.matches"
+              class="schedule-match"
+              [class.is-live]="stateOf(match) === 'live'"
+              [class.is-finished]="stateOf(match) === 'finished'">
+              <header class="schedule-match-head">
+                <span class="schedule-match-league">{{ match.league }}</span>
+                <span class="schedule-match-state" [class.is-live]="stateOf(match) === 'live'">
+                  <span *ngIf="stateOf(match) === 'live'" class="sh-live-dot" aria-hidden="true"></span>
+                  {{ statusLabel(match) }}
+                </span>
+              </header>
+
+              <div class="schedule-match-time">
+                <time [attr.datetime]="match.startsAt">{{ kickoffTime(match) }}</time>
+              </div>
+
+              <div class="schedule-team-row">
+                <span class="schedule-team-abbr">{{ match.homeShort }}</span>
+                <a routerLink="/team" [queryParams]="{ name: match.home }">{{ match.home }}</a>
+                <strong *ngIf="showsScore(match)">{{ match.homeScore }}</strong>
+              </div>
+              <div class="schedule-team-row">
+                <span class="schedule-team-abbr">{{ match.awayShort }}</span>
+                <a routerLink="/team" [queryParams]="{ name: match.away }">{{ match.away }}</a>
+                <strong *ngIf="showsScore(match)">{{ match.awayScore }}</strong>
+              </div>
+
+              <footer class="schedule-match-foot">
+                <span><b>Saal</b> {{ match.venue }}</span>
+                <span *ngIf="match.stream" class="schedule-stream">Otseülekanne</span>
+                <a *ngIf="stateOf(match) !== 'upcoming'" routerLink="/match" [queryParams]="{ id: match.id }">
+                  {{ stateOf(match) === 'live' ? 'Jälgi mängu' : 'Protokoll' }} →
+                </a>
+                <a *ngIf="stateOf(match) === 'upcoming'" routerLink="/league">Liiga tabel →</a>
+              </footer>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <ng-template #noMatches>
+        <div class="schedule-empty">
+          <span aria-hidden="true">▦</span>
+          <h3>Selle valikuga mänge ei ole</h3>
+          <p>Vali teine päev või tühjenda filtrid, et näha kogu nädala ajakava.</p>
+          <button type="button" (click)="clearFilters()">Näita kogu nädalat</button>
+        </div>
+      </ng-template>
+    </section>
+
+    <section *ngIf="selectedDay === 'all'" class="schedule-pending" aria-labelledby="pending-title">
+      <div class="schedule-section-head">
+        <div>
+          <p class="schedule-eyebrow">Planeerimisel</p>
+          <h2 id="pending-title">Kuupäev kinnitamisel</h2>
+        </div>
+        <span>{{ pendingMatches.length }} mängupaari</span>
+      </div>
+      <p class="schedule-pending-lead">Mängupaarid on paigas. Algusajad ja puuduvad saalid lisatakse korraldajate kinnituse järel.</p>
+
+      <div *ngIf="pendingMatches.length; else noPending" class="schedule-pending-grid">
+        <article *ngFor="let match of pendingMatches" class="schedule-pending-card">
+          <div>
+            <span>{{ match.league }}</span>
+            <small>{{ match.round }}</small>
+          </div>
+          <p><b>{{ match.homeShort }}</b> {{ match.home }}</p>
+          <p><b>{{ match.awayShort }}</b> {{ match.away }}</p>
+          <footer>{{ match.venue || 'Saal kinnitamisel' }}</footer>
+        </article>
+      </div>
+
+      <ng-template #noPending>
+        <p class="schedule-pending-none">Valitud filtritega kuupäevata mängupaare ei ole.</p>
+      </ng-template>
+    </section>
+  </div>
+</main>
