@@ -44,49 +44,49 @@ export const PORTAL_PARTNERS: PortalPartner[] = [
     name: 'Oxdog',
     tier: 'Peapartner',
     description: 'Eesti Saalihoki Liidu ametlik varustuspartner.',
-    image: '/sponsors/oxdog.png',
+    image: 'sponsors/oxdog.png',
     url: 'https://www.oxdog.net/'
   },
   {
     name: 'Paf',
     tier: 'Peapartner',
     description: 'Eesti saalihoki pikaajaline toetaja.',
-    image: '/sponsors/paf.gif',
+    image: 'sponsors/paf.gif',
     url: 'https://www.paf.ee/et?utm_medium=display&utm_source=saalihoki&utm_campaign=ongoing&utm_content=saalihoki_120x120'
   },
   {
     name: 'GO',
     tier: 'Ametlik partner',
     description: 'Eesti Saalihoki Liidu koostööpartner.',
-    image: '/sponsors/go.jpg',
+    image: 'sponsors/go.jpg',
     url: 'https://www.go.ee/'
   },
   {
     name: 'Automaailm / Fat Pipe',
     tier: 'Ametlik partner',
     description: 'Saalihokivarustuse partner Eestis.',
-    image: '/sponsors/automaailm-fat-pipe.png',
+    image: 'sponsors/automaailm-fat-pipe.png',
     url: 'https://automaailm.ee/vaba-aeg/saalihoki'
   },
   {
     name: 'Tallink Floorball',
     tier: 'Ametlik partner',
     description: 'Rahvusvaheline saalihoki koostööpartner.',
-    image: '/sponsors/tallink-floorball.png',
+    image: 'sponsors/tallink-floorball.png',
     url: 'https://www.tallinkfloorball.ee/'
   },
   {
     name: 'iDent',
     tier: 'Ametlik partner',
     description: 'Eesti Saalihoki Liidu koostööpartner.',
-    image: '/sponsors/ident.jpg',
+    image: 'sponsors/ident.jpg',
     url: 'https://ident.ee/'
   },
   {
     name: 'Sport Television',
     tier: 'Ametlik partner',
     description: 'Saalihoki otseülekannete partner.',
-    image: '/sponsors/sport-television.jpg',
+    image: 'sponsors/sport-television.jpg',
     url: 'https://sport.television.ee/Upcoming/floorball'
   }
 ];
@@ -95,13 +95,13 @@ export const PORTAL_MEMBERSHIPS: PortalMembership[] = [
   {
     name: 'Eesti Olümpiakomitee',
     shortName: 'EOK',
-    image: '/sponsors/eok.png',
+    image: 'sponsors/eok.png',
     url: 'https://www.eok.ee/'
   },
   {
     name: 'International Floorball Federation',
     shortName: 'IFF',
-    image: '/sponsors/iff.png',
+    image: 'sponsors/iff.png',
     url: 'https://www.floorball.sport/'
   }
 ];
