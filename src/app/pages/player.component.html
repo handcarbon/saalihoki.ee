@@ -1,33 +1,48 @@
-<article class="player-body-wrap">
-  <header class="player-hero">
-    <div class="player-avatar" aria-hidden="true">{{ initials }}</div>
-    <div>
-      <h1 class="player-name">{{ player.name }}</h1>
-      <div class="player-dob">Mängija profiil · hooaeg {{ player.season }}</div>
-      <div class="player-tags">
-        <span class="player-tag">{{ player.position }}</span>
-        <a class="player-tag" routerLink="/team" [queryParams]="{ name: player.team }">{{ player.team }}</a>
+<article class="profile-page player-profile-page">
+  <header class="profile-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › <a routerLink="/search">Mängijad</a> › {{ player.name }}</div>
+    <div class="profile-hero-grid">
+      <div class="profile-mark profile-avatar" aria-hidden="true">{{ initials }}</div>
+      <div class="profile-hero-copy">
+        <p class="section-kicker">Mängija profiil</p>
+        <h1>{{ player.name }}</h1>
+        <p>{{ player.position }} · {{ player.league }}</p>
+        <div class="profile-tags"><a routerLink="/team" [queryParams]="{ name: player.team }">{{ player.team }}</a><span>Hooaeg {{ player.season }}</span></div>
       </div>
+      <div class="profile-verified" *ngIf="isKnownPlayer; else unverifiedPlayer"><span aria-hidden="true">✓</span><small>Arhiiviprofiil</small><strong>{{ player.season }}</strong></div>
+      <ng-template #unverifiedPlayer><div class="profile-verified is-unverified"><span aria-hidden="true">!</span><small>Andmed puuduvad</small><strong>Kinnitamata profiil</strong></div></ng-template>
     </div>
   </header>
 
-  <div class="player-stats-bar" aria-label="Hooaja statistika">
-    <div class="player-stat-cell"><div class="player-stat-num">{{ player.games }}</div><div class="player-stat-lbl">Mänge</div></div>
-    <div class="player-stat-cell"><div class="player-stat-num">{{ player.goals }}</div><div class="player-stat-lbl">Väravaid</div></div>
-    <div class="player-stat-cell"><div class="player-stat-num">{{ player.assists }}</div><div class="player-stat-lbl">Sööte</div></div>
-    <div class="player-stat-cell"><div class="player-stat-num">{{ player.goals + player.assists }}</div><div class="player-stat-lbl">Punkte</div></div>
-  </div>
+  <dl class="profile-stat-bar" aria-label="Hooaja statistika">
+    <div><dt>Mänge</dt><dd>{{ player.games }}</dd></div>
+    <div><dt>Väravaid</dt><dd>{{ player.goals }}</dd></div>
+    <div><dt>Sööte</dt><dd>{{ player.assists }}</dd></div>
+    <div><dt>Punkte</dt><dd>{{ points }}</dd></div>
+    <div><dt>P/mäng</dt><dd>{{ pointsPerGame }}</dd></div>
+  </dl>
 
-  <div class="player-body">
-    <h2 class="sh-section-title sm">Hooaja statistika</h2>
-    <p class="table-swipe-hint">Tabelit saab külgsuunas kerida <span aria-hidden="true">↔</span></p>
-    <div class="sh-card player-table-wrap">
-      <table class="player-career-table" style="width:100%;">
-        <caption class="sr-only">{{ player.name }} statistika hooajal {{ player.season }}</caption>
-        <tr><th scope="col">Meeskond</th><th scope="col">Liiga</th><th scope="col">Voor</th><th scope="col" class="r"><abbr title="Mänge">M</abbr></th><th scope="col" class="r"><abbr title="Väravaid">G</abbr></th><th scope="col" class="r"><abbr title="Sööte">A</abbr></th><th scope="col" class="r"><abbr title="Punkte">Pts</abbr></th></tr>
-        <tr class="player-season-row"><td colspan="7">Hooaeg {{ player.season }}</td></tr>
-        <tr><td class="sticky-cell"><a routerLink="/team" [queryParams]="{ name: player.team }">{{ player.team }}</a></td><td><a routerLink="/league">{{ player.league }}</a></td><td>Põhiturniir</td><td class="r">{{ player.games }}</td><td class="r">{{ player.goals }}</td><td class="r">{{ player.assists }}</td><td class="r pts">{{ player.goals + player.assists }}</td></tr>
-      </table>
-    </div>
+  <div class="profile-content player-profile-content">
+    <section aria-labelledby="player-season-title">
+      <div class="profile-section-head"><div><p class="section-card-eyebrow">Statistika</p><h2 id="player-season-title">Hooaja kokkuvõte</h2></div><span>{{ player.season }}</span></div>
+      <p class="table-swipe-hint">Tabelit saab külgsuunas kerida <span aria-hidden="true">↔</span></p>
+      <div class="sh-card profile-table-shell" role="region" [attr.aria-label]="player.name + ' hooaja statistika'" tabindex="0">
+        <table class="profile-table"><caption class="sr-only">{{ player.name }} statistika hooajal {{ player.season }}</caption><thead><tr><th scope="col">Meeskond</th><th scope="col">Liiga</th><th scope="col">Etapp</th><th scope="col">M</th><th scope="col">V</th><th scope="col">S</th><th scope="col">P</th><th scope="col">P/M</th></tr></thead><tbody><tr><th scope="row"><a routerLink="/team" [queryParams]="{ name: player.team }">{{ player.team }}</a></th><td>{{ player.league }}</td><td>Põhiturniir</td><td>{{ player.games }}</td><td>{{ player.goals }}</td><td>{{ player.assists }}</td><td class="pts">{{ points }}</td><td>{{ pointsPerGame }}</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <section class="player-match-log" aria-labelledby="player-log-title">
+      <div class="profile-section-head"><div><p class="section-card-eyebrow">Meeskonna mängud</p><h2 id="player-log-title">Viimased protokollid</h2></div></div>
+      <div class="sh-card player-match-list" *ngIf="recentMatches.length; else noPlayerMatches">
+        <a *ngFor="let match of recentMatches" routerLink="/match" [queryParams]="{ id: match.id }">
+          <time [attr.datetime]="match.startsAt">{{ formattedDate(match.startsAt) }}</time>
+          <span><strong>{{ match.home }} – {{ match.away }}</strong><small>{{ match.league }} · {{ match.venue }}</small></span>
+          <b>{{ match.homeScore }}:{{ match.awayScore }}</b>
+        </a>
+      </div>
+      <ng-template #noPlayerMatches><div class="empty-state"><h3>Mängulogi puudub</h3><p>Selle mängija meeskonna protokolle ei ole valitud arhiivis.</p></div></ng-template>
+    </section>
+
+    <aside class="profile-note"><strong>Andmete märkus</strong><p>Profiil kasutab hooaja {{ player.season }} staatilist arhiivi. Isikuandmeid ja fotosid kuvatakse ainult siis, kui need on avaldamiseks kinnitatud.</p></aside>
   </div>
 </article>

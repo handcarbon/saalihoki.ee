@@ -1,0 +1,38 @@
+<article class="news-detail-page">
+  <header class="news-detail-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › <a routerLink="/news">Uudised</a> › {{ article.category }}</div>
+    <div class="news-detail-heading">
+      <p class="section-kicker">{{ article.category }}</p>
+      <h1>{{ article.title }}</h1>
+      <p class="news-detail-lead">{{ article.summary }}</p>
+      <div class="news-detail-byline">
+        <span>{{ article.author }}</span>
+        <time [attr.datetime]="article.date">{{ formattedDate(article.date) }}</time>
+        <span *ngIf="article.relatedCompetition">{{ article.relatedCompetition }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="news-detail-layout">
+    <div class="news-detail-article">
+      <picture *ngIf="article.image" class="news-detail-media">
+        <source *ngIf="article.image === 'news_photo.jpg'" type="image/webp" srcset="news_photo.webp">
+        <img [src]="article.image" [alt]="article.title" width="900" height="600" fetchpriority="high" decoding="async">
+      </picture>
+      <p *ngFor="let paragraph of article.body">{{ paragraph }}</p>
+      <div class="news-detail-source">
+        <strong>Allikas</strong>
+        <span>Eesti Saalihoki Liidu uudiste arhiiv</span>
+      </div>
+    </div>
+
+    <aside class="news-detail-related" aria-labelledby="related-news-title">
+      <h2 id="related-news-title">Veel uudiseid</h2>
+      <a *ngFor="let item of related" [routerLink]="['/news', item.id]">
+        <small>{{ item.category }} · {{ formattedDate(item.date) }}</small>
+        <strong>{{ item.title }}</strong>
+        <span aria-hidden="true">→</span>
+      </a>
+    </aside>
+  </div>
+</article>

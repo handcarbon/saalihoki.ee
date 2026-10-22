@@ -7,45 +7,44 @@
   </header>
 
   <div class="section-content">
-    <div *ngIf="isPartnerSection; else standardCards" class="partner-directory">
-      <div class="partner-directory-grid">
-        <a *ngFor="let partner of partners" class="partner-directory-card" [href]="partner.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'">
-          <span class="partner-directory-logo"><img [src]="partner.image" [alt]="partner.name" loading="lazy"></span>
-          <span class="partner-directory-copy">
-            <span class="section-card-eyebrow">{{ partner.tier }}</span>
-            <strong>{{ partner.name }}</strong>
-            <span>{{ partner.description }}</span>
-            <span class="partner-directory-link">Ava veebileht ↗</span>
-          </span>
-        </a>
+    <ng-container *ngIf="isNewsSection; else nonNewsSection">
+      <div class="news-archive-toolbar" aria-label="Uudiste kategooriad">
+        <button *ngFor="let category of newsCategories" type="button" [class.active]="selectedNewsCategory === category" [attr.aria-pressed]="selectedNewsCategory === category" (click)="selectedNewsCategory = category">{{ category }}</button>
       </div>
-
-      <section class="membership-panel" aria-labelledby="membership-title">
-        <div>
-          <p class="section-card-eyebrow">Liikmelisus</p>
-          <h2 id="membership-title">Kuulume spordiorganisatsioonidesse</h2>
-        </div>
-        <div class="membership-grid">
-          <a *ngFor="let membership of memberships" [href]="membership.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="membership.name + ' veebileht (avaneb uuel vahelehel)'">
-            <img [src]="membership.image" [alt]="membership.shortName" loading="lazy">
-            <span>{{ membership.name }}</span>
+      <div class="news-archive-grid">
+        <article *ngFor="let item of filteredNews; let i = index" class="news-archive-card" [class.is-featured]="i === 0 && selectedNewsCategory === 'Kõik'">
+          <a class="news-archive-media" [routerLink]="['/news', item.id]" tabindex="-1" aria-hidden="true">
+            <picture *ngIf="item.image; else newsPlaceholder"><source *ngIf="item.image === 'news_photo.jpg'" type="image/webp" srcset="news_photo.webp"><img [src]="item.image" alt="" width="720" height="480" [attr.loading]="i === 0 ? 'eager' : 'lazy'"></picture>
+            <ng-template #newsPlaceholder><span class="news-category-placeholder">{{ item.category }}</span></ng-template>
           </a>
-        </div>
-      </section>
-    </div>
-
-    <ng-template #standardCards>
-      <div class="section-card-grid">
-      <article class="section-card" *ngFor="let card of content.cards; let i = index">
-        <img *ngIf="card.image" [src]="card.image" [alt]="card.title" [attr.loading]="i === 0 ? 'eager' : 'lazy'">
-        <div class="section-card-body">
-          <p class="section-card-eyebrow">{{ card.eyebrow }}</p>
-          <h2>{{ card.title }}</h2>
-          <p>{{ card.text }}</p>
-          <a *ngIf="card.link" [routerLink]="card.link" class="sh-primary-link">{{ card.linkLabel }} →</a>
-        </div>
-      </article>
+          <div class="news-archive-body"><p class="section-card-eyebrow">{{ formatDate(item.date) }} · {{ item.category }}</p><h2><a [routerLink]="['/news', item.id]">{{ item.title }}</a></h2><p>{{ item.summary }}</p><a [routerLink]="['/news', item.id]" class="sh-primary-link">Loe artiklit →</a></div>
+        </article>
       </div>
+    </ng-container>
+
+    <ng-template #nonNewsSection>
+      <ng-container *ngIf="isAssociationSection; else partnerOrStandard">
+        <div class="association-layout">
+          <nav class="association-nav" aria-label="Liidu lehe jaotised"><a href="#contacts">Kontaktid</a><a href="#documents">Dokumendid</a><a href="#clubs">Liikmesklubid</a><a href="#memberships">Liikmelisus</a></nav>
+          <div class="association-main">
+            <section id="contacts" class="association-section" aria-labelledby="contacts-title"><div class="profile-section-head"><div><p class="section-card-eyebrow">Organisatsioon</p><h2 id="contacts-title">Kontaktid ja juhtimine</h2></div></div><div class="association-contact-grid"><article class="sh-card" *ngFor="let person of associationPeople"><span>{{ person.role }}</span><h3>{{ person.name }}</h3><a *ngIf="person.contact.includes('@'); else phoneContact" [href]="'mailto:' + person.contact">{{ person.contact }}</a><ng-template #phoneContact><a [href]="'tel:' + person.contact.replaceAll(' ', '')">{{ person.contact }}</a></ng-template></article></div></section>
+
+            <section id="documents" class="association-section" aria-labelledby="documents-title"><div class="profile-section-head"><div><p class="section-card-eyebrow">Ametlik info</p><h2 id="documents-title">Dokumendid ja juhendid</h2></div></div><div class="association-document-list"><a *ngFor="let document of associationDocuments" [href]="document.url" target="_blank" rel="noopener noreferrer"><span class="document-mark" aria-hidden="true">PDF</span><span><small>{{ document.type }}</small><strong>{{ document.title }}</strong><em>{{ document.meta }}</em></span><b aria-hidden="true">↗</b></a></div></section>
+
+            <section id="clubs" class="association-section" aria-labelledby="clubs-title"><div class="profile-section-head"><div><p class="section-card-eyebrow">Võrgustik</p><h2 id="clubs-title">Liikmesklubid</h2></div><a routerLink="/league">Kõik võistlused →</a></div><div class="association-club-grid"><a *ngFor="let club of memberClubs" routerLink="/team" [queryParams]="{ name: club.name }"><span>{{ club.short }}</span><strong>{{ club.name }}</strong><small>{{ club.location }}</small></a></div></section>
+
+            <section id="memberships" class="membership-panel" aria-labelledby="membership-title"><div><p class="section-card-eyebrow">Liikmelisus</p><h2 id="membership-title">Kuulume spordiorganisatsioonidesse</h2></div><div class="membership-grid"><a *ngFor="let membership of memberships" [href]="membership.url" target="_blank" rel="noopener noreferrer"><img [src]="membership.image" [alt]="membership.shortName" loading="lazy"><span>{{ membership.name }}</span></a></div></section>
+          </div>
+        </div>
+      </ng-container>
+    </ng-template>
+
+    <ng-template #partnerOrStandard>
+      <div *ngIf="isPartnerSection; else standardCards" class="partner-directory">
+        <div class="partner-directory-grid"><a *ngFor="let partner of partners" class="partner-directory-card" [href]="partner.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="partner.name + ' veebileht (avaneb uuel vahelehel)'"><span class="partner-directory-logo"><img [src]="partner.image" [alt]="partner.name" loading="lazy"></span><span class="partner-directory-copy"><span class="section-card-eyebrow">{{ partner.tier }}</span><strong>{{ partner.name }}</strong><span>{{ partner.description }}</span><span class="partner-directory-link">Ava veebileht ↗</span></span></a></div>
+        <section class="membership-panel" aria-labelledby="partner-membership-title"><div><p class="section-card-eyebrow">Liikmelisus</p><h2 id="partner-membership-title">Kuulume spordiorganisatsioonidesse</h2></div><div class="membership-grid"><a *ngFor="let membership of memberships" [href]="membership.url" target="_blank" rel="noopener noreferrer"><img [src]="membership.image" [alt]="membership.shortName" loading="lazy"><span>{{ membership.name }}</span></a></div></section>
+      </div>
+      <ng-template #standardCards><div class="section-card-grid"><article class="section-card" *ngFor="let card of content.cards; let i = index"><img *ngIf="card.image" [src]="card.image" [alt]="card.title" [attr.loading]="i === 0 ? 'eager' : 'lazy'"><div class="section-card-body"><p class="section-card-eyebrow">{{ card.eyebrow }}</p><h2>{{ card.title }}</h2><p>{{ card.text }}</p><a *ngIf="card.link" [routerLink]="card.link" class="sh-primary-link">{{ card.linkLabel }} →</a></div></article></div></ng-template>
     </ng-template>
   </div>
 </section>

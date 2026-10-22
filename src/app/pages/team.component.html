@@ -1,130 +1,64 @@
-<section class="team-body-wrap">
-    <div class="sh-hero-inner">
-        <div class="sh-breadcrumb">
-            <a routerLink="/">Avaleht</a> › <a routerLink="/league">Meeskonnad</a> › {{ team.name }}
-        </div>
-        <div class="team-hero-inner">
-            <div class="team-logo-box">
-                <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="35" cy="35" r="32" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-                    <text x="35" y="28" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="18" fill="var(--white)" letter-spacing="1">{{ team.short }}</text>
-                    <line x1="14" y1="34" x2="56" y2="34" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
-                    <text x="35" y="48" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="10" font-weight="700" fill="rgba(255,255,255,0.8)" letter-spacing="1.5">{{ team.short }}</text>
-                </svg>
-            </div>
-            <div>
-                <h1 class="team-name">{{ team.name }}</h1>
-                <div class="team-meta" style="font-size:12px;margin-top:4px;">Asukoht · {{ team.location }}</div>
-                <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
-                    <span class="team-league-tag" *ngFor="let league of team.leagues">{{ league }}</span>
-                </div>
-            </div>
-        </div>
+<section class="profile-page team-profile-page">
+  <header class="profile-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › <a routerLink="/league">Klubid</a> › {{ team.name }}</div>
+    <div class="profile-hero-grid">
+      <div class="profile-mark">
+        <img *ngIf="team.logo; else teamMonogram" [src]="team.logo" alt="" width="88" height="88">
+        <ng-template #teamMonogram><span aria-hidden="true">{{ team.short }}</span></ng-template>
+      </div>
+      <div class="profile-hero-copy">
+        <p class="section-kicker">Meeskonna profiil</p>
+        <h1>{{ team.name }}</h1>
+        <p>{{ team.location }} <span *ngIf="team.founded">· Asutatud {{ team.founded }}</span></p>
+        <div class="profile-tags"><span *ngFor="let league of team.leagues">{{ league }}</span><span *ngIf="!isKnownTeam">Profiil kinnitamata</span></div>
+      </div>
+      <div class="profile-verified" *ngIf="isKnownTeam"><span aria-hidden="true">✓</span><small>Arhiiviprofiil</small><strong>{{ season }}</strong></div>
     </div>
+  </header>
 
-    <!-- TEAM QUICK STATS -->
-    <div class="team-stats-bar">
-        <div class="team-stat-cell"><div class="team-stat-num">{{ roster.length }}</div><div class="team-stat-lbl">Mängijaid</div></div>
-        <div class="team-stat-cell"><div class="team-stat-num">{{ team.leagues.length }}</div><div class="team-stat-lbl">Liigad</div></div>
-        <div class="team-stat-cell"><div class="team-stat-num">25/26</div><div class="team-stat-lbl">Hooaeg</div></div>
-        <div class="team-stat-cell"><div class="team-stat-num">EST</div><div class="team-stat-lbl">Riik</div></div>
-    </div>
+  <dl class="profile-stat-bar" aria-label="Meeskonna kokkuvõte">
+    <div><dt>Mängijaid</dt><dd>{{ roster.length }}</dd></div>
+    <div><dt>Tabelikoht</dt><dd>{{ standingsRow ? standingsRow.rank + '.' : '—' }}</dd></div>
+    <div><dt>Punkte</dt><dd>{{ standingsRow?.points ?? '—' }}</dd></div>
+    <div><dt>Hooaeg</dt><dd>{{ season }}</dd></div>
+  </dl>
 
-    <!-- SEASON SUB TABS -->
+  <div class="profile-content">
     <div class="sub-tabs" role="tablist" aria-label="Meeskonna vaated">
-        <button id="team-tab-roster" type="button" role="tab" class="sub-tab" [class.active]="activeTab === 'roster'" [attr.aria-selected]="activeTab === 'roster'" aria-controls="team-roster" [attr.tabindex]="activeTab === 'roster' ? 0 : -1" (click)="setTab('roster')" (keydown)="handleTabKeydown($event, 'roster')">Mängijad 2025/26</button>
-        <button id="team-tab-info" type="button" role="tab" class="sub-tab" [class.active]="activeTab === 'info'" [attr.aria-selected]="activeTab === 'info'" aria-controls="team-info" [attr.tabindex]="activeTab === 'info' ? 0 : -1" (click)="setTab('info')" (keydown)="handleTabKeydown($event, 'info')">Info</button>
-        <button id="team-tab-history" type="button" role="tab" class="sub-tab" [class.active]="activeTab === 'history'" [attr.aria-selected]="activeTab === 'history'" aria-controls="team-history" [attr.tabindex]="activeTab === 'history' ? 0 : -1" (click)="setTab('history')" (keydown)="handleTabKeydown($event, 'history')">Ajalugu</button>
+      <button id="team-tab-roster" type="button" role="tab" class="sub-tab" [class.active]="activeTab === 'roster'" [attr.aria-selected]="activeTab === 'roster'" aria-controls="team-roster" [attr.tabindex]="activeTab === 'roster' ? 0 : -1" (click)="setTab('roster')" (keydown)="handleTabKeydown($event, 'roster')">Ülevaade</button>
+      <button id="team-tab-info" type="button" role="tab" class="sub-tab" [class.active]="activeTab === 'info'" [attr.aria-selected]="activeTab === 'info'" aria-controls="team-info" [attr.tabindex]="activeTab === 'info' ? 0 : -1" (click)="setTab('info')" (keydown)="handleTabKeydown($event, 'info')">Klubi info</button>
+      <button id="team-tab-history" type="button" role="tab" class="sub-tab" [class.active]="activeTab === 'history'" [attr.aria-selected]="activeTab === 'history'" aria-controls="team-history" [attr.tabindex]="activeTab === 'history' ? 0 : -1" (click)="setTab('history')" (keydown)="handleTabKeydown($event, 'history')">Ajalugu</button>
     </div>
 
-    <!-- ROSTER PANEL -->
-    <div class="sub-panel" [class.active]="activeTab === 'roster'" id="team-roster" role="tabpanel" aria-labelledby="team-tab-roster" [attr.aria-hidden]="activeTab !== 'roster'" tabindex="0">
-        <div class="team-body">
-            <!-- LEFT SIDEBAR -->
-            <div>
-                <div class="team-photo-placeholder">
-                    <span>📸</span>
-                    <span class="team-photo-label">{{ team.name }} foto lisamisel</span>
-                </div>
+    <div class="sub-panel profile-panel" [class.active]="activeTab === 'roster'" id="team-roster" role="tabpanel" aria-labelledby="team-tab-roster" [attr.aria-hidden]="activeTab !== 'roster'" tabindex="0">
+      <div class="team-dashboard">
+        <section class="team-dashboard-main" aria-labelledby="team-roster-title">
+          <div class="profile-section-head"><div><p class="section-card-eyebrow">{{ season }}</p><h2 id="team-roster-title">Meeskonna koosseis</h2></div><span>{{ roster.length }} mängijat</span></div>
+          <div class="sh-card profile-table-shell" *ngIf="roster.length; else rosterEmpty" role="region" aria-label="Meeskonna mängijad" tabindex="0">
+            <table class="profile-table"><caption class="sr-only">{{ team.name }} koosseis hooajal {{ season }}</caption><thead><tr><th scope="col">#</th><th scope="col">Mängija</th><th scope="col">Positsioon</th><th scope="col">M</th><th scope="col">V</th><th scope="col">S</th><th scope="col">P</th></tr></thead><tbody><tr *ngFor="let player of roster; let i = index"><td>{{ i + 1 }}</td><th scope="row"><a routerLink="/player" [queryParams]="{ name: player.name }">{{ player.name }}</a></th><td>{{ player.position }}</td><td>{{ player.games }}</td><td>{{ player.goals }}</td><td>{{ player.assists }}</td><td class="pts">{{ player.goals + player.assists }}</td></tr></tbody></table>
+          </div>
+          <ng-template #rosterEmpty><div class="empty-state"><h3>Koosseis pole avaldatud</h3><p>Selle meeskonna mängijate andmed ei ole arhiivis saadaval.</p></div></ng-template>
+        </section>
 
-                <div class="sh-card" style="margin-bottom:14px;">
-                    <div class="sh-section-title" style="font-size:15px;margin-bottom:10px;">Vormi värvid</div>
-                    <div class="team-info-row">
-                        <span class="team-info-label">Vorm A</span>
-                        <span class="team-info-val">Andmed täiendamisel</span>
-                    </div>
-                    <div class="team-info-row">
-                        <span class="team-info-label">Vorm B</span>
-                        <span class="team-info-val">Andmed täiendamisel</span>
-                    </div>
-                </div>
-
-                <div class="sh-card">
-                    <div class="sh-section-title" style="font-size:15px;margin-bottom:10px;">Kodusaal</div>
-                    <div class="team-info-row">
-                        <span class="team-info-label">Saal</span>
-                        <span class="team-info-val" style="font-size:12px;">{{ team.venue }}</span>
-                    </div>
-                    <div class="team-info-row">
-                        <span class="team-info-label">Aadress</span>
-                        <span class="team-info-val" style="font-size:12px;">{{ team.venueAddress }}</span>
-                    </div>
-                    <div class="team-info-row">
-                        <span class="team-info-label">Kontakt</span>
-                        <span class="team-info-val">Klubi kaudu</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PLAYER LIST -->
-            <div>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                    <h2 class="sh-section-title" style="margin-bottom:0;">{{ team.leagues[0] }} 2025/2026 mängijad</h2>
-                    <span class="sh-tag sh-tag-blue">{{ roster.length }} mängijat</span>
-                </div>
-                <label for="team-season" class="sr-only">Vali võistlus ja hooaeg</label>
-                <select id="team-season" class="season-select" [(ngModel)]="selectedSeason">
-                    <option *ngFor="let league of team.leagues">{{ league }} 2025 / 2026</option>
-                    <option>{{ team.leagues[0] }} 2024 / 2025</option>
-                    <option>{{ team.leagues[0] }} 2023 / 2024</option>
-                </select>
-
-                <div class="sh-card" style="padding:0;overflow:hidden;">
-                    <table class="player-table">
-                        <colgroup><col class="c-jrk"><col class="c-nr"><col class="c-name"></colgroup>
-                        <tr><th class="r" scope="col">Jrk</th><th class="r" scope="col">Nr</th><th scope="col">Mängija</th></tr>
-                        <tr *ngFor="let player of roster; let i = index"><td class="jrk">{{ i + 1 }}.</td><td class="nr">{{ i + 1 }}</td><td><a routerLink="/player" [queryParams]="{ name: player.name }">{{ player.name }}</a></td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <aside class="team-dashboard-side">
+          <section class="sh-card team-venue-card" aria-labelledby="venue-title"><p class="section-card-eyebrow">Kodusaal</p><h2 id="venue-title">{{ team.venue }}</h2><p>{{ team.venueAddress }}</p><a [href]="'https://www.google.com/maps/search/?api=1&query=' + team.venueAddress" target="_blank" rel="noopener noreferrer">Ava kaardil ↗</a></section>
+          <section class="sh-card team-form-card" aria-labelledby="form-title"><p class="section-card-eyebrow">Viimased mängud</p><h2 id="form-title">Vorm</h2><div class="team-form-pills" *ngIf="recentMatches.length; else noForm"><a *ngFor="let match of recentMatches" routerLink="/match" [queryParams]="{ id: match.id }" [class.is-win]="resultFor(match) === 'V'" [class.is-loss]="resultFor(match) === 'K'"><b>{{ resultFor(match) }}</b><span>{{ opponentFor(match) }}</span><strong>{{ scoreFor(match) }}</strong></a></div><ng-template #noForm><p>Mängutulemusi pole.</p></ng-template></section>
+        </aside>
+      </div>
     </div>
 
-    <!-- INFO PANEL -->
-    <div class="sub-panel" [class.active]="activeTab === 'info'" id="team-info" role="tabpanel" aria-labelledby="team-tab-info" [attr.aria-hidden]="activeTab !== 'info'" tabindex="0" style="max-width:560px;">
-        <div class="sh-card">
-            <h2 class="sh-section-title" style="margin-bottom:14px;">Kontaktandmed</h2>
-            <div class="team-info-row"><span class="team-info-label">Klubi</span><span class="team-info-val">{{ team.name }}</span></div>
-            <div class="team-info-row"><span class="team-info-label">Liidu kontakt</span><span class="team-info-val" style="color:var(--blue-600);"><a href="mailto:info@saalihoki.ee">info&#64;saalihoki.ee</a></span></div>
-            <div class="team-info-row"><span class="team-info-label">Asukoht</span><span class="team-info-val">{{ team.location }}</span></div>
-            <div class="team-info-row"><span class="team-info-label">Vorm A</span><span class="team-info-val">Andmed täiendamisel</span></div>
-            <div class="team-info-row"><span class="team-info-label">Vorm B</span><span class="team-info-val">Andmed täiendamisel</span></div>
-            <div class="team-info-row"><span class="team-info-label">Kodusaal</span><span class="team-info-val" style="font-size:12px;">{{ team.venue }}</span></div>
-            <div class="team-info-row"><span class="team-info-label">Saali aadress</span><span class="team-info-val" style="font-size:12px;">{{ team.venueAddress }}</span></div>
-        </div>
+    <div class="sub-panel profile-panel" [class.active]="activeTab === 'info'" id="team-info" role="tabpanel" aria-labelledby="team-tab-info" [attr.aria-hidden]="activeTab !== 'info'" tabindex="0">
+      <div class="profile-info-grid">
+        <section class="sh-card"><p class="section-card-eyebrow">Kontakt</p><h2>Klubi kontaktandmed</h2><dl class="profile-detail-list"><div><dt>Klubi</dt><dd>{{ team.name }}</dd></div><div><dt>Asukoht</dt><dd>{{ team.location }}</dd></div><div *ngIf="team.email"><dt>E-post</dt><dd><a [href]="'mailto:' + team.email">{{ team.email }}</a></dd></div><div *ngIf="team.website"><dt>Veebileht</dt><dd><a [href]="team.website" target="_blank" rel="noopener noreferrer">Ava veebileht ↗</a></dd></div></dl></section>
+        <section class="sh-card"><p class="section-card-eyebrow">Võistlused</p><h2>Liigad ja saal</h2><dl class="profile-detail-list"><div><dt>Liigad</dt><dd>{{ team.leagues.join(' · ') || 'Kinnitamata' }}</dd></div><div><dt>Kodusaal</dt><dd>{{ team.venue }}</dd></div><div><dt>Aadress</dt><dd>{{ team.venueAddress }}</dd></div><div><dt>Liidu kontakt</dt><dd><a href="mailto:info@saalihoki.ee">info&#64;saalihoki.ee</a></dd></div></dl></section>
+      </div>
     </div>
 
-    <!-- HISTORY PANEL -->
-    <div class="sub-panel" [class.active]="activeTab === 'history'" id="team-history" role="tabpanel" aria-labelledby="team-tab-history" [attr.aria-hidden]="activeTab !== 'history'" tabindex="0">
-        <h2 class="sh-section-title">Hooajad</h2>
-        <div class="sh-card" style="padding:0;overflow:hidden;">
-            <table class="player-table">
-                <tr><th>Hooaeg</th><th>Liiga</th></tr>
-                <tr><td>2025 / 2026</td><td><a routerLink="/league">{{ team.leagues.join(' · ') }}</a></td></tr>
-                <tr><td>2024 / 2025</td><td><a routerLink="/league">{{ team.leagues[0] }}</a></td></tr>
-                <tr><td>2023 / 2024</td><td><a routerLink="/league">{{ team.leagues[0] }}</a></td></tr>
-                <tr><td>2022 / 2023</td><td><a routerLink="/league">{{ team.leagues[0] }}</a></td></tr>
-            </table>
-        </div>
+    <div class="sub-panel profile-panel" [class.active]="activeTab === 'history'" id="team-history" role="tabpanel" aria-labelledby="team-tab-history" [attr.aria-hidden]="activeTab !== 'history'" tabindex="0">
+      <div class="profile-section-head"><div><p class="section-card-eyebrow">Arhiiv</p><h2>Hooajad ja mängud</h2></div></div>
+      <div class="sh-card profile-table-shell" role="region" aria-label="Meeskonna mängude arhiiv" tabindex="0">
+        <table class="profile-table"><caption class="sr-only">{{ team.name }} mängude arhiiv</caption><thead><tr><th scope="col">Kuupäev</th><th scope="col">Võistlus</th><th scope="col">Mäng</th><th scope="col">Tulemus</th></tr></thead><tbody><tr *ngFor="let match of matches"><td>{{ formattedDate(match.startsAt) }}</td><td>{{ match.league }}</td><th scope="row"><a routerLink="/match" [queryParams]="{ id: match.id }">{{ match.home }} – {{ match.away }}</a></th><td class="pts">{{ scoreFor(match) }}</td></tr></tbody></table>
+      </div>
     </div>
+  </div>
 </section>

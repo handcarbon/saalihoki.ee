@@ -6,22 +6,15 @@ import { Subscription } from 'rxjs';
 
 import {
   MatchState,
+  PORTAL_DATA_NOTICE,
   PORTAL_MATCHES,
   PORTAL_PENDING_MATCHES,
+  PORTAL_SEASON,
   PortalMatch,
   PortalPendingMatch,
   hasScore,
   matchState
 } from '../portal-data';
-
-interface ScheduleDay {
-  date: Date;
-  key: string;
-  weekday: string;
-  dayNumber: string;
-  month: string;
-  count: number;
-}
 
 interface MatchGroup {
   key: string;
@@ -36,6 +29,8 @@ interface MatchGroup {
   templateUrl: './schedule.component.html'
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
+  readonly season = PORTAL_SEASON;
+  readonly dataNotice = PORTAL_DATA_NOTICE;
   readonly allMatches = PORTAL_MATCHES;
   readonly allPendingMatches = PORTAL_PENDING_MATCHES;
   readonly leagues = this.uniqueValues([
@@ -46,16 +41,11 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     ...PORTAL_MATCHES.flatMap((match) => [match.home, match.away]),
     ...PORTAL_PENDING_MATCHES.flatMap((match) => [match.home, match.away])
   ]);
-  readonly venues = this.uniqueValues([
-    ...PORTAL_MATCHES.map((match) => match.venue),
-    ...PORTAL_PENDING_MATCHES.map((match) => match.venue).filter((venue): venue is string => Boolean(venue))
-  ]);
 
-  weekStart = this.startOfWeek(new Date());
-  selectedDay = 'all';
+  readonly latestDataDate = new Date(Math.max(...PORTAL_MATCHES.map((match) => new Date(match.startsAt).getTime())));
+  currentMonth = this.startOfMonth(this.latestDataDate);
   selectedLeague = 'all';
   selectedTeam = 'all';
-  selectedVenue = 'all';
 
   private readonly subscription = new Subscription();
 
@@ -72,36 +62,14 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  get weekDays(): ScheduleDay[] {
-    const matches = this.matchesInWeekWithFilters;
-    return Array.from({ length: 7 }, (_, index) => {
-      const date = this.addDays(this.weekStart, index);
-      const key = this.dateKey(date);
-      return {
-        date,
-        key,
-        weekday: date.toLocaleDateString('et-EE', { weekday: 'short' }).replace('.', '').toUpperCase(),
-        dayNumber: date.toLocaleDateString('et-EE', { day: '2-digit' }),
-        month: date.toLocaleDateString('et-EE', { month: 'short' }).replace('.', '').toUpperCase(),
-        count: matches.filter((match) => this.dateKey(new Date(match.startsAt)) === key).length
-      };
-    });
+  get monthLabel(): string {
+    const label = this.currentMonth.toLocaleDateString('et-EE', { month: 'long', year: 'numeric' });
+    return label.charAt(0).toLocaleUpperCase('et') + label.slice(1);
   }
 
-  get weekRangeLabel(): string {
-    const end = this.addDays(this.weekStart, 6);
-    const startMonth = this.weekStart.toLocaleDateString('et-EE', { month: 'short' }).replace('.', '');
-    const endMonth = end.toLocaleDateString('et-EE', { month: 'short' }).replace('.', '');
-    const year = end.getFullYear();
-    if (this.weekStart.getMonth() === end.getMonth()) {
-      return `${this.weekStart.getDate()}.–${end.getDate()}. ${endMonth} ${year}`;
-    }
-    return `${this.weekStart.getDate()}. ${startMonth} – ${end.getDate()}. ${endMonth} ${year}`;
-  }
-
-  get matchesInWeekWithFilters(): PortalMatch[] {
-    const start = this.weekStart.getTime();
-    const end = this.addDays(this.weekStart, 7).getTime();
+  get visibleMatches(): PortalMatch[] {
+    const start = this.currentMonth.getTime();
+    const end = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1).getTime();
     return this.allMatches
       .filter((match) => {
         const kickoff = new Date(match.startsAt).getTime();
@@ -109,15 +77,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       })
       .filter((match) => this.matchesFilters(match))
       .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
-  }
-
-  get visibleMatches(): PortalMatch[] {
-    if (this.selectedDay === 'all') {
-      return this.matchesInWeekWithFilters;
-    }
-    return this.matchesInWeekWithFilters.filter(
-      (match) => this.dateKey(new Date(match.startsAt)) === this.selectedDay
-    );
   }
 
   get matchGroups(): MatchGroup[] {
@@ -140,11 +99,11 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   get filtersActive(): boolean {
-    return this.selectedLeague !== 'all' || this.selectedTeam !== 'all' || this.selectedVenue !== 'all';
+    return this.selectedLeague !== 'all' || this.selectedTeam !== 'all';
   }
 
-  get isCurrentWeek(): boolean {
-    return this.dateKey(this.weekStart) === this.dateKey(this.startOfWeek(new Date()));
+  get isLatestMonth(): boolean {
+    return this.monthKey(this.currentMonth) === this.monthKey(this.latestDataDate);
   }
 
   get liveCount(): number {
@@ -159,20 +118,13 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return this.visibleMatches.filter((match) => matchState(match) === 'finished').length;
   }
 
-  changeWeek(offset: number): void {
-    this.weekStart = this.addDays(this.weekStart, offset * 7);
-    this.selectedDay = 'all';
+  changeMonth(offset: number): void {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + offset, 1);
     this.syncQuery();
   }
 
-  goToCurrentWeek(): void {
-    this.weekStart = this.startOfWeek(new Date());
-    this.selectedDay = 'all';
-    this.syncQuery();
-  }
-
-  selectDay(day: string): void {
-    this.selectedDay = day;
+  goToLatestMonth(): void {
+    this.currentMonth = this.startOfMonth(this.latestDataDate);
     this.syncQuery();
   }
 
@@ -183,13 +135,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   clearFilters(): void {
     this.selectedLeague = 'all';
     this.selectedTeam = 'all';
-    this.selectedVenue = 'all';
-    this.selectedDay = 'all';
     this.syncQuery();
-  }
-
-  isToday(date: Date): boolean {
-    return this.dateKey(date) === this.dateKey(new Date());
   }
 
   stateOf(match: PortalMatch): MatchState {
@@ -215,30 +161,32 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return new Date(match.startsAt).toLocaleTimeString('et-EE', { hour: '2-digit', minute: '2-digit' });
   }
 
+  competitionRoute(match: PortalMatch): string {
+    return match.competitionId === 'm35' ? '/league/m35' : '/league';
+  }
+
   private applyQueryParams(params: ParamMap): void {
     const requestedDay = params.get('day');
     const requestedWeek = params.get('week');
+    const requestedMonth = params.get('month');
     const dayDate = requestedDay ? this.parseDateKey(requestedDay) : null;
     const weekDate = requestedWeek ? this.parseDateKey(requestedWeek) : null;
+    const monthDate = requestedMonth ? this.parseMonthKey(requestedMonth) : null;
 
-    this.weekStart = weekDate
-      ? this.startOfWeek(weekDate)
-      : dayDate
-        ? this.startOfWeek(dayDate)
-        : this.startOfWeek(new Date());
-    this.selectedDay = dayDate ? this.dateKey(dayDate) : 'all';
+    this.currentMonth = this.startOfMonth(monthDate ?? dayDate ?? weekDate ?? this.latestDataDate);
     this.selectedLeague = this.validOption(params.get('league'), this.leagues);
     this.selectedTeam = this.validOption(params.get('team'), this.teams);
-    this.selectedVenue = this.validOption(params.get('venue'), this.venues);
   }
 
   private syncQuery(): void {
     const queryParams = {
-      week: this.isCurrentWeek ? null : this.dateKey(this.weekStart),
-      day: this.selectedDay === 'all' ? null : this.selectedDay,
+      month: this.isLatestMonth ? null : this.monthKey(this.currentMonth),
+      view: null,
+      week: null,
+      day: null,
       league: this.selectedLeague === 'all' ? null : this.selectedLeague,
       team: this.selectedTeam === 'all' ? null : this.selectedTeam,
-      venue: this.selectedVenue === 'all' ? null : this.selectedVenue
+      venue: null
     };
     void this.router.navigate([], {
       relativeTo: this.route,
@@ -247,11 +195,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     });
   }
 
-  private matchesFilters(match: { league: string; home: string; away: string; venue?: string }): boolean {
+  private matchesFilters(match: { league: string; home: string; away: string }): boolean {
     const leagueMatches = this.selectedLeague === 'all' || match.league === this.selectedLeague;
     const teamMatches = this.selectedTeam === 'all' || match.home === this.selectedTeam || match.away === this.selectedTeam;
-    const venueMatches = this.selectedVenue === 'all' || match.venue === this.selectedVenue;
-    return leagueMatches && teamMatches && venueMatches;
+    return leagueMatches && teamMatches;
   }
 
   private groupLabel(date: Date): string {
@@ -263,18 +210,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return label.charAt(0).toLocaleUpperCase('et') + label.slice(1);
   }
 
-  private startOfWeek(value: Date): Date {
-    const date = new Date(value);
-    date.setHours(0, 0, 0, 0);
-    const daysSinceMonday = (date.getDay() + 6) % 7;
-    date.setDate(date.getDate() - daysSinceMonday);
-    return date;
-  }
-
-  private addDays(value: Date, days: number): Date {
-    const date = new Date(value);
-    date.setDate(date.getDate() + days);
-    return date;
+  private startOfMonth(value: Date): Date {
+    return new Date(value.getFullYear(), value.getMonth(), 1);
   }
 
   private dateKey(value: Date): string {
@@ -284,11 +221,24 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
 
+  private monthKey(value: Date): string {
+    const month = `${value.getMonth() + 1}`.padStart(2, '0');
+    return `${value.getFullYear()}-${month}`;
+  }
+
   private parseDateKey(value: string): Date | null {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
       return null;
     }
     const date = new Date(`${value}T00:00:00`);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  private parseMonthKey(value: string): Date | null {
+    if (!/^\d{4}-\d{2}$/.test(value)) {
+      return null;
+    }
+    const date = new Date(`${value}-01T00:00:00`);
     return Number.isNaN(date.getTime()) ? null : date;
   }
 

@@ -184,6 +184,24 @@ export class HomeComponent {
     this.standingsTableId = id;
   }
 
+  handleStandingsKeydown(event: KeyboardEvent, currentId: string): void {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const index = this.standingsTables.findIndex((table) => table.id === currentId);
+    const nextIndex = event.key === 'Home'
+      ? 0
+      : event.key === 'End'
+        ? this.standingsTables.length - 1
+        : (index + (event.key === 'ArrowRight' ? 1 : -1) + this.standingsTables.length) % this.standingsTables.length;
+    this.selectStandings(this.standingsTables[nextIndex].id);
+    const buttons = (event.currentTarget as HTMLElement).parentElement?.querySelectorAll<HTMLElement>('[role="tab"]');
+    buttons?.[nextIndex]?.focus();
+  }
+
+  standingsRoute(): string {
+    return this.standingsTableId === 'm35' ? '/league/m35' : '/league';
+  }
+
   goalDiff(row: { goalsFor: number; goalsAgainst: number }): string {
     const diff = row.goalsFor - row.goalsAgainst;
     return diff > 0 ? `+${diff}` : `${diff}`;

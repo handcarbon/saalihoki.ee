@@ -31,11 +31,11 @@
   <!-- Trimmed from seven top-level items to five; Galerii and Koolitused
        now live under Liit, so the nav no longer needs a drawer on tablets. -->
   <div class="sh-nav-links" id="mobile-navigation" [class.mobile-open]="mobileMenuOpen">
-    <a routerLink="/news" routerLinkActive="active">Uudised</a>
-    <a routerLink="/league" routerLinkActive="active">Liigad</a>
-    <a routerLink="/schedule" routerLinkActive="active">Ajakavad</a>
-    <a routerLink="/national-team" routerLinkActive="active">Koondis</a>
-    <a routerLink="/association" routerLinkActive="active">Liit</a>
+    <a #menuFirstLink routerLink="/news" routerLinkActive="active" ariaCurrentWhenActive="page">Uudised</a>
+    <a routerLink="/league" routerLinkActive="active" ariaCurrentWhenActive="page">Liigad</a>
+    <a routerLink="/schedule" routerLinkActive="active" ariaCurrentWhenActive="page">Ajakavad</a>
+    <a routerLink="/national-team" routerLinkActive="active" ariaCurrentWhenActive="page">Koondis</a>
+    <a routerLink="/association" routerLinkActive="active" ariaCurrentWhenActive="page">Liit</a>
 
     <div class="sh-social sh-social-mobile" aria-label="Sotsiaalmeedia">
       <a href="https://www.facebook.com/saalihoki.ee" aria-label="Facebook" target="_blank" rel="noreferrer noopener">
@@ -51,10 +51,11 @@
   </div>
 
   <div class="sh-nav-right">
-    <form class="sh-search" [class.mobile-open]="mobileSearchOpen" (ngSubmit)="searchPlayer()" role="search">
+    <form id="mobile-player-search" class="sh-search" [class.mobile-open]="mobileSearchOpen" (ngSubmit)="searchPlayer()" role="search">
       <label class="sr-only" for="player-search">Otsi mängijat</label>
       <svg class="sh-search-icon" aria-hidden="true" focusable="false"><use href="#i-search"></use></svg>
       <input
+        #playerSearch
         id="player-search"
         type="search"
         name="search"
@@ -106,16 +107,20 @@
       </a>
     </div>
 
-    <button type="button" class="sh-mobile-action" aria-label="Ava mängija otsing"
-            [attr.aria-expanded]="mobileSearchOpen" (click)="toggleMobileSearch()">
+    <button #mobileSearchButton type="button" class="sh-mobile-action"
+            [attr.aria-label]="mobileSearchOpen ? 'Sulge mängija otsing' : 'Ava mängija otsing'"
+            aria-controls="mobile-player-search" [attr.aria-expanded]="mobileSearchOpen" (click)="toggleMobileSearch()">
       <svg aria-hidden="true" focusable="false"><use href="#i-search"></use></svg>
     </button>
-    <button type="button" class="sh-mobile-action sh-menu-button" aria-label="Ava menüü"
+    <button #mobileMenuButton type="button" class="sh-mobile-action sh-menu-button"
+            [attr.aria-label]="mobileMenuOpen ? 'Sulge menüü' : 'Ava menüü'"
             aria-controls="mobile-navigation" [attr.aria-expanded]="mobileMenuOpen" (click)="toggleMobileMenu()">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
+
+<div class="sr-only" aria-live="polite" aria-atomic="true">{{ pageAnnouncement }}</div>
 
 <main id="main-content" tabindex="-1">
   <router-outlet></router-outlet>

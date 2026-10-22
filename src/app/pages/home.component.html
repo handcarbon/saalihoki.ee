@@ -12,7 +12,8 @@
             <li *ngFor="let match of matchStrip">
                 <a class="sh-match-card"
                    [class.is-live]="stateOf(match) === 'live'"
-                   [routerLink]="stateOf(match) === 'upcoming' ? '/schedule' : '/match'">
+                   [routerLink]="stateOf(match) === 'upcoming' ? '/schedule' : '/match'"
+                   [queryParams]="stateOf(match) === 'upcoming' ? {} : { id: match.id }">
                     <span class="sh-match-top">
                         <span class="sh-match-league">{{ match.league }}</span>
                         <span class="sh-match-status" [class.is-live]="stateOf(match) === 'live'">
@@ -63,10 +64,10 @@
             <time [attr.datetime]="isoDate(featuredStory.date)">{{ fullDate(featuredStory.date) }}</time>
         </p>
         <h1 class="sh-hero-headline">
-            <a routerLink="/news">{{ featuredStory.title }}</a>
+            <a [routerLink]="['/news', featuredStory.id]">{{ featuredStory.title }}</a>
         </h1>
         <p class="sh-hero-lead">{{ featuredStory.summary }}</p>
-        <a class="sh-btn sh-btn-primary" routerLink="/news">Loe uudist →</a>
+        <a class="sh-btn sh-btn-primary" [routerLink]="['/news', featuredStory.id]">Loe uudist →</a>
     </div>
 </section>
 
@@ -82,7 +83,7 @@
 
         <div class="sh-news-grid">
             <article class="sh-news-lead">
-                <a class="sh-news-lead-media" routerLink="/news" tabindex="-1" aria-hidden="true">
+                <a class="sh-news-lead-media" [routerLink]="['/news', featuredStory.id]" tabindex="-1" aria-hidden="true">
                     <picture>
                         <source type="image/webp" srcset="news_photo.webp">
                         <img [src]="featuredStory.image" alt="" width="450" height="600"
@@ -94,14 +95,14 @@
                         <span class="sh-tag sh-tag-blue">{{ featuredStory.category }}</span>
                         <time [attr.datetime]="isoDate(featuredStory.date)">{{ fullDate(featuredStory.date) }}</time>
                     </p>
-                    <h3><a routerLink="/news">{{ featuredStory.title }}</a></h3>
+                    <h3><a [routerLink]="['/news', featuredStory.id]">{{ featuredStory.title }}</a></h3>
                     <p class="sh-news-summary">{{ featuredStory.summary }}</p>
                 </div>
             </article>
 
             <ul class="sh-news-list">
                 <li *ngFor="let item of secondaryNews">
-                    <a class="sh-news-row" routerLink="/news">
+                    <a class="sh-news-row" [routerLink]="['/news', item.id]">
                         <span class="sh-news-date">
                             <span class="sh-news-day">{{ dayNumber(item.date) }}</span>
                             <span class="sh-news-month">{{ monthShort(item.date) }}</span>
@@ -122,7 +123,7 @@
     <section class="sh-block" aria-labelledby="standings-title">
         <div class="sh-section-head">
             <h2 id="standings-title" class="sh-section-title">Tabelid</h2>
-            <a class="sh-see-all" routerLink="/league">Täistabel →</a>
+            <a class="sh-see-all" [routerLink]="standingsRoute()">Täistabel →</a>
         </div>
 
         <div class="sh-card sh-standings-card">
@@ -134,12 +135,14 @@
                         [class.active]="table.id === standingsTableId"
                         [attr.aria-selected]="table.id === standingsTableId"
                         [attr.tabindex]="table.id === standingsTableId ? 0 : -1"
-                        (click)="selectStandings(table.id)">
+                        [attr.aria-controls]="'home-standings-' + table.id"
+                        (click)="selectStandings(table.id)"
+                        (keydown)="handleStandingsKeydown($event, table.id)">
                     {{ table.league }}
                 </button>
             </div>
 
-            <div class="sh-table-scroll">
+            <div class="sh-table-scroll" role="tabpanel" [id]="'home-standings-' + standingsTableId" tabindex="0">
                 <table class="sh-standings-mini">
                     <caption class="sr-only">{{ activeStandings.league }} — viie parema seis</caption>
                     <thead>
@@ -162,7 +165,7 @@
                                       [class.rank-3]="row.rank === 3"
                                       [class.rank-n]="row.rank > 3">{{ row.rank }}</span>
                             </td>
-                            <td class="team-cell"><a routerLink="/team">{{ row.team }}</a></td>
+                            <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: row.team }">{{ row.team }}</a></td>
                             <td>{{ row.played }}</td>
                             <td>{{ row.won }}</td>
                             <td>{{ row.drawn }}</td>
@@ -185,7 +188,7 @@
                 <h2 id="home-leaders-title" class="sh-section-title">Statistika liidrid</h2>
                 <p>M35+ · Põhiturniir</p>
             </div>
-            <a class="sh-see-all" routerLink="/league" [queryParams]="{ view: 'scorers' }">Kogu statistika →</a>
+            <a class="sh-see-all" routerLink="/league/m35" [queryParams]="{ view: 'scorers' }">Kogu statistika →</a>
         </div>
 
         <div class="sh-leader-category-grid">
@@ -200,7 +203,7 @@
                         <h3>{{ category.title }}</h3>
                     </div>
                     <a
-                        routerLink="/league"
+                        routerLink="/league/m35"
                         [queryParams]="{ view: category.view }"
                         [attr.aria-label]="category.title + ' täistabel'"
                     >→</a>
@@ -233,7 +236,7 @@
                 <h2 id="fixtures-title" class="sh-section-title sm">Tulevased mängud</h2>
                 <a class="sh-see-all" routerLink="/schedule">Kõik →</a>
             </div>
-            <ul class="sh-card sh-list">
+            <ul class="sh-card sh-list" *ngIf="nextFixtures.length; else seasonComplete">
                 <li *ngFor="let match of nextFixtures">
                     <a class="sh-list-row" routerLink="/schedule">
                         <span class="sh-news-date">
@@ -247,16 +250,22 @@
                     </a>
                 </li>
             </ul>
+            <ng-template #seasonComplete>
+                <div class="sh-card sh-list-empty">
+                    <strong>Hooaja tulevasi mänge ei ole avaldatud</strong>
+                    <span>Vaata lõppenud kohtumisi tulemuskeskusest.</span>
+                </div>
+            </ng-template>
         </section>
 
         <section class="sh-block" aria-labelledby="results-title">
             <div class="sh-section-head">
                 <h2 id="results-title" class="sh-section-title sm">Viimased tulemused</h2>
-                <a class="sh-see-all" routerLink="/league">Kõik →</a>
+                <a class="sh-see-all" routerLink="/schedule">Kõik →</a>
             </div>
             <ul class="sh-card sh-list">
                 <li *ngFor="let match of latestResults">
-                    <a class="sh-list-row" routerLink="/match">
+                    <a class="sh-list-row" routerLink="/match" [queryParams]="{ id: match.id }">
                         <span class="sh-result-score">
                             {{ match.homeScore }}<span class="sep">:</span>{{ match.awayScore }}
                         </span>

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PORTAL_MEMBERSHIPS, PORTAL_PARTNERS } from '../portal-data';
+import { PORTAL_MEMBERSHIPS, PORTAL_NEWS, PORTAL_PARTNERS, PORTAL_TEAMS, PortalNewsItem } from '../portal-data';
 
 interface SectionCard {
   eyebrow: string;
@@ -93,8 +93,25 @@ const SECTION_CONTENT: Record<string, SectionContent> = {
 export class SectionComponent implements OnInit, OnDestroy {
   content = SECTION_CONTENT['news'];
   isPartnerSection = false;
+  isNewsSection = true;
+  isAssociationSection = false;
+  selectedNewsCategory = 'Kõik';
   readonly partners = PORTAL_PARTNERS;
   readonly memberships = PORTAL_MEMBERSHIPS;
+  readonly news = PORTAL_NEWS;
+  readonly newsCategories = ['Kõik', ...new Set(PORTAL_NEWS.map((item) => item.category))];
+  readonly memberClubs = PORTAL_TEAMS.slice(0, 10);
+  readonly associationPeople = [
+    { role: 'Juhatus', name: 'Eesti Saalihoki Liidu juhatus', contact: 'info@saalihoki.ee' },
+    { role: 'Võistlused', name: 'Võistluste korraldus', contact: 'info@saalihoki.ee' },
+    { role: 'Üldkontakt', name: 'Liidu büroo', contact: '+372 566 21 873' }
+  ];
+  readonly associationDocuments = [
+    { type: 'Võistlused', title: 'Võistlusjuhendid ja reglemendid', meta: 'Hooaja dokumendid', url: 'https://www.saalihoki.ee/Materjalid/Default.aspx' },
+    { type: 'Klubid', title: 'Litsentsid ja registreerimine', meta: 'Vormid ja tähtajad', url: 'https://www.saalihoki.ee/Materjalid/Default.aspx' },
+    { type: 'Organisatsioon', title: 'Põhikiri ja juhtimine', meta: 'Liidu alusdokumendid', url: 'https://www.saalihoki.ee/Liit/Default.aspx' },
+    { type: 'Turvalisus', title: 'Aus mäng ja turvaline sport', meta: 'Juhised klubidele', url: 'https://www.eok.ee/organisatsioon/aus-mang' }
+  ];
   private readonly subscription = new Subscription();
 
   constructor(private readonly route: ActivatedRoute) {}
@@ -104,7 +121,19 @@ export class SectionComponent implements OnInit, OnDestroy {
       const section = data['section'] as string;
       this.content = SECTION_CONTENT[section] ?? SECTION_CONTENT['news'];
       this.isPartnerSection = section === 'partners';
+      this.isNewsSection = section === 'news';
+      this.isAssociationSection = section === 'association';
     }));
+  }
+
+  get filteredNews(): PortalNewsItem[] {
+    return this.selectedNewsCategory === 'Kõik'
+      ? this.news
+      : this.news.filter((item) => item.category === this.selectedNewsCategory);
+  }
+
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('et-EE', { day: '2-digit', month: 'long', year: 'numeric' });
   }
 
   ngOnDestroy(): void {

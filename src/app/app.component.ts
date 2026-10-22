@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, HostListener, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 
 import { PORTAL_MEMBERSHIPS, PORTAL_PLAYERS, PortalPlayer } from './portal-data';
@@ -13,10 +15,16 @@ import { PORTAL_MEMBERSHIPS, PORTAL_PLAYERS, PortalPlayer } from './portal-data'
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnDestroy {
+  @ViewChild('playerSearch') private playerSearch?: ElementRef<HTMLInputElement>;
+  @ViewChild('menuFirstLink') private menuFirstLink?: ElementRef<HTMLAnchorElement>;
+  @ViewChild('mobileMenuButton') private mobileMenuButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('mobileSearchButton') private mobileSearchButton?: ElementRef<HTMLButtonElement>;
+
   searchTerm = '';
   searchFocused = false;
   mobileMenuOpen = false;
   mobileSearchOpen = false;
+  pageAnnouncement = '';
 
   /** Index of the highlighted suggestion; -1 means none. */
   activeIndex = -1;
@@ -26,10 +34,20 @@ export class AppComponent implements OnDestroy {
 
   private readonly subscription = new Subscription();
 
-  constructor(private readonly router: Router) {
+  constructor(
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly title: Title,
+    private readonly meta: Meta,
+    @Inject(DOCUMENT) private readonly document: Document
+  ) {
     this.subscription.add(this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe(() => this.closeMobilePanels()));
+    ).subscribe((event) => {
+      this.closeMobilePanels();
+      this.updateMetadata(event.urlAfterRedirects);
+      window.setTimeout(() => this.announceAndFocusPage(), 0);
+    }));
   }
 
   get suggestions(): PortalPlayer[] {
@@ -143,11 +161,19 @@ export class AppComponent implements OnDestroy {
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
     this.mobileSearchOpen = false;
+    window.setTimeout(() => {
+      if (this.mobileMenuOpen) this.menuFirstLink?.nativeElement.focus();
+      else this.mobileMenuButton?.nativeElement.focus();
+    }, 0);
   }
 
   toggleMobileSearch(): void {
     this.mobileSearchOpen = !this.mobileSearchOpen;
     this.mobileMenuOpen = false;
+    window.setTimeout(() => {
+      if (this.mobileSearchOpen) this.playerSearch?.nativeElement.focus();
+      else this.mobileSearchButton?.nativeElement.focus();
+    }, 0);
   }
 
   closeMobilePanels(): void {
@@ -178,7 +204,44 @@ export class AppComponent implements OnDestroy {
 
   @HostListener('document:keydown.escape')
   handleEscape(): void {
+    const menuWasOpen = this.mobileMenuOpen;
+    const searchWasOpen = this.mobileSearchOpen;
     this.closeMobilePanels();
+    if (menuWasOpen) this.mobileMenuButton?.nativeElement.focus();
+    if (searchWasOpen) this.mobileSearchButton?.nativeElement.focus();
+  }
+
+  private announceAndFocusPage(): void {
+    const main = this.document.getElementById('main-content');
+    const heading = main?.querySelector<HTMLElement>('h1');
+    const target = heading ?? main;
+    if (!target) return;
+    target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+    this.pageAnnouncement = this.title.getTitle();
+  }
+
+  private updateMetadata(url: string): void {
+    let route = this.activatedRoute;
+    while (route.firstChild) route = route.firstChild;
+    const description = route.snapshot.data['description'] as string | undefined;
+    const pageTitle = route.snapshot.title ?? this.title.getTitle();
+    const canonicalUrl = `https://www.saalihoki.ee${url.split('?')[0] || '/'}`;
+
+    if (description) {
+      this.meta.updateTag({ name: 'description', content: description });
+      this.meta.updateTag({ property: 'og:description', content: description });
+    }
+    this.meta.updateTag({ property: 'og:title', content: pageTitle });
+    this.meta.updateTag({ property: 'og:url', content: canonicalUrl });
+
+    let canonical = this.document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = this.document.createElement('link');
+      canonical.rel = 'canonical';
+      this.document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
   }
 
   ngOnDestroy(): void {

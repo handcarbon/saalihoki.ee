@@ -2,154 +2,40 @@
   <header class="player-db-hero">
     <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › Mängijad</div>
     <div class="player-db-hero-grid">
-      <div>
-        <p class="section-kicker">Mängijate andmebaas</p>
-        <h1>Leia mängija. Võrdle statistikat.</h1>
-        <p>Sirvi Eesti saalihoki mängijaid, filtreeri meeskonna ja positsiooni järgi ning ava detailne mängijaprofiil.</p>
-      </div>
-      <dl class="player-db-summary" aria-label="Andmebaasi ülevaade">
-        <div><dt>Mängijaid</dt><dd>{{ totalPlayers }}</dd></div>
-        <div><dt>Mänginud</dt><dd>{{ activePlayers }}</dd></div>
-        <div><dt>Meeskondi</dt><dd>{{ teamCount }}</dd></div>
-        <div><dt>Väravaid</dt><dd>{{ totalGoals }}</dd></div>
-      </dl>
+      <div><p class="section-kicker">Mängijate andmebaas</p><h1>Leia mängija. Võrdle statistikat.</h1><p>Sirvi Eesti saalihoki mängijaid, filtreeri meeskonna ja positsiooni järgi ning ava detailne mängijaprofiil.</p></div>
+      <dl class="player-db-summary" aria-label="Andmebaasi ülevaade"><div><dt>Mängijaid</dt><dd>{{ totalPlayers }}</dd></div><div><dt>Mänginud</dt><dd>{{ activePlayers }}</dd></div><div><dt>Meeskondi</dt><dd>{{ teamCount }}</dd></div><div><dt>Väravaid</dt><dd>{{ totalGoals }}</dd></div></dl>
     </div>
   </header>
 
   <div class="player-db-content">
-    <section class="player-db-leaders" aria-labelledby="leaders-title">
-      <div class="player-db-section-title">
-        <div>
-          <p class="section-card-eyebrow">{{ season }}</p>
-          <h2 id="leaders-title">Statistika liidrid</h2>
-        </div>
-        <a routerLink="/league">Kogu statistika <span aria-hidden="true">→</span></a>
-      </div>
-
-      <div class="player-leader-grid">
-        <a
-          class="player-leader-card"
-          *ngFor="let leader of leaders"
-          routerLink="/player"
-          [queryParams]="{ name: leader.player.name }"
-        >
-          <span class="player-leader-rank" aria-hidden="true">1</span>
-          <span class="player-leader-avatar" aria-hidden="true">{{ initials(leader.player.name) }}</span>
-          <span class="player-leader-copy">
-            <small>{{ leader.label }}</small>
-            <strong>{{ leader.player.name }}</strong>
-            <span>{{ leader.player.team }}</span>
-          </span>
-          <span class="player-leader-value">{{ leader.value }}<small>{{ leader.suffix }}</small></span>
-        </a>
-      </div>
-    </section>
-
     <section class="player-directory" aria-labelledby="directory-title">
-      <div class="player-db-section-title">
-        <div>
-          <p class="section-card-eyebrow">Andmebaas</p>
-          <h2 id="directory-title">Otsi ja filtreeri</h2>
-        </div>
-        <span class="player-season-pill"><span aria-hidden="true">●</span> Hooaeg {{ season }}</span>
-      </div>
+      <div class="player-db-section-title"><div><p class="section-card-eyebrow">Andmebaas</p><h2 id="directory-title">Otsi ja filtreeri</h2></div><span class="player-season-pill"><span aria-hidden="true">●</span> Hooaeg {{ season }}</span></div>
 
       <form class="player-filter-panel" role="search" (ngSubmit)="submitSearch()">
-        <label class="player-search-field">
-          <span>Mängija või meeskond</span>
-          <span class="player-search-control">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <input
-              type="search"
-              name="playerQuery"
-              [(ngModel)]="query"
-              placeholder="Näiteks Taavi Sau või Sparta"
-              autocomplete="off"
-            >
-            <button type="submit">Otsi</button>
-          </span>
-        </label>
-
-        <label class="player-filter-field">
-          <span>Meeskond</span>
-          <select name="team" [(ngModel)]="selectedTeam" (ngModelChange)="updateFilters()">
-            <option value="all">Kõik meeskonnad</option>
-            <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
-          </select>
-        </label>
-
-        <label class="player-filter-field">
-          <span>Positsioon</span>
-          <select name="position" [(ngModel)]="selectedPosition" (ngModelChange)="updateFilters()">
-            <option value="all">Kõik positsioonid</option>
-            <option *ngFor="let position of positions" [value]="position">{{ position }}</option>
-          </select>
-        </label>
-
-        <label class="player-filter-field">
-          <span>Järjesta</span>
-          <select name="sort" [(ngModel)]="selectedSort" (ngModelChange)="updateFilters()">
-            <option value="points">Punktid</option>
-            <option value="goals">Väravad</option>
-            <option value="assists">Söödud</option>
-            <option value="games">Mängud</option>
-            <option value="name">Nimi A–Z</option>
-          </select>
-        </label>
+        <label class="player-search-field"><span>Mängija või meeskond</span><span class="player-search-control"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input type="search" name="playerQuery" [(ngModel)]="query" placeholder="Näiteks Taavi Sau või Sparta" autocomplete="off"><button type="submit">Otsi</button></span></label>
+        <label class="player-filter-field"><span>Meeskond</span><select name="team" [(ngModel)]="selectedTeam" (ngModelChange)="updateFilters()"><option value="all">Kõik meeskonnad</option><option *ngFor="let team of teams" [value]="team">{{ team }}</option></select></label>
+        <label class="player-filter-field"><span>Positsioon</span><select name="position" [(ngModel)]="selectedPosition" (ngModelChange)="updateFilters()"><option value="all">Kõik positsioonid</option><option *ngFor="let position of positions" [value]="position">{{ position }}</option></select></label>
+        <label class="player-filter-field"><span>Järjesta</span><select name="sort" [(ngModel)]="selectedSort" (ngModelChange)="updateFilters()"><option value="points">Punktid</option><option value="goals">Väravad</option><option value="assists">Söödud</option><option value="games">Mängud</option><option value="name">Nimi A–Z</option></select></label>
       </form>
 
-      <div class="player-result-heading" aria-live="polite">
-        <div>
-          <h3>{{ resultHeading }}</h3>
-          <p>{{ results.length }} mängijat</p>
-        </div>
-        <button type="button" *ngIf="hasFilters" (click)="resetFilters()">Tühjenda filtrid</button>
-      </div>
+      <div class="player-result-heading" aria-live="polite"><div><h3>{{ resultHeading }}</h3><p>{{ results.length }} mängijat · kuvatud {{ visibleResults.length }}</p></div><button type="button" *ngIf="hasFilters" (click)="resetFilters()">Tühjenda filtrid</button></div>
 
-      <div class="player-result-table" *ngIf="results.length; else emptyState">
-        <div class="player-result-columns" aria-hidden="true">
-          <span>Mängija</span>
-          <span>Meeskond</span>
-          <span>Positsioon</span>
-          <span>M</span>
-          <span>V</span>
-          <span>S</span>
-          <span>P</span>
-          <span></span>
-        </div>
-        <div class="player-result-list">
-          <a
-            class="player-result-row"
-            *ngFor="let player of results; trackBy: trackPlayer"
-            routerLink="/player"
-            [queryParams]="{ name: player.name }"
-          >
-            <span class="player-result-person">
-              <span class="search-result-avatar" aria-hidden="true">{{ initials(player.name) }}</span>
-              <span>
-                <strong>{{ player.name }}</strong>
-                <small>{{ player.position }} · {{ player.league }} · {{ player.team }}</small>
-              </span>
-            </span>
-            <span class="player-result-team">{{ player.team }}</span>
-            <span class="player-result-position">{{ player.position }} · {{ player.league }}</span>
-            <span class="player-result-stat player-result-games"><small>Mängud</small>{{ player.games }}</span>
-            <span class="player-result-stat player-result-goals"><small>Väravad</small>{{ player.goals }}</span>
-            <span class="player-result-stat player-result-assists"><small>Söödud</small>{{ player.assists }}</span>
-            <span class="player-result-stat player-result-points"><small>Punktid</small>{{ points(player) }}</span>
-            <span class="player-result-arrow" aria-hidden="true">→</span>
+      <div class="player-result-table" *ngIf="results.length; else emptyState" role="table" aria-label="Mängijate otsingutulemused">
+        <div class="player-result-columns" role="row"><span role="columnheader">Mängija</span><span role="columnheader">Meeskond</span><span role="columnheader">Positsioon</span><span role="columnheader">M</span><span role="columnheader">V</span><span role="columnheader">S</span><span role="columnheader">P</span><span aria-hidden="true"></span></div>
+        <div class="player-result-list" role="rowgroup">
+          <a class="player-result-row" role="row" *ngFor="let player of visibleResults; trackBy: trackPlayer" routerLink="/player" [queryParams]="{ name: player.name }">
+            <span class="player-result-person" role="cell"><span class="search-result-avatar" aria-hidden="true">{{ initials(player.name) }}</span><span><strong>{{ player.name }}</strong><small>{{ player.position }} · {{ player.league }} · {{ player.team }}</small></span></span>
+            <span class="player-result-team" role="cell">{{ player.team }}</span><span class="player-result-position" role="cell">{{ player.position }} · {{ player.league }}</span><span class="player-result-stat player-result-games" role="cell"><small>Mängud</small>{{ player.games }}</span><span class="player-result-stat player-result-goals" role="cell"><small>Väravad</small>{{ player.goals }}</span><span class="player-result-stat player-result-assists" role="cell"><small>Söödud</small>{{ player.assists }}</span><span class="player-result-stat player-result-points" role="cell"><small>Punktid</small>{{ points(player) }}</span><span class="player-result-arrow" aria-hidden="true">→</span>
           </a>
         </div>
+        <div class="player-load-more" *ngIf="hasMoreResults"><button type="button" (click)="loadMore()">Näita veel 20 mängijat</button></div>
       </div>
+      <ng-template #emptyState><div class="empty-state player-db-empty"><span class="empty-state-icon" aria-hidden="true">⌕</span><h3>Sellist mängijat ei leitud</h3><p>Muuda otsingusõna või proovi vähem filtreid.</p><button type="button" class="player-reset-button" (click)="resetFilters()">Näita kõiki mängijaid</button></div></ng-template>
+    </section>
 
-      <ng-template #emptyState>
-        <div class="empty-state player-db-empty">
-          <span class="empty-state-icon" aria-hidden="true">⌕</span>
-          <h3>Sellist mängijat ei leitud</h3>
-          <p>Muuda otsingusõna või proovi vähem filtreid.</p>
-          <button type="button" class="player-reset-button" (click)="resetFilters()">Näita kõiki mängijaid</button>
-        </div>
-      </ng-template>
+    <section class="player-db-leaders" aria-labelledby="leaders-title">
+      <div class="player-db-section-title"><div><p class="section-card-eyebrow">{{ season }}</p><h2 id="leaders-title">Statistika liidrid</h2></div><a routerLink="/league/m35" [queryParams]="{ view: 'scorers' }">Kogu statistika <span aria-hidden="true">→</span></a></div>
+      <div class="player-leader-grid"><a class="player-leader-card" *ngFor="let leader of leaders" routerLink="/player" [queryParams]="{ name: leader.player.name }"><span class="player-leader-rank" aria-hidden="true">1</span><span class="player-leader-avatar" aria-hidden="true">{{ initials(leader.player.name) }}</span><span class="player-leader-copy"><small>{{ leader.label }}</small><strong>{{ leader.player.name }}</strong><span>{{ leader.player.team }}</span></span><span class="player-leader-value">{{ leader.value }}<small>{{ leader.suffix }}</small></span></a></div>
     </section>
   </div>
 </section>

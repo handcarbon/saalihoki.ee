@@ -1,0 +1,43 @@
+<section class="competition-index">
+  <header class="competition-index-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › Liigad</div>
+    <p class="section-kicker">Eesti saalihoki võistlused</p>
+    <h1>Liigad ja vanuseklassid</h1>
+    <p>Vali võistlus, et avada tabel, tulemused ja statistika. Kuvatud on hooaja {{ season }} staatiline arhiiv.</p>
+  </header>
+
+  <div class="competition-index-content">
+    <div class="competition-index-actions">
+      <a class="sh-btn sh-btn-primary" routerLink="/schedule">Ajakavad ja tulemused</a>
+      <a class="sh-btn sh-btn-secondary" routerLink="/search">Mängijate andmebaas</a>
+    </div>
+
+    <section *ngFor="let group of groups" class="competition-group" [attr.aria-labelledby]="'competition-' + group">
+      <div class="competition-group-head">
+        <div>
+          <p class="section-card-eyebrow">Võistlused</p>
+          <h2 [id]="'competition-' + group">{{ group }}</h2>
+        </div>
+        <span>{{ competitionsFor(group).length }} sarja</span>
+      </div>
+
+      <div class="competition-card-grid">
+        <article *ngFor="let competition of competitionsFor(group)" class="competition-card">
+          <div class="competition-mark" aria-hidden="true">{{ competition.short }}</div>
+          <div class="competition-card-copy">
+            <div class="competition-card-meta">
+              <span>{{ competition.status }}</span>
+              <span>{{ competition.teams }} võistkonda</span>
+            </div>
+            <h3>{{ competition.name }}</h3>
+            <p>{{ competition.description }}</p>
+          </div>
+          <a *ngIf="competition.route; else scheduleLink" [routerLink]="competition.route" [attr.aria-label]="'Ava ' + competition.name">Ava võistluskeskus <span aria-hidden="true">→</span></a>
+          <ng-template #scheduleLink>
+            <a routerLink="/schedule" [queryParams]="{ league: competition.scheduleLeague }" [attr.aria-label]="'Vaata ' + competition.name + ' ajakava'">Vaata ajakava <span aria-hidden="true">→</span></a>
+          </ng-template>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>

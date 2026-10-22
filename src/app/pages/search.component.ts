@@ -39,6 +39,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   selectedPosition = 'all';
   selectedSort: PlayerSort = 'points';
   results: PortalPlayer[] = [];
+  visibleCount = 20;
 
   private readonly subscription = new Subscription();
   private readonly validSorts: PlayerSort[] = ['points', 'goals', 'assists', 'games', 'name'];
@@ -94,6 +95,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     );
   }
 
+  get visibleResults(): PortalPlayer[] {
+    return this.results.slice(0, this.visibleCount);
+  }
+
+  get hasMoreResults(): boolean {
+    return this.visibleCount < this.results.length;
+  }
+
+  loadMore(): void {
+    this.visibleCount += 20;
+  }
+
   get resultHeading(): string {
     if (this.query) {
       return `Tulemused otsingule „${this.query}”`;
@@ -130,6 +143,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.results = this.sortPlayers(filtered, this.selectedSort);
+    this.visibleCount = 20;
   }
 
   private sortPlayers(players: PortalPlayer[], sort: PlayerSort): PortalPlayer[] {

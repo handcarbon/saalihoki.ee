@@ -10,11 +10,11 @@
             </div>
             <div class="league-hero-copy">
                 <div class="league-official-line">
-                    <span>Eesti Saalihoki Liit · ametlik võistlus</span>
-                    <span class="league-season-status"><i aria-hidden="true"></i> Hooaeg käib</span>
+                    <span>Eesti Saalihoki Liit · võistluste arhiiv</span>
+                    <span class="league-season-status"><i aria-hidden="true"></i> Lõppenud hooaeg</span>
                 </div>
                 <h1 class="league-title">M35+ Meistrivõistlused</h1>
-                <p>Eesti klubisaalihoki ametlik võistluskeskus: tabel, tulemused, mängijate statistika ja kohamängud.</p>
+                <p>Eesti klubisaalihoki võistluste arhiiv: tabel, tulemused, mängijate statistika ja kohamängud.</p>
             </div>
             <div class="league-hero-actions" aria-label="Liiga kiirlingid">
                 <a class="league-hero-button primary" routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }">
@@ -29,22 +29,22 @@
         </div>
 
         <dl class="league-facts" aria-label="Võistluse põhiandmed">
-            <div><dt>Hooaeg</dt><dd>2026 / 2027</dd></div>
-            <div><dt>Võistlusetapp</dt><dd>Põhiturniir</dd></div>
+            <div><dt>Hooaeg</dt><dd>{{ season }}</dd></div>
+            <div><dt>Võistlusetapp</dt><dd>Hooaeg lõppenud</dd></div>
             <div><dt>Meeskondi</dt><dd>9</dd></div>
             <div><dt>Mänge hooajal</dt><dd>72</dd></div>
         </dl>
     </header>
 
     <div class="league-command-strip" aria-label="Liiga hetkeseis">
-        <a class="league-command-card league-live-card" routerLink="/match" [queryParams]="{ id: liveMatch.id }">
-            <span class="league-card-label is-live"><i aria-hidden="true"></i> Hetkel otse</span>
+        <a class="league-command-card league-live-card" routerLink="/match" [queryParams]="{ id: latestResult.id }">
+            <span class="league-card-label">Viimane tulemus</span>
             <div class="league-live-score">
-                <span><b>{{ liveMatch.homeShort }}</b><small>{{ liveMatch.home }}</small></span>
-                <strong>{{ liveMatch.homeScore }}<em>:</em>{{ liveMatch.awayScore }}</strong>
-                <span><b>{{ liveMatch.awayShort }}</b><small>{{ liveMatch.away }}</small></span>
+                <span><b>{{ latestResult.homeShort }}</b><small>{{ latestResult.home }}</small></span>
+                <strong>{{ latestResult.homeScore }}<em>:</em>{{ latestResult.awayScore }}</strong>
+                <span><b>{{ latestResult.awayShort }}</b><small>{{ latestResult.away }}</small></span>
             </div>
-            <span class="league-card-foot">{{ liveMatch.period }} · {{ liveMatch.venue }} <b>Vaata mängu →</b></span>
+            <span class="league-card-foot">{{ latestResult.venue }} <b>Protokoll →</b></span>
         </a>
 
         <a class="league-command-card" routerLink="/team" [queryParams]="{ name: 'Drinkgeld' }">
@@ -62,10 +62,10 @@
         </a>
 
         <a class="league-command-card league-next-card" routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }">
-            <span class="league-card-label">Järgmine mäng</span>
-            <span class="league-card-kickoff">{{ matchDay(nextMatch) }} <strong>{{ matchTime(nextMatch) }}</strong></span>
-            <strong class="league-card-title">{{ nextMatch.homeShort }} <em>vs</em> {{ nextMatch.awayShort }}</strong>
-            <span class="league-card-foot">{{ nextMatch.venue }} <b>Ajakava →</b></span>
+            <span class="league-card-label">Andmete staatus</span>
+            <span class="league-card-value">8 <small>vooru</small></span>
+            <strong class="league-card-title">Hooaja arhiiv</strong>
+            <span class="league-card-foot">{{ dataNotice }} <b>Tulemused →</b></span>
         </a>
     </div>
 
@@ -84,85 +84,37 @@
                 <span class="league-section-eyebrow">Põhiturniir · 8. voor</span>
                 <h2 class="sh-section-title">Põhiturniiri tabel — M35+</h2>
             </div>
-            <span class="league-data-status"><i aria-hidden="true"></i> Ametlik tulemus</span>
+            <span class="league-data-status"><i aria-hidden="true"></i> Staatiline arhiiv</span>
         </div>
-        <p class="table-legend"><abbr title="Mänge">M</abbr> mängud · <abbr title="Võite">V</abbr> võidud · <abbr title="Võite lisaajal">VL</abbr> lisaajavõidud · <abbr title="Kaotusi">K</abbr> kaotused · <abbr title="Kaotusi lisaajal">KL</abbr> lisaajakaotused · <abbr title="Väravate suhe">VS</abbr> väravate suhe · <abbr title="Punkte">Pts</abbr> punktid</p>
-        <div class="sh-card league-standings-shell">
+        <p class="table-legend"><abbr title="Mänge">M</abbr> mängud · <abbr title="Võite">V</abbr> võidud · <abbr title="Viike">Vi</abbr> viigid · <abbr title="Kaotusi">K</abbr> kaotused · <abbr title="Väravate suhe">VS</abbr> väravate suhe · <abbr title="Punkte">P</abbr> punktid</p>
+        <p class="table-swipe-hint">Tabelit saab külgsuunas kerida <span aria-hidden="true">↔</span></p>
+        <div class="sh-card league-standings-shell" role="region" aria-label="M35+ põhiturniiri tabel" tabindex="0">
             <table class="standings-table">
-                <tr>
-                    <th style="width:32px;">#</th>
-                    <th class="l">Meeskond</th>
-                    <th title="Mänge">M</th>
-                    <th title="Võite">V</th>
-                    <th title="Võite lisaajal">VL</th>
-                    <th title="Kaotusi">K</th>
-                    <th title="Kaotusi lisaajal">KL</th>
-                    <th title="Väravate suhe">VS</th>
-                    <th title="Punkte">Pts</th>
-                </tr>
-                <tr class="qualifies">
-                    <td><span class="rank-badge rank-1">1</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Drinkgeld' }">Drinkgeld</a></td>
-                    <td>8</td><td>8</td><td>0</td><td>0</td><td>0</td>
-                    <td><span class="result-w">52–7</span></td>
-                    <td class="pts">24</td>
-                </tr>
-                <tr class="qualifies">
-                    <td><span class="rank-badge rank-2">2</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Lauka Kolhoos' }">Lauka Kolhoos</a></td>
-                    <td>8</td><td>7</td><td>0</td><td>1</td><td>0</td>
-                    <td><span class="result-w">51–19</span></td>
-                    <td class="pts">21</td>
-                </tr>
-                <tr class="qualifies">
-                    <td><span class="rank-badge rank-3">3</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Rapla Kepiklubi' }">Rapla Kepiklubi</a></td>
-                    <td>8</td><td>4</td><td>1</td><td>2</td><td>1</td>
-                    <td>46–34</td>
-                    <td class="pts">15</td>
-                </tr>
-                <tr class="qualifies">
-                    <td><span class="rank-badge rank-n">4</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Kadrina' }">Kadrina</a></td>
-                    <td>8</td><td>3</td><td>1</td><td>4</td><td>0</td>
-                    <td>24–44</td>
-                    <td class="pts">11</td>
-                </tr>
-                <tr>
-                    <td><span class="rank-badge rank-n">5</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Prosura' }">Prosura</a></td>
-                    <td>8</td><td>3</td><td>0</td><td>4</td><td>1</td>
-                    <td>27–34</td>
-                    <td class="pts">10</td>
-                </tr>
-                <tr>
-                    <td><span class="rank-badge rank-n">6</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Tabajad' }">Tabajad</a></td>
-                    <td>8</td><td>3</td><td>0</td><td>5</td><td>0</td>
-                    <td>21–35</td>
-                    <td class="pts">9</td>
-                </tr>
-                <tr>
-                    <td><span class="rank-badge rank-n">7</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Tallinn United' }">Tallinn United</a></td>
-                    <td>8</td><td>3</td><td>0</td><td>5</td><td>0</td>
-                    <td>41–26</td>
-                    <td class="pts">9</td>
-                </tr>
-                <tr>
-                    <td><span class="rank-badge rank-n">8</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'SH Mehed Metsast' }">SH Mehed Metsast</a></td>
-                    <td>8</td><td>3</td><td>0</td><td>5</td><td>0</td>
-                    <td>38–43</td>
-                    <td class="pts">9</td>
-                </tr>
-                <tr>
-                    <td><span class="rank-badge rank-n">9</span></td>
-                    <td class="team-cell"><a routerLink="/team" [queryParams]="{ name: 'Märjamaa' }">Märjamaa</a></td>
-                    <td>8</td><td>0</td><td>0</td><td>8</td><td>0</td>
-                    <td><span class="result-l">7–65</span></td>
-                    <td class="pts">0</td>
-                </tr>
+                <caption class="sr-only">M35+ hooaja {{ season }} põhiturniiri lõpptabel</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:32px;">#</th>
+                        <th scope="col" class="l">Meeskond</th>
+                        <th scope="col" title="Mänge">M</th>
+                        <th scope="col" title="Võite">V</th>
+                        <th scope="col" title="Viike">Vi</th>
+                        <th scope="col" title="Kaotusi">K</th>
+                        <th scope="col" title="Väravate suhe">VS</th>
+                        <th scope="col" title="Punkte">P</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of standings.rows" [class.qualifies]="row.rank <= 4">
+                        <td><span class="rank-badge" [class.rank-1]="row.rank === 1" [class.rank-2]="row.rank === 2" [class.rank-3]="row.rank === 3" [class.rank-n]="row.rank > 3">{{ row.rank }}</span></td>
+                        <th scope="row" class="team-cell"><a routerLink="/team" [queryParams]="{ name: row.team }">{{ row.team }}</a></th>
+                        <td>{{ row.played }}</td>
+                        <td>{{ row.won }}</td>
+                        <td>{{ row.drawn }}</td>
+                        <td>{{ row.lost }}</td>
+                        <td>{{ row.goalsFor }}–{{ row.goalsAgainst }}</td>
+                        <td class="pts">{{ row.points }}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <div class="league-table-key" aria-label="Tabeli tähised">
@@ -184,109 +136,109 @@
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Drinkgeld' }">Drinkgeld</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-w">4–3</a></td>
-                    <td><a routerLink="/match" class="result-w">5–1</a></td>
-                    <td><a routerLink="/match" class="result-w">10–0</a></td>
-                    <td><a routerLink="/match" class="result-w">9–0</a></td>
-                    <td><a routerLink="/match" class="result-w">3–0</a></td>
-                    <td><a routerLink="/match" class="result-w">6–1</a></td>
-                    <td><a routerLink="/match" class="result-w">10–2</a></td>
-                    <td><a routerLink="/match" class="result-w">5–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">4–3</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">10–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">9–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">3–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">6–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">10–2</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–0</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Lauka Kolhoos' }">Lauka Kolhoos</a></td>
-                    <td><a routerLink="/match" class="result-l">3–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">3–4</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-w">7–5</a></td>
-                    <td><a routerLink="/match" class="result-w">6–0</a></td>
-                    <td><a routerLink="/match" class="result-w">7–1</a></td>
-                    <td><a routerLink="/match" class="result-w">9–3</a></td>
-                    <td><a routerLink="/match" class="result-w">5–3</a></td>
-                    <td><a routerLink="/match" class="result-w">5–2</a></td>
-                    <td><a routerLink="/match" class="result-w">9–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">7–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">6–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">7–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">9–3</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–3</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–2</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">9–1</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Rapla Kepiklubi' }">Rapla Kepiklubi</a></td>
-                    <td><a routerLink="/match" class="result-l">1–5</a></td>
-                    <td><a routerLink="/match" class="result-l">5–7</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">1–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">5–7</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-l">4–5</a></td>
-                    <td><a routerLink="/match" class="result-w">5–4</a></td>
-                    <td><a routerLink="/match" class="result-w">5–2</a></td>
-                    <td><a routerLink="/match" class="result-w">9–4</a></td>
-                    <td><a routerLink="/match" class="result-w">7–6</a></td>
-                    <td><a routerLink="/match" class="result-w">10–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">4–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–2</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">9–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">7–6</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">10–1</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Kadrina' }">Kadrina</a></td>
-                    <td><a routerLink="/match" class="result-l">0–10</a></td>
-                    <td><a routerLink="/match" class="result-l">0–6</a></td>
-                    <td><a routerLink="/match" class="result-w">5–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–10</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–6</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–4</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-w">4–2</a></td>
-                    <td><a routerLink="/match" class="result-w">5–2</a></td>
-                    <td><a routerLink="/match" class="result-l">0–13</a></td>
-                    <td><a routerLink="/match" class="result-l">5–7</a></td>
-                    <td><a routerLink="/match" class="result-w">5–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">4–2</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–2</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–13</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">5–7</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–0</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Prosura' }">Prosura</a></td>
-                    <td><a routerLink="/match" class="result-l">0–9</a></td>
-                    <td><a routerLink="/match" class="result-l">1–7</a></td>
-                    <td><a routerLink="/match" class="result-l">4–5</a></td>
-                    <td><a routerLink="/match" class="result-l">2–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–9</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">1–7</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">4–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">2–4</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-l">3–4</a></td>
-                    <td><a routerLink="/match" class="result-w">3–1</a></td>
-                    <td><a routerLink="/match" class="result-w">5–4</a></td>
-                    <td><a routerLink="/match" class="result-w">9–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">3–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">3–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">5–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">9–0</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Tabajad' }">Tabajad</a></td>
-                    <td><a routerLink="/match" class="result-l">0–3</a></td>
-                    <td><a routerLink="/match" class="result-l">3–9</a></td>
-                    <td><a routerLink="/match" class="result-l">2–5</a></td>
-                    <td><a routerLink="/match" class="result-l">2–5</a></td>
-                    <td><a routerLink="/match" class="result-w">4–3</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–3</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">3–9</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">2–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">2–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">4–3</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-w">1–0</a></td>
-                    <td><a routerLink="/match" class="result-l">3–6</a></td>
-                    <td><a routerLink="/match" class="result-w">6–4</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">1–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">3–6</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">6–4</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Tallinn United' }">Tallinn United</a></td>
-                    <td><a routerLink="/match" class="result-l">1–6</a></td>
-                    <td><a routerLink="/match" class="result-l">3–5</a></td>
-                    <td><a routerLink="/match" class="result-l">4–9</a></td>
-                    <td><a routerLink="/match" class="result-w">13–0</a></td>
-                    <td><a routerLink="/match" class="result-l">1–3</a></td>
-                    <td><a routerLink="/match" class="result-l">0–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">1–6</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">3–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">4–9</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">13–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">1–3</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–1</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-w">7–2</a></td>
-                    <td><a routerLink="/match" class="result-w">12–0</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">7–2</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">12–0</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'SH Mehed Metsast' }">SH Mehed Metsast</a></td>
-                    <td><a routerLink="/match" class="result-l">2–10</a></td>
-                    <td><a routerLink="/match" class="result-l">2–5</a></td>
-                    <td><a routerLink="/match" class="result-l">6–7</a></td>
-                    <td><a routerLink="/match" class="result-w">7–5</a></td>
-                    <td><a routerLink="/match" class="result-l">4–5</a></td>
-                    <td><a routerLink="/match" class="result-w">6–3</a></td>
-                    <td><a routerLink="/match" class="result-l">2–7</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">2–10</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">2–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">6–7</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">7–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">4–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">6–3</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">2–7</a></td>
                     <td class="self">—</td>
-                    <td><a routerLink="/match" class="result-w">9–1</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-w">9–1</a></td>
                 </tr>
                 <tr>
                     <td class="team-name-cell"><a routerLink="/team" [queryParams]="{ name: 'Märjamaa' }">Märjamaa</a></td>
-                    <td><a routerLink="/match" class="result-l">0–5</a></td>
-                    <td><a routerLink="/match" class="result-l">1–9</a></td>
-                    <td><a routerLink="/match" class="result-l">1–10</a></td>
-                    <td><a routerLink="/match" class="result-l">0–5</a></td>
-                    <td><a routerLink="/match" class="result-l">0–9</a></td>
-                    <td><a routerLink="/match" class="result-l">4–6</a></td>
-                    <td><a routerLink="/match" class="result-l">0–12</a></td>
-                    <td><a routerLink="/match" class="result-l">1–9</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">1–9</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">1–10</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–5</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–9</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">4–6</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">0–12</a></td>
+                    <td><a routerLink="/schedule" [queryParams]="{ league: 'M35+ MV' }" class="result-l">1–9</a></td>
                     <td class="self">—</td>
                 </tr>
             </table>

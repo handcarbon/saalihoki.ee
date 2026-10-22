@@ -5,7 +5,18 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { findTeam, PORTAL_PLAYERS, PortalPlayer, PortalTeam } from '../portal-data';
+import {
+  findTeam,
+  PORTAL_MATCHES,
+  PORTAL_PLAYERS,
+  PORTAL_SEASON,
+  PORTAL_STANDINGS,
+  PORTAL_TEAMS,
+  PortalMatch,
+  PortalPlayer,
+  PortalStandingsRow,
+  PortalTeam
+} from '../portal-data';
 
 type TeamTab = 'roster' | 'info' | 'history';
 
@@ -18,9 +29,14 @@ type TeamTab = 'roster' | 'info' | 'history';
 export class TeamComponent implements OnInit, OnDestroy {
   activeTab: TeamTab = 'roster';
   readonly tabs: TeamTab[] = ['roster', 'info', 'history'];
-  selectedSeason = 'Meeste MV 2025 / 2026';
+  readonly season = PORTAL_SEASON;
+  selectedSeason = '';
   team: PortalTeam = findTeam('Sparta Team Automaailm');
   roster: PortalPlayer[] = [];
+  matches: PortalMatch[] = [];
+  recentMatches: PortalMatch[] = [];
+  standingsRow?: PortalStandingsRow;
+  isKnownTeam = true;
   private readonly subscription = new Subscription();
 
   constructor(
@@ -35,9 +51,33 @@ export class TeamComponent implements OnInit, OnDestroy {
       this.activeTab = requested && this.tabs.includes(requested) ? requested : 'roster';
       this.team = findTeam(params.get('name'));
       this.roster = PORTAL_PLAYERS.filter((player) => player.team === this.team.name);
-      this.selectedSeason = `${this.team.leagues[0]} 2025 / 2026`;
+      this.matches = PORTAL_MATCHES.filter((match) => match.home === this.team.name || match.away === this.team.name)
+        .sort((a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime());
+      this.recentMatches = this.matches.filter((match) => match.status === 'finished').slice(0, 5);
+      this.standingsRow = PORTAL_STANDINGS.flatMap((table) => table.rows).find((row) => row.team === this.team.name);
+      this.isKnownTeam = PORTAL_TEAMS.some((team) => team.name === this.team.name);
+      this.selectedSeason = `${this.team.leagues[0] || 'Võistlus'} ${this.season}`;
       this.title.setTitle(`${this.team.name} · Saalihoki.ee`);
     }));
+  }
+
+  resultFor(match: PortalMatch): 'V' | 'Vi' | 'K' {
+    const own = match.home === this.team.name ? match.homeScore : match.awayScore;
+    const opponent = match.home === this.team.name ? match.awayScore : match.homeScore;
+    if (own === opponent) return 'Vi';
+    return (own ?? 0) > (opponent ?? 0) ? 'V' : 'K';
+  }
+
+  opponentFor(match: PortalMatch): string {
+    return match.home === this.team.name ? match.away : match.home;
+  }
+
+  scoreFor(match: PortalMatch): string {
+    return `${match.homeScore ?? '–'}:${match.awayScore ?? '–'}`;
+  }
+
+  formattedDate(value: string): string {
+    return new Date(value).toLocaleDateString('et-EE', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
   setTab(tab: TeamTab): void {
