@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -54,6 +55,34 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Wait for legacy Pages publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          legacy_run_id="$(
+            gh api "repos/${GITHUB_REPOSITORY}/actions/runs?per_page=20" \
+              --jq ".workflow_runs[] | select(.head_sha == \"${GITHUB_SHA}\" and .name == \"pages build and deployment\") | .id" \
+              | head -n 1
+          )"
+
+          if [ -z "$legacy_run_id" ]; then
+            echo "No legacy Pages run found; continuing with workflow deployment."
+            exit 0
+          fi
+
+          for attempt in $(seq 1 30); do
+            legacy_status="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${legacy_run_id}" --jq '.status')"
+            if [ "$legacy_status" = "completed" ]; then
+              echo "Legacy Pages run completed; publishing the production artifact."
+              exit 0
+            fi
+            echo "Legacy Pages run is ${legacy_status}; waiting (${attempt}/30)."
+            sleep 5
+          done
+
+          echo "::error::Timed out waiting for the legacy Pages run."
+          exit 1
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
