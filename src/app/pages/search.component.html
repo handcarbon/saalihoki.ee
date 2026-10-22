@@ -128,11 +128,11 @@
               <span class="search-result-avatar" aria-hidden="true">{{ initials(player.name) }}</span>
               <span>
                 <strong>{{ player.name }}</strong>
-                <small>{{ player.position }} · {{ player.team }}</small>
+                <small>{{ player.position }} · {{ player.league }} · {{ player.team }}</small>
               </span>
             </span>
             <span class="player-result-team">{{ player.team }}</span>
-            <span class="player-result-position">{{ player.position }}</span>
+            <span class="player-result-position">{{ player.position }} · {{ player.league }}</span>
             <span class="player-result-stat player-result-games"><small>Mängud</small>{{ player.games }}</span>
             <span class="player-result-stat player-result-goals"><small>Väravad</small>{{ player.goals }}</span>
             <span class="player-result-stat player-result-assists"><small>Söödud</small>{{ player.assists }}</span>

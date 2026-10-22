@@ -1,11 +1,6 @@
-export interface PortalPlayer {
-  name: string;
-  team: string;
-  position: string;
-  games: number;
-  goals: number;
-  assists: number;
-}
+import { PORTAL_PLAYERS, PORTAL_PLAYER_SEASON, type PortalPlayer } from './player-data';
+
+export { PORTAL_PLAYER_SEASON, PORTAL_PLAYERS, type PortalPlayer } from './player-data';
 
 export interface PortalGoalieStats {
   name: string;
@@ -106,68 +101,33 @@ export const PORTAL_MEMBERSHIPS: PortalMembership[] = [
   }
 ];
 
-export const PORTAL_PLAYERS: PortalPlayer[] = [
-  { name: 'Taavi Sau', team: 'Rapla Kepiklubi', position: 'Ründaja', games: 8, goals: 20, assists: 4 },
-  { name: 'Sergei Burov', team: 'Tallinn United', position: 'Ründaja', games: 7, goals: 10, assists: 8 },
-  { name: 'Tauno Sau', team: 'Rapla Kepiklubi', position: 'Ründaja', games: 8, goals: 4, assists: 12 },
-  { name: 'Ilmar Niitov', team: 'Drinkgeld', position: 'Ründaja', games: 7, goals: 7, assists: 8 },
-  { name: 'Tanel Soidla', team: 'SH Mehed Metsast', position: 'Ründaja', games: 6, goals: 12, assists: 2 },
-  { name: 'Tiit Tammeveski', team: 'Lauka Kolhoos', position: 'Ründaja', games: 6, goals: 3, assists: 11 },
-  { name: 'Siim Romanov', team: 'Lauka Kolhoos', position: 'Ründaja', games: 6, goals: 10, assists: 3 },
-  { name: 'Uno Kraam', team: 'Prosura', position: 'Ründaja', games: 7, goals: 7, assists: 5 },
-  { name: 'Ivan Dubkov', team: 'Tallinn United', position: 'Ründaja', games: 6, goals: 6, assists: 5 },
-  { name: 'Margus Guss', team: 'Drinkgeld', position: 'Ründaja', games: 7, goals: 9, assists: 2 },
-  { name: 'Raido Moor', team: 'Drinkgeld', position: 'Ründaja', games: 7, goals: 5, assists: 6 },
-  { name: 'Kaspar Jõgar', team: 'Drinkgeld', position: 'Ründaja', games: 5, goals: 7, assists: 3 },
-  { name: 'Karel Loik', team: 'Lauka Kolhoos', position: 'Ründaja', games: 5, goals: 5, assists: 5 },
-  { name: 'Rannar Malk', team: 'Lauka Kolhoos', position: 'Kaitsja', games: 5, goals: 5, assists: 5 },
-  { name: 'Aleksandr Ponomarjov', team: 'Tallinn United', position: 'Ründaja', games: 7, goals: 7, assists: 3 },
-  { name: 'Alo Mäesalu', team: 'Lauka Kolhoos', position: 'Kaitsja', games: 8, goals: 5, assists: 5 },
-  { name: 'Andres Aamisepp', team: 'SH Mehed Metsast', position: 'Ründaja', games: 3, goals: 4, assists: 5 },
-  { name: 'Toomas Peterson', team: 'Drinkgeld', position: 'Kaitsja', games: 6, goals: 3, assists: 6 },
-  { name: 'Künter Põldmaa', team: 'Tabajad', position: 'Ründaja', games: 7, goals: 7, assists: 2 },
-  { name: 'Jaanus Läätsim', team: 'Rapla Kepiklubi', position: 'Kaitsja', games: 8, goals: 6, assists: 3 },
-  { name: 'Ivo Lepik', team: 'Drinkgeld', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Erki Kärblane', team: 'Lauka Kolhoos', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Kaupo Kaur', team: 'Lauka Kolhoos', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Anre Vooremaa', team: 'Lauka Kolhoos', position: 'Mängija', games: 1, goals: 0, assists: 1 },
-  { name: 'Ilmar Põhjala', team: 'Lauka Kolhoos', position: 'Mängija', games: 1, goals: 0, assists: 1 },
-  { name: 'Andres Tammeveski', team: 'Lauka Kolhoos', position: 'Mängija', games: 1, goals: 0, assists: 0 },
-  { name: 'Mario Paulus', team: 'Drinkgeld', position: 'Mängija', games: 1, goals: 0, assists: 1 },
-  { name: 'Targo Treial', team: 'Drinkgeld', position: 'Mängija', games: 1, goals: 0, assists: 1 },
-  { name: 'Raul Eesmäe', team: 'Drinkgeld', position: 'Mängija', games: 1, goals: 0, assists: 1 },
-  { name: 'Tarmo Pütsep', team: 'Drinkgeld', position: 'Mängija', games: 1, goals: 0, assists: 1 },
-  { name: 'Siim Stokkeby', team: 'Lauka Kolhoos', position: 'Väravavaht', games: 2, goals: 0, assists: 0 },
-  { name: 'Sergei Kirillov', team: 'Tallinn United', position: 'Väravavaht', games: 2, goals: 0, assists: 0 },
-  { name: 'Taavi Lepik', team: 'Drinkgeld', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Elari Vool', team: 'Kadrina', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Mihhail Jakovlev', team: 'Prosura', position: 'Väravavaht', games: 2, goals: 0, assists: 0 },
-  { name: 'Erti Suurtalu', team: 'Rapla Kepiklubi', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Tiivo Vaigurand', team: 'SH Mehed Metsast', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Toomas Joonas', team: 'Tabajad', position: 'Väravavaht', games: 1, goals: 0, assists: 0 },
-  { name: 'Henry-Haidor Hõrak', team: 'Sparta Team Automaailm', position: 'Ründaja', games: 0, goals: 0, assists: 0 },
-  { name: 'Mihkel Tasa', team: 'Sparta Team Automaailm', position: 'Kaitsja', games: 0, goals: 0, assists: 0 },
-  { name: 'Sander Savi', team: 'Sparta Team Automaailm', position: 'Ründaja', games: 0, goals: 0, assists: 0 },
-  ...[
-    'Sander Suurtalu', 'Anton Fjodorov', 'Joosep Perandi', 'Remo Merimaa', 'Rene Kärner',
-    'Artjom Kuznetsov', 'Mats Tamme', 'Kennet Vaha', 'Kristian Tikerpäe', 'Kermo Uue',
-    'Martin Tikerpäe', 'Stenver Savi', 'Niko Tauno Petteri Impiö', 'Risto Heapost',
-    'Oliver Savi', 'Morten Talviste', 'Jarl Gustsin', 'Rasmus Rannula', 'Gustav Salm',
-    'Kaspar Kallion', 'Gerdo Unga', 'Tanel Kasenurm', 'Arseni Suhharnikov',
-    'Karl Oskar Vikk', 'Kristen Kurval'
-  ].map((name) => ({ name, team: 'Sparta Team Automaailm', position: 'Mängija', games: 0, goals: 0, assists: 0 }))
-];
-
 export const PORTAL_GOALIES: PortalGoalieStats[] = [
-  { name: 'Ivo Lepik', team: 'Drinkgeld', minutes: 45, shots: 18, saves: 18 },
-  { name: 'Siim Stokkeby', team: 'Lauka Kolhoos', minutes: 90, shots: 38, saves: 34 },
-  { name: 'Sergei Kirillov', team: 'Tallinn United', minutes: 75, shots: 36, saves: 32 },
-  { name: 'Taavi Lepik', team: 'Drinkgeld', minutes: 45, shots: 15, saves: 13 },
-  { name: 'Elari Vool', team: 'Kadrina', minutes: 45, shots: 14, saves: 11 },
-  { name: 'Mihhail Jakovlev', team: 'Prosura', minutes: 90, shots: 41, saves: 31 },
-  { name: 'Erti Suurtalu', team: 'Rapla Kepiklubi', minutes: 30, shots: 11, saves: 8 },
-  { name: 'Tiivo Vaigurand', team: 'SH Mehed Metsast', minutes: 45, shots: 29, saves: 21 },
-  { name: 'Toomas Joonas', team: 'Tabajad', minutes: 45, shots: 26, saves: 14 }
+  // Final 2025/26 goalkeeper tables from the same three archived leagues as PORTAL_PLAYERS.
+  { name: 'Siim Stokkeby', team: 'Lauka Kolhoos', minutes: 120, shots: 21, saves: 20 },
+  { name: 'Ivo Lepik', team: 'Drinkgeld', minutes: 180, shots: 66, saves: 62 },
+  { name: 'Taavi Lepik', team: 'Drinkgeld', minutes: 135, shots: 40, saves: 37 },
+  { name: 'Sergei Kirillov', team: 'Tallinn United', minutes: 180, shots: 82, saves: 71 },
+  { name: 'Denis Savchenko', team: 'Tabajad', minutes: 270, shots: 123, saves: 102 },
+  { name: 'Vitali Sõtšjov', team: 'Tallinn United', minutes: 180, shots: 82, saves: 67 },
+  { name: 'Raido Raidoja', team: 'Rapla Kepiklubi', minutes: 150, shots: 85, saves: 69 },
+  { name: 'Kaupo Kaur', team: 'Lauka Kolhoos', minutes: 240, shots: 91, saves: 73 },
+  { name: 'Erti Suurtalu', team: 'Rapla Kepiklubi', minutes: 210, shots: 83, saves: 66 },
+  { name: 'Mihhail Jakovlev', team: 'Prosura', minutes: 360, shots: 156, saves: 122 },
+  { name: 'Elari Vool', team: 'Kadrina', minutes: 315, shots: 200, saves: 156 },
+  { name: 'Rene Abel', team: 'Märjamaa', minutes: 45, shots: 40, saves: 31 },
+  { name: 'Märt Käär', team: 'Märjamaa', minutes: 90, shots: 63, saves: 48 },
+  { name: 'Tiivo Vaigurand', team: 'SH Mehed Metsast', minutes: 345, shots: 157, saves: 117 },
+  { name: 'Toomas Joonas', team: 'Tabajad', minutes: 90, shots: 54, saves: 40 },
+  { name: 'Alar Siiber', team: 'Märjamaa', minutes: 45, shots: 29, saves: 20 },
+  { name: 'Argo Raudsepp', team: 'SH Mehed Metsast', minutes: 15, shots: 9, saves: 6 },
+  { name: 'Toomas Jaaniste', team: 'Märjamaa', minutes: 90, shots: 51, saves: 29 },
+  { name: 'Karl-Erik Kruusmaa', team: 'Jõgeva SK Tähe / Olivia', minutes: 220, shots: 100, saves: 83 },
+  { name: 'Kristen Kurval', team: 'Sparta Team Automaailm', minutes: 155, shots: 83, saves: 67 },
+  { name: 'Remo Merimaa', team: 'Sparta Team Automaailm', minutes: 105, shots: 57, saves: 41 },
+  { name: 'Karl Kalm', team: 'Jõgeva SK Tähe / Olivia', minutes: 40, shots: 31, saves: 22 },
+  { name: 'Merliin Arusalu', team: 'Sparta', minutes: 180, shots: 84, saves: 77 },
+  { name: 'Katrin Kaarama', team: 'Eesti Maaülikool', minutes: 120, shots: 67, saves: 57 },
+  { name: 'Klaara Käämer', team: 'Eesti Maaülikool', minutes: 59, shots: 28, saves: 22 }
 ];
 
 export const PORTAL_TEAMS: PortalTeam[] = [
@@ -180,7 +140,10 @@ export const PORTAL_TEAMS: PortalTeam[] = [
   { name: 'Tabajad', short: 'TAB', location: 'Eesti', leagues: ['M35+'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' },
   { name: 'Tallinn United', short: 'TU', location: 'Tallinn, Eesti', leagues: ['M35+'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' },
   { name: 'SH Mehed Metsast', short: 'SHM', location: 'Eesti', leagues: ['M35+'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' },
-  { name: 'Märjamaa', short: 'MÄR', location: 'Märjamaa, Eesti', leagues: ['M35+'], venue: 'Märjamaa valla spordikeskus', venueAddress: 'Staadioni 3, Märjamaa' }
+  { name: 'Märjamaa', short: 'MÄR', location: 'Märjamaa, Eesti', leagues: ['M35+'], venue: 'Märjamaa valla spordikeskus', venueAddress: 'Staadioni 3, Märjamaa' },
+  { name: 'Jõgeva SK Tähe / Olivia', short: 'JÕG', location: 'Jõgeva, Eesti', leagues: ['Meeste MV'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' },
+  { name: 'Sparta', short: 'SPA', location: 'Tallinn, Eesti', leagues: ['Naiste MV'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' },
+  { name: 'Eesti Maaülikool', short: 'EMÜ', location: 'Tartu, Eesti', leagues: ['Naiste MV'], venue: 'Andmed täiendamisel', venueAddress: 'Andmed täiendamisel' }
 ];
 
 export function playerInitials(name: string): string {
@@ -200,7 +163,16 @@ export function findPlayer(name: string | null): PortalPlayer {
     return knownPlayer;
   }
   if (requestedName) {
-    return { name: requestedName, team: 'Andmed täiendamisel', position: 'Mängija', games: 0, goals: 0, assists: 0 };
+    return {
+      name: requestedName,
+      team: 'Andmed täiendamisel',
+      position: 'Mängija',
+      season: PORTAL_PLAYER_SEASON,
+      league: 'Andmed täiendamisel',
+      games: 0,
+      goals: 0,
+      assists: 0
+    };
   }
   return PORTAL_PLAYERS.find((player) => player.name === 'Siim Romanov')!;
 }
