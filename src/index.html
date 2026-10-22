@@ -9,17 +9,7 @@
   <meta name="theme-color" content="#0F2A6E">
   <link rel="canonical" href="https://www.saalihoki.ee/">
 
-  <!-- Fonts: moved out of an @import inside styles.css, which serialised the
-       request behind the stylesheet and blocked rendering. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap">
-
-  <!-- LCP element: give the browser the hero before it parses the template. -->
-  <link rel="preload" as="image" href="hero-1200.webp" type="image/webp"
-        imagesrcset="hero-800.webp 800w, hero-1200.webp 1200w, hero-2048.webp 2048w"
-        imagesizes="100vw" fetchpriority="high">
+  <!-- Fonts are bundled and fingerprinted from src/fonts by the Angular build. -->
 
   <link rel="icon" href="logo.png" type="image/png">
   <link rel="apple-touch-icon" href="logo.png">
@@ -32,6 +22,25 @@
   <meta property="og:image" content="https://www.saalihoki.ee/hero-1200.jpg">
   <meta property="og:url" content="https://www.saalihoki.ee/">
   <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsOrganization",
+      "name": "Eesti Saalihoki Liit",
+      "url": "https://www.saalihoki.ee/",
+      "logo": "https://www.saalihoki.ee/logo.png",
+      "sport": "Floorball",
+      "email": "info@saalihoki.ee",
+      "telephone": "+372 566 21 873",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Kadaka tee 42a",
+        "postalCode": "12915",
+        "addressLocality": "Tallinn",
+        "addressCountry": "EE"
+      }
+    }
+  </script>
 </head>
 <body>
   <app-root></app-root>

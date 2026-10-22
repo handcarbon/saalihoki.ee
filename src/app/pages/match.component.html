@@ -1,125 +1,102 @@
-<article class="proto-body-wrap">
-  <header class="proto-hero">
-    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › <a routerLink="/schedule">Lõppenud mängud</a> › Lauka Kolhoos vs Drinkgeld</div>
-    <h1 class="sr-only">Lauka Kolhoos 3 — 4 Drinkgeld</h1>
-    <div class="proto-meta">
-      <span>📅 21.02.2026</span><span>📍 Aruküla</span>
-      <span>🏒 M35+ meistrivõistlused · Mäng nr M35-27</span><span>👥 Publik: 25</span>
+<article class="match-page">
+  <header class="match-official-hero">
+    <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › <a routerLink="/schedule">Tulemused</a> › {{ match.home }} – {{ match.away }}</div>
+
+    <div class="match-context">
+      <span>{{ match.league }}</span>
+      <span>{{ match.round }}</span>
+      <span *ngIf="match.matchNumber">Mäng {{ match.matchNumber }}</span>
     </div>
-    <div class="proto-scoreboard">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <img src="lauka.png" alt="" style="width:52px;height:52px;object-fit:contain;border-radius:8px;background:var(--white);padding:3px;">
-        <div><a class="proto-team-name" routerLink="/team" [queryParams]="{ name: 'Lauka Kolhoos' }">Lauka Kolhoos</a><div class="proto-team-sub">Koduvõistkond</div></div>
-      </div>
-      <div style="text-align:center;">
-        <div class="proto-score">3<span class="proto-score-sep">—</span>4</div>
-        <div class="proto-done">Mäng lõppenud</div>
-        <div class="proto-periods">
-          <div class="proto-period"><div class="proto-period-label">1. kolmandik</div><div class="proto-period-score">0 — 0</div></div>
-          <div class="proto-period"><div class="proto-period-label">2. kolmandik</div><div class="proto-period-score">1 — 3</div></div>
-          <div class="proto-period"><div class="proto-period-label">3. kolmandik</div><div class="proto-period-score">2 — 1</div></div>
+
+    <h1 class="sr-only">{{ match.home }} {{ match.homeScore }} – {{ match.awayScore }} {{ match.away }}</h1>
+    <div class="match-scoreboard">
+      <a class="match-team match-team-home" routerLink="/team" [queryParams]="{ name: match.home }">
+        <span class="match-crest">
+          <img *ngIf="homeTeam.logo; else homeMonogram" [src]="homeTeam.logo" alt="" width="72" height="72">
+          <ng-template #homeMonogram><strong aria-hidden="true">{{ match.homeShort }}</strong></ng-template>
+        </span>
+        <span><strong>{{ match.home }}</strong><small>Koduvõistkond</small></span>
+      </a>
+
+      <div class="match-score-center">
+        <span class="match-state">{{ match.status === 'finished' ? 'Mäng lõppenud' : match.status === 'live' ? 'Mäng käib' : 'Tulekul' }}</span>
+        <div class="match-score" *ngIf="match.homeScore !== undefined; else kickoff">{{ match.homeScore }}<span>:</span>{{ match.awayScore }}</div>
+        <ng-template #kickoff><div class="match-score match-score-time">{{ formattedTime(match.startsAt) }}</div></ng-template>
+        <div class="match-periods" *ngIf="match.periods?.length">
+          <span *ngFor="let period of match.periods"><small>{{ period.label }}</small><b>{{ period.home }}–{{ period.away }}</b></span>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;flex-direction:row-reverse;">
-        <img src="drinkgeld.png" alt="" style="width:52px;height:52px;object-fit:contain;border-radius:8px;background:var(--white);padding:3px;">
-        <div style="text-align:right;"><a class="proto-team-name" routerLink="/team" [queryParams]="{ name: 'Drinkgeld' }">Drinkgeld</a><div class="proto-team-sub">Külalisvõistkond</div></div>
-      </div>
+
+      <a class="match-team match-team-away" routerLink="/team" [queryParams]="{ name: match.away }">
+        <span class="match-crest">
+          <img *ngIf="awayTeam.logo; else awayMonogram" [src]="awayTeam.logo" alt="" width="72" height="72">
+          <ng-template #awayMonogram><strong aria-hidden="true">{{ match.awayShort }}</strong></ng-template>
+        </span>
+        <span><strong>{{ match.away }}</strong><small>Külalisvõistkond</small></span>
+      </a>
     </div>
+
+    <dl class="match-facts" aria-label="Mängu põhiandmed">
+      <div><dt>Kuupäev</dt><dd>{{ formattedDate(match.startsAt) }} · {{ formattedTime(match.startsAt) }}</dd></div>
+      <div><dt>Saal</dt><dd>{{ match.venue }}</dd></div>
+      <div><dt>Publik</dt><dd>{{ match.spectators ?? '—' }}</dd></div>
+      <div><dt>Andmed</dt><dd>{{ dataNotice }}</dd></div>
+    </dl>
   </header>
 
-  <div class="proto-body">
-    <div class="proto-full">
-      <h2 class="sh-section-title sm">Mängu käik</h2>
-      <div class="proto-timeline" aria-label="Mängu sündmused">
-        <div class="proto-event penalty"><div class="proto-event-time">03:24</div><div class="proto-event-icon">🟨</div><div class="proto-event-body"><strong>Karistus</strong> — Rannar Malk (Lauka Kolhoos) · 2 min · 201 Kepilöök</div></div>
-        <div class="proto-event penalty"><div class="proto-event-time">09:36</div><div class="proto-event-icon">🟨</div><div class="proto-event-body"><strong>Karistus</strong> — Rannar Malk (Lauka Kolhoos) · 2 min · 201 Kepilöök</div></div>
-        <div class="proto-event goal-a"><div class="proto-event-time">14:49</div><div class="proto-event-icon">🥅</div><div class="proto-event-body"><strong>Värav — Siim Romanov</strong> (Lauka Kolhoos) <span class="assist">· söötis Ilmar Põhjala</span> <span class="sh-tag sh-tag-blue" style="margin-left:4px;">1 — 0</span></div></div>
-        <div class="proto-event goal-b"><div class="proto-event-time">23:00</div><div class="proto-event-icon">🥅</div><div class="proto-event-body"><strong>Värav — Kaspar Jõgar</strong> (Drinkgeld) <span class="assist">· söötis Raul Eesmäe</span> <span class="sh-tag sh-tag-blue" style="margin-left:4px;">1 — 1</span></div></div>
-        <div class="proto-event goal-b"><div class="proto-event-time">23:11</div><div class="proto-event-icon">🥅</div><div class="proto-event-body"><strong>Värav — Ilmar Niitov</strong> (Drinkgeld) <span class="assist">· söötis Mario Paulus</span> <span class="sh-tag sh-tag-blue" style="margin-left:4px;">1 — 2</span></div></div>
-        <div class="proto-event goal-b"><div class="proto-event-time">25:12</div><div class="proto-event-icon">🥅</div><div class="proto-event-body"><strong>Värav — Kaspar Jõgar</strong> (Drinkgeld) <span class="assist">· söötis Tarmo Pütsep</span> <span class="sh-tag sh-tag-blue" style="margin-left:4px;">1 — 3</span></div></div>
-        <div class="proto-event goal-a"><div class="proto-event-time">29:38</div><div class="proto-event-icon">🥅</div><div class="proto-event-body"><strong>Värav — Siim Romanov</strong> (Lauka Kolhoos) <span class="assist">· söötis Tiit Tammeveski</span> <span class="sh-tag sh-tag-blue" style="margin-left:4px;">2 — 3</span></div></div>
-        <div class="proto-event goal-b"><div class="proto-event-time">34:44</div><div class="proto-event-icon">🥅</div><div class="proto-event-body"><strong>Värav — Kaspar Jõgar</strong> (Drinkgeld) <span class="assist">· söötis Targo Treial</span> <span class="sh-tag sh-tag-blue" style="margin-left:4px;">2 — 4</span></div></div>
-        <div class="proto-event penalty"><div class="proto-event-time">37:58</div><div class="proto-event-icon">🟨</div><div class="proto-event-body"><strong>Karistus</strong> — Tarmo Pütsep (Drinkgeld) · 2 min · 201 Kepilöök</div></div>
-        <div class="proto-event goal-a"><div class="proto-event-time">39:55</div><div class="proto-event-icon">🥅</div><div class="proto-event-body"><strong>Värav — Siim Romanov</strong> (Lauka Kolhoos) <span class="assist">· söötis Anre Vooremaa</span> <span class="sh-tag sh-tag-blue" style="margin-left:4px;">3 — 4</span></div></div>
+  <div class="match-content">
+    <section class="match-events" aria-labelledby="match-events-title">
+      <div class="league-section-head">
+        <div><span class="league-section-eyebrow">Protokoll</span><h2 id="match-events-title" class="sh-section-title">Mängu käik</h2></div>
+        <span class="league-data-status"><i aria-hidden="true"></i> Staatiline arhiiv</span>
       </div>
-    </div>
 
-    <div class="sh-card">
-      <div class="proto-roster-head">
-        <div style="display:flex;align-items:center;gap:10px;"><img src="lauka.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:6px;background:var(--sunken);padding:2px;"><h2 class="proto-roster-team">Lauka Kolhoos</h2></div>
-        <span class="sh-tag sh-tag-blue">Koduvõistkond</span>
-      </div>
-      <table class="proto-roster-table">
-        <colgroup><col class="c-nr"><col class="c-pos"><col class="c-name"><col class="c-pts"></colgroup>
-        <tr><th class="r">Nr</th><th></th><th>Mängija</th><th class="r">G+A</th></tr>
-        <tr><td class="num">1</td><td class="pos">VV</td><td><a routerLink="/player" [queryParams]="{ name: 'Erki Kärblane' }">Erki Kärblane</a></td><td class="stat"></td></tr>
-        <tr><td class="num">9</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Tiit Tammeveski' }">Tiit Tammeveski</a></td><td class="stat">0+1</td></tr>
-        <tr><td class="num">18</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Rannar Malk' }">Rannar Malk</a></td><td class="stat"></td></tr>
-        <tr><td class="num">39</td><td class="pos">VV</td><td><a routerLink="/player" [queryParams]="{ name: 'Kaupo Kaur' }">Kaupo Kaur</a></td><td class="stat"></td></tr>
-        <tr><td class="num">51</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Anre Vooremaa' }">Anre Vooremaa</a></td><td class="stat">0+1</td></tr>
-        <tr><td class="num">55</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Ilmar Põhjala' }">Ilmar Põhjala</a></td><td class="stat">0+1</td></tr>
-        <tr><td class="num">72</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Andres Tammeveski' }">Andres Tammeveski</a></td><td class="stat"></td></tr>
-        <tr><td class="num">84</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Alo Mäesalu' }">Alo Mäesalu</a></td><td class="stat"></td></tr>
-        <tr><td class="num">90</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Siim Romanov' }">Siim Romanov</a></td><td class="stat">3+0</td></tr>
-      </table>
-    </div>
+      <ol class="match-timeline" *ngIf="match.events?.length; else protocolUnavailable">
+        <li *ngFor="let event of match.events" [class.is-goal]="event.type === 'goal'" [class.is-penalty]="event.type === 'penalty'">
+          <time>{{ event.time }}</time>
+          <span class="match-event-symbol" aria-hidden="true">{{ event.type === 'goal' ? 'V' : '2' }}</span>
+          <div>
+            <small>{{ event.type === 'goal' ? 'Värav' : 'Karistus' }} · {{ event.team }}</small>
+            <strong>{{ event.player }}</strong>
+            <span *ngIf="event.detail">{{ event.detail }}</span>
+          </div>
+          <b *ngIf="event.score" class="match-event-score">{{ event.score }}</b>
+        </li>
+      </ol>
+      <ng-template #protocolUnavailable>
+        <div class="empty-state match-empty"><h3>Detailne sündmuste protokoll puudub</h3><p>Tulemus ja mängu põhiandmed on siiski arhiivis olemas.</p></div>
+      </ng-template>
+    </section>
 
-    <div class="sh-card">
-      <div class="proto-roster-head">
-        <div style="display:flex;align-items:center;gap:10px;"><img src="drinkgeld.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:6px;background:var(--sunken);padding:2px;"><h2 class="proto-roster-team">Drinkgeld</h2></div>
-        <span class="sh-tag sh-tag-amber">Külalisvõistkond</span>
-      </div>
-      <table class="proto-roster-table">
-        <colgroup><col class="c-nr"><col class="c-pos"><col class="c-name"><col class="c-pts"></colgroup>
-        <tr><th class="r">Nr</th><th></th><th>Mängija</th><th class="r">G+A</th></tr>
-        <tr><td class="num">8</td><td class="pos">VV</td><td><a routerLink="/player" [queryParams]="{ name: 'Ivo Lepik' }">Ivo Lepik</a></td><td class="stat"></td></tr>
-        <tr><td class="num">24</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Kaspar Jõgar' }">Kaspar Jõgar</a></td><td class="stat">3+0</td></tr>
-        <tr><td class="num">28</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Ilmar Niitov' }">Ilmar Niitov</a></td><td class="stat">1+0</td></tr>
-        <tr><td class="num">31</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Mario Paulus' }">Mario Paulus</a></td><td class="stat">0+1</td></tr>
-        <tr><td class="num">61</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Targo Treial' }">Targo Treial</a></td><td class="stat">0+1</td></tr>
-        <tr><td class="num">77</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Raul Eesmäe' }">Raul Eesmäe</a></td><td class="stat">0+1</td></tr>
-        <tr><td class="num">83</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Tarmo Pütsep' }">Tarmo Pütsep</a></td><td class="stat">0+1</td></tr>
-        <tr><td class="num">99</td><td class="pos"></td><td><a routerLink="/player" [queryParams]="{ name: 'Raido Moor' }">Raido Moor</a></td><td class="stat"></td></tr>
-      </table>
-    </div>
+    <section class="match-rosters" aria-labelledby="match-rosters-title">
+      <h2 id="match-rosters-title" class="sh-section-title">Koosseisud</h2>
+      <div class="match-roster-grid">
+        <article class="sh-card">
+          <header><span class="team-monogram">{{ match.homeShort }}</span><div><small>Koduvõistkond</small><h3>{{ match.home }}</h3></div></header>
+          <div class="match-table-wrap" *ngIf="match.homeRoster?.length; else homeRosterMissing" role="region" [attr.aria-label]="match.home + ' koosseis'" tabindex="0">
+            <table class="match-roster-table"><caption class="sr-only">{{ match.home }} mängijad</caption><thead><tr><th scope="col">Nr</th><th scope="col">Pos</th><th scope="col">Mängija</th><th scope="col">V+S</th></tr></thead><tbody><tr *ngFor="let player of match.homeRoster"><td>{{ player.number }}</td><td>{{ player.position || '—' }}</td><th scope="row"><a routerLink="/player" [queryParams]="{ name: player.name }">{{ player.name }}</a></th><td>{{ player.points || '—' }}</td></tr></tbody></table>
+          </div>
+          <ng-template #homeRosterMissing><p class="match-roster-missing">Koosseisu andmeid ei ole selles protokollis.</p></ng-template>
+        </article>
 
-    <div class="sh-card proto-full">
-      <h2 class="sh-section-title sm">Väravavahi tõrjed</h2>
-      <div class="proto-saves-grid">
-        <div>
-          <div style="font-size:11px;font-weight:700;color:var(--ink-500);margin-bottom:6px;">Lauka Kolhoos — VV nr 39</div>
-          <table class="proto-saves-table">
-            <tr><th>Kolmandik</th><th>Algus</th><th>Lõpp</th><th>Tõrjeid</th></tr>
-            <tr><td>1.</td><td>00:00</td><td>15:00</td><td><strong>4</strong></td></tr>
-            <tr><td>2.</td><td>15:00</td><td>30:00</td><td><strong>8</strong></td></tr>
-            <tr><td>3.</td><td>30:00</td><td>45:00</td><td><strong>6</strong></td></tr>
-          </table>
-        </div>
-        <div>
-          <div style="font-size:11px;font-weight:700;color:var(--ink-500);margin-bottom:6px;">Drinkgeld — VV nr 8</div>
-          <table class="proto-saves-table">
-            <tr><th>Kolmandik</th><th>Algus</th><th>Lõpp</th><th>Tõrjeid</th></tr>
-            <tr><td>1.</td><td>00:00</td><td>15:00</td><td><strong>2</strong></td></tr>
-            <tr><td>2.</td><td>15:00</td><td>30:00</td><td><strong>5</strong></td></tr>
-            <tr><td>3.</td><td>30:00</td><td>45:00</td><td><strong>7</strong></td></tr>
-          </table>
-        </div>
+        <article class="sh-card">
+          <header><span class="team-monogram">{{ match.awayShort }}</span><div><small>Külalisvõistkond</small><h3>{{ match.away }}</h3></div></header>
+          <div class="match-table-wrap" *ngIf="match.awayRoster?.length; else awayRosterMissing" role="region" [attr.aria-label]="match.away + ' koosseis'" tabindex="0">
+            <table class="match-roster-table"><caption class="sr-only">{{ match.away }} mängijad</caption><thead><tr><th scope="col">Nr</th><th scope="col">Pos</th><th scope="col">Mängija</th><th scope="col">V+S</th></tr></thead><tbody><tr *ngFor="let player of match.awayRoster"><td>{{ player.number }}</td><td>{{ player.position || '—' }}</td><th scope="row"><a routerLink="/player" [queryParams]="{ name: player.name }">{{ player.name }}</a></th><td>{{ player.points || '—' }}</td></tr></tbody></table>
+          </div>
+          <ng-template #awayRosterMissing><p class="match-roster-missing">Koosseisu andmeid ei ole selles protokollis.</p></ng-template>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <div class="sh-card proto-full">
-      <h2 class="sh-section-title sm">Mängu info</h2>
-      <div class="proto-info-grid">
-        <div><div class="proto-info-label">Organisatsioon</div><div class="proto-info-val">Eesti Saalihoki Liit</div></div>
-        <div><div class="proto-info-label">Võistlus</div><div class="proto-info-val">M35+ meistrivõistlused</div></div>
-        <div><div class="proto-info-label">Koht</div><div class="proto-info-val">Aruküla</div></div>
-        <div><div class="proto-info-label">Kuupäev</div><div class="proto-info-val">21.02.2026</div></div>
-        <div><div class="proto-info-label">Kohtunik 1</div><div class="proto-info-val">Margus Liivik</div></div>
-        <div><div class="proto-info-label">Kohtunik 2</div><div class="proto-info-val">Martin Tali</div></div>
-        <div><div class="proto-info-label">Protokollija</div><div class="proto-info-val">Hans-Kristjan Koppel</div></div>
-        <div><div class="proto-info-label">Mäng nr</div><div class="proto-info-val">M35 — 27</div></div>
-        <div><div class="proto-info-label">Publik</div><div class="proto-info-val">25</div></div>
-      </div>
-    </div>
+    <section class="sh-card match-officials" aria-labelledby="match-officials-title">
+      <div><p class="section-card-eyebrow">Mängu info</p><h2 id="match-officials-title">Korraldus ja kohtunikud</h2></div>
+      <dl>
+        <div><dt>Võistlus</dt><dd>{{ match.league }}</dd></div>
+        <div><dt>Voor</dt><dd>{{ match.round }}</dd></div>
+        <div><dt>Kohtunikud</dt><dd>{{ match.officials?.join(' · ') || 'Andmed puuduvad' }}</dd></div>
+        <div><dt>Mängu number</dt><dd>{{ match.matchNumber || '—' }}</dd></div>
+      </dl>
+    </section>
   </div>
 </article>

@@ -1,26 +1,27 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PORTAL_MATCHES, PortalMatch, matchState } from '../portal-data';
+import { PORTAL_DATA_NOTICE, PORTAL_MATCHES, PORTAL_SEASON, PORTAL_STANDINGS, PortalMatch } from '../portal-data';
 
 type LeagueTab = 'standings' | 'results' | 'scorers' | 'goalies' | 'playoff';
 
 @Component({
   selector: 'app-league',
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './league.component.html'
 })
 export class LeagueComponent implements OnInit, OnDestroy {
   activeTab: LeagueTab = 'standings';
   readonly tabs: LeagueTab[] = ['standings', 'results', 'scorers', 'goalies', 'playoff'];
-  readonly liveMatch = PORTAL_MATCHES.find(
-    (match) => match.league === 'M35+ MV' && matchState(match) === 'live'
-  )!;
-  readonly nextMatch = PORTAL_MATCHES
-    .filter((match) => match.league === 'M35+ MV' && matchState(match) === 'upcoming')
-    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())[0]!;
+  readonly season = PORTAL_SEASON;
+  readonly dataNotice = PORTAL_DATA_NOTICE;
+  readonly standings = PORTAL_STANDINGS.find((table) => table.id === 'm35')!;
+  readonly latestResult = PORTAL_MATCHES
+    .filter((match) => match.competitionId === 'm35' && match.status === 'finished')
+    .sort((a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime())[0];
   private readonly subscription = new Subscription();
 
   constructor(

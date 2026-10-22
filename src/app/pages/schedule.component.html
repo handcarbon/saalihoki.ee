@@ -1,11 +1,11 @@
-<main class="schedule-page">
+<section class="schedule-page">
   <header class="schedule-hero">
     <div class="sh-breadcrumb"><a routerLink="/">Avaleht</a> › Ajakavad ja tulemused</div>
     <div class="schedule-hero-row">
       <div>
-        <p class="section-kicker">Hooaeg 2026 / 2027</p>
-        <h1>Match Center</h1>
-        <p>Leia järgmised mängud, saalid, otseülekanded ja lõppenud kohtumiste protokollid.</p>
+        <p class="section-kicker">Hooaeg {{ season }}</p>
+        <h1>Tulemuskeskus</h1>
+        <p>Leia mängud, saalid ja lõppenud kohtumiste protokollid. {{ dataNotice }}.</p>
       </div>
       <dl class="schedule-summary" aria-label="Valitud perioodi kokkuvõte">
         <div><dt>Otse</dt><dd>{{ liveCount }}</dd></div>
@@ -17,14 +17,17 @@
 
   <div class="schedule-content">
     <section class="schedule-control-panel" aria-labelledby="schedule-period-title">
-      <div class="schedule-week-nav">
-        <button type="button" class="schedule-arrow" aria-label="Eelmine nädal" (click)="changeWeek(-1)">←</button>
-        <div class="schedule-week-title">
-          <span id="schedule-period-title">Valitud nädal</span>
-          <strong>{{ weekRangeLabel }}</strong>
+      <div class="schedule-period-bar">
+        <div class="schedule-month-nav">
+          <button type="button" class="schedule-arrow" aria-label="Eelmine kuu" (click)="changeMonth(-1)">←</button>
+          <div class="schedule-month-title">
+            <span id="schedule-period-title">Mängukuu</span>
+            <strong>{{ monthLabel }}</strong>
+          </div>
+          <button type="button" class="schedule-arrow" aria-label="Järgmine kuu" (click)="changeMonth(1)">→</button>
+          <button *ngIf="!isLatestMonth" type="button" class="schedule-today" (click)="goToLatestMonth()">Viimane mängukuu</button>
         </div>
-        <button type="button" class="schedule-arrow" aria-label="Järgmine nädal" (click)="changeWeek(1)">→</button>
-        <button *ngIf="!isCurrentWeek" type="button" class="schedule-today" (click)="goToCurrentWeek()">Praegune nädal</button>
+
       </div>
 
       <div class="schedule-filters" aria-label="Mängude filtrid">
@@ -42,52 +45,19 @@
             <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
           </select>
         </label>
-        <label>
-          <span>Saal</span>
-          <select [(ngModel)]="selectedVenue" (ngModelChange)="filtersChanged()">
-            <option value="all">Kõik saalid</option>
-            <option *ngFor="let venue of venues" [value]="venue">{{ venue }}</option>
-          </select>
-        </label>
         <button *ngIf="filtersActive" type="button" class="schedule-clear" (click)="clearFilters()">Tühjenda filtrid</button>
       </div>
 
-      <div class="schedule-days" role="tablist" aria-label="Nädalapäevad">
-        <button
-          type="button"
-          role="tab"
-          class="schedule-day schedule-day-all"
-          [class.active]="selectedDay === 'all'"
-          [attr.aria-selected]="selectedDay === 'all'"
-          (click)="selectDay('all')">
-          <span>Kogu</span>
-          <strong>nädal</strong>
-          <small>{{ matchesInWeekWithFilters.length }} mängu</small>
-        </button>
-        <button
-          *ngFor="let day of weekDays"
-          type="button"
-          role="tab"
-          class="schedule-day"
-          [class.active]="selectedDay === day.key"
-          [class.is-today]="isToday(day.date)"
-          [attr.aria-selected]="selectedDay === day.key"
-          [attr.aria-label]="day.weekday + ' ' + day.dayNumber + '. ' + day.month + ', ' + day.count + ' mängu'"
-          (click)="selectDay(day.key)">
-          <span>{{ day.weekday }}</span>
-          <strong>{{ day.dayNumber }}</strong>
-          <small>{{ day.count }} mängu</small>
-        </button>
-      </div>
     </section>
 
-    <section class="schedule-results" aria-labelledby="schedule-results-title" aria-live="polite">
+    <section class="schedule-results" aria-labelledby="schedule-results-title">
+      <p class="sr-only" aria-live="polite">Kuvatakse {{ visibleMatches.length }} mängu kuus {{ monthLabel }}</p>
       <div class="schedule-section-head">
         <div>
-          <p class="schedule-eyebrow">Ajakava</p>
+          <p class="schedule-eyebrow">Mängude agenda</p>
           <h2 id="schedule-results-title">{{ visibleMatches.length }} mängu</h2>
         </div>
-        <span>{{ weekRangeLabel }}</span>
+        <span>{{ monthLabel }}</span>
       </div>
 
       <div *ngIf="matchGroups.length; else noMatches" class="schedule-groups">
@@ -132,7 +102,7 @@
                 <a *ngIf="stateOf(match) !== 'upcoming'" routerLink="/match" [queryParams]="{ id: match.id }">
                   {{ stateOf(match) === 'live' ? 'Jälgi mängu' : 'Protokoll' }} →
                 </a>
-                <a *ngIf="stateOf(match) === 'upcoming'" routerLink="/league">Liiga tabel →</a>
+                <a *ngIf="stateOf(match) === 'upcoming'" [routerLink]="competitionRoute(match)">Liiga tabel →</a>
               </footer>
             </article>
           </div>
@@ -142,14 +112,14 @@
       <ng-template #noMatches>
         <div class="schedule-empty">
           <span aria-hidden="true">▦</span>
-          <h3>Selle valikuga mänge ei ole</h3>
-          <p>Vali teine päev või tühjenda filtrid, et näha kogu nädala ajakava.</p>
-          <button type="button" (click)="clearFilters()">Näita kogu nädalat</button>
+          <h3>Sellel kuul mänge ei ole</h3>
+          <p>Vali teine kuu või tühjenda filtrid, et näha kõiki mänge.</p>
+          <button type="button" (click)="clearFilters()">Tühjenda filtrid</button>
         </div>
       </ng-template>
     </section>
 
-    <section *ngIf="selectedDay === 'all'" class="schedule-pending" aria-labelledby="pending-title">
+    <section class="schedule-pending" aria-labelledby="pending-title">
       <div class="schedule-section-head">
         <div>
           <p class="schedule-eyebrow">Planeerimisel</p>
@@ -176,4 +146,4 @@
       </ng-template>
     </section>
   </div>
-</main>
+</section>
