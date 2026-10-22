@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PORTAL_PLAYERS, PortalPlayer, playerInitials } from '../portal-data';
+import { PORTAL_PLAYERS, PORTAL_PLAYER_SEASON, PortalPlayer, playerInitials } from '../portal-data';
 
 type PlayerSort = 'points' | 'goals' | 'assists' | 'games' | 'name';
 
@@ -23,7 +23,7 @@ interface PlayerLeader {
   templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  readonly season = '2026/2027';
+  readonly season = PORTAL_PLAYER_SEASON;
   readonly totalPlayers = PORTAL_PLAYERS.length;
   readonly activePlayers = PORTAL_PLAYERS.filter((player) => player.games > 0).length;
   readonly teamCount = new Set(PORTAL_PLAYERS.map((player) => player.team)).size;
@@ -115,13 +115,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   trackPlayer(_index: number, player: PortalPlayer): string {
-    return `${player.name}-${player.team}`;
+    return `${player.name}-${player.team}-${player.league}`;
   }
 
   private applyFilters(): void {
     const normalized = this.query.toLocaleLowerCase('et');
     const filtered = PORTAL_PLAYERS.filter((player) => {
-      const matchesQuery = !normalized || `${player.name} ${player.team} ${player.position}`
+      const matchesQuery = !normalized || `${player.name} ${player.team} ${player.position} ${player.league}`
         .toLocaleLowerCase('et')
         .includes(normalized);
       const matchesTeam = this.selectedTeam === 'all' || player.team === this.selectedTeam;

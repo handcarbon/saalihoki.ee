@@ -3,7 +3,7 @@
     <div class="player-avatar" aria-hidden="true">{{ initials }}</div>
     <div>
       <h1 class="player-name">{{ player.name }}</h1>
-      <div class="player-dob">Mängija profiil · hooaeg 2025 / 2026</div>
+      <div class="player-dob">Mängija profiil · hooaeg {{ player.season }}</div>
       <div class="player-tags">
         <span class="player-tag">{{ player.position }}</span>
         <a class="player-tag" routerLink="/team" [queryParams]="{ name: player.team }">{{ player.team }}</a>
@@ -23,10 +23,10 @@
     <p class="table-swipe-hint">Tabelit saab külgsuunas kerida <span aria-hidden="true">↔</span></p>
     <div class="sh-card player-table-wrap">
       <table class="player-career-table" style="width:100%;">
-        <caption class="sr-only">{{ player.name }} statistika hooajal 2025 / 2026</caption>
+        <caption class="sr-only">{{ player.name }} statistika hooajal {{ player.season }}</caption>
         <tr><th scope="col">Meeskond</th><th scope="col">Liiga</th><th scope="col">Voor</th><th scope="col" class="r"><abbr title="Mänge">M</abbr></th><th scope="col" class="r"><abbr title="Väravaid">G</abbr></th><th scope="col" class="r"><abbr title="Sööte">A</abbr></th><th scope="col" class="r"><abbr title="Punkte">Pts</abbr></th></tr>
-        <tr class="player-season-row"><td colspan="7">Hooaeg 2025 / 2026</td></tr>
-        <tr><td class="sticky-cell"><a routerLink="/team" [queryParams]="{ name: player.team }">{{ player.team }}</a></td><td><a routerLink="/league">M35+</a></td><td>Põhiturniir</td><td class="r">{{ player.games }}</td><td class="r">{{ player.goals }}</td><td class="r">{{ player.assists }}</td><td class="r pts">{{ player.goals + player.assists }}</td></tr>
+        <tr class="player-season-row"><td colspan="7">Hooaeg {{ player.season }}</td></tr>
+        <tr><td class="sticky-cell"><a routerLink="/team" [queryParams]="{ name: player.team }">{{ player.team }}</a></td><td><a routerLink="/league">{{ player.league }}</a></td><td>Põhiturniir</td><td class="r">{{ player.games }}</td><td class="r">{{ player.goals }}</td><td class="r">{{ player.assists }}</td><td class="r pts">{{ player.goals + player.assists }}</td></tr>
       </table>
     </div>
   </div>
