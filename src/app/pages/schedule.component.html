@@ -4,8 +4,8 @@
     <div class="schedule-hero-row">
       <div>
         <p class="section-kicker">Hooaeg {{ season }}</p>
-        <h1>Tulemuskeskus</h1>
-        <p>Leia mängud, saalid ja lõppenud kohtumiste protokollid. {{ dataNotice }}.</p>
+        <h1>Ajakava ja tulemused</h1>
+        <p>Kohtumised, saalid ja mänguprotokollid ühes kompaktses vaates. {{ dataNotice }}.</p>
       </div>
       <dl class="schedule-summary" aria-label="Valitud perioodi kokkuvõte">
         <div><dt>Otse</dt><dd>{{ liveCount }}</dd></div>
@@ -28,26 +28,24 @@
           <button *ngIf="!isLatestMonth" type="button" class="schedule-today" (click)="goToLatestMonth()">Viimane mängukuu</button>
         </div>
 
+        <div class="schedule-filters" aria-label="Mängude filtrid">
+          <label>
+            <span>Liiga</span>
+            <select [(ngModel)]="selectedLeague" (ngModelChange)="filtersChanged()">
+              <option value="all">Kõik liigad</option>
+              <option *ngFor="let league of leagues" [value]="league">{{ league }}</option>
+            </select>
+          </label>
+          <label>
+            <span>Meeskond</span>
+            <select [(ngModel)]="selectedTeam" (ngModelChange)="filtersChanged()">
+              <option value="all">Kõik meeskonnad</option>
+              <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+            </select>
+          </label>
+          <button *ngIf="filtersActive" type="button" class="schedule-clear" (click)="clearFilters()">Tühjenda</button>
+        </div>
       </div>
-
-      <div class="schedule-filters" aria-label="Mängude filtrid">
-        <label>
-          <span>Liiga</span>
-          <select [(ngModel)]="selectedLeague" (ngModelChange)="filtersChanged()">
-            <option value="all">Kõik liigad</option>
-            <option *ngFor="let league of leagues" [value]="league">{{ league }}</option>
-          </select>
-        </label>
-        <label>
-          <span>Meeskond</span>
-          <select [(ngModel)]="selectedTeam" (ngModelChange)="filtersChanged()">
-            <option value="all">Kõik meeskonnad</option>
-            <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
-          </select>
-        </label>
-        <button *ngIf="filtersActive" type="button" class="schedule-clear" (click)="clearFilters()">Tühjenda filtrid</button>
-      </div>
-
     </section>
 
     <section class="schedule-results" aria-labelledby="schedule-results-title">
@@ -60,53 +58,42 @@
         <span>{{ monthLabel }}</span>
       </div>
 
-      <div *ngIf="matchGroups.length; else noMatches" class="schedule-groups">
-        <section *ngFor="let group of matchGroups" class="schedule-group" [attr.aria-labelledby]="'day-' + group.key">
-          <div class="schedule-group-head">
-            <h3 [id]="'day-' + group.key">{{ group.label }}</h3>
-            <span>{{ group.matches.length }} mängu</span>
-          </div>
-
-          <div class="schedule-match-grid">
-            <article
-              *ngFor="let match of group.matches"
-              class="schedule-match"
-              [class.is-live]="stateOf(match) === 'live'"
-              [class.is-finished]="stateOf(match) === 'finished'">
-              <header class="schedule-match-head">
-                <span class="schedule-match-league">{{ match.league }}</span>
-                <span class="schedule-match-state" [class.is-live]="stateOf(match) === 'live'">
-                  <span *ngIf="stateOf(match) === 'live'" class="sh-live-dot" aria-hidden="true"></span>
-                  {{ statusLabel(match) }}
-                </span>
-              </header>
-
-              <div class="schedule-match-time">
-                <time [attr.datetime]="match.startsAt">{{ kickoffTime(match) }}</time>
-              </div>
-
-              <div class="schedule-team-row">
-                <span class="schedule-team-abbr">{{ match.homeShort }}</span>
+      <div *ngIf="visibleMatches.length; else noMatches" class="schedule-table-wrap">
+        <table class="schedule-table">
+          <caption class="sr-only">{{ monthLabel }} mängude ajakava</caption>
+          <thead>
+            <tr>
+              <th scope="col">Aeg</th>
+              <th scope="col">Liiga</th>
+              <th scope="col">Kohtumine</th>
+              <th scope="col">Saal</th>
+              <th scope="col"><span class="sr-only">Olek ja protokoll</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let match of visibleMatches" [class.is-live]="stateOf(match) === 'live'" [class.is-finished]="stateOf(match) === 'finished'">
+              <td class="schedule-table-time" data-label="Aeg">
+                <time [attr.datetime]="match.startsAt"><span>{{ shortDate(match) }}</span><strong>{{ kickoffTime(match) }}</strong></time>
+              </td>
+              <td class="schedule-table-league" data-label="Liiga"><a [routerLink]="competitionRoute(match)">{{ match.league }}</a></td>
+              <td class="schedule-table-match" data-label="Kohtumine">
                 <a routerLink="/team" [queryParams]="{ name: match.home }">{{ match.home }}</a>
-                <strong *ngIf="showsScore(match)">{{ match.homeScore }}</strong>
-              </div>
-              <div class="schedule-team-row">
-                <span class="schedule-team-abbr">{{ match.awayShort }}</span>
+                <span aria-hidden="true">–</span>
                 <a routerLink="/team" [queryParams]="{ name: match.away }">{{ match.away }}</a>
-                <strong *ngIf="showsScore(match)">{{ match.awayScore }}</strong>
-              </div>
-
-              <footer class="schedule-match-foot">
-                <span><b>Saal</b> {{ match.venue }}</span>
-                <span *ngIf="match.stream" class="schedule-stream">Otseülekanne</span>
+                <b *ngIf="showsScore(match)" aria-label="Tulemus">{{ match.homeScore }} : {{ match.awayScore }}</b>
+              </td>
+              <td class="schedule-table-venue" data-label="Saal">{{ match.venue }}</td>
+              <td class="schedule-table-action">
+                <span class="schedule-match-state" [class.is-live]="stateOf(match) === 'live'">
+                  <span *ngIf="stateOf(match) === 'live'" class="sh-live-dot" aria-hidden="true"></span>{{ statusLabel(match) }}
+                </span>
                 <a *ngIf="stateOf(match) !== 'upcoming'" routerLink="/match" [queryParams]="{ id: match.id }">
-                  {{ stateOf(match) === 'live' ? 'Jälgi mängu' : 'Protokoll' }} →
+                  {{ stateOf(match) === 'live' ? 'Jälgi' : 'Protokoll' }} →
                 </a>
-                <a *ngIf="stateOf(match) === 'upcoming'" [routerLink]="competitionRoute(match)">Liiga tabel →</a>
-              </footer>
-            </article>
-          </div>
-        </section>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <ng-template #noMatches>
@@ -119,31 +106,20 @@
       </ng-template>
     </section>
 
-    <section class="schedule-pending" aria-labelledby="pending-title">
+    <section *ngIf="pendingMatches.length" class="schedule-pending" aria-labelledby="pending-title">
       <div class="schedule-section-head">
-        <div>
-          <p class="schedule-eyebrow">Planeerimisel</p>
-          <h2 id="pending-title">Kuupäev kinnitamisel</h2>
-        </div>
+        <div><p class="schedule-eyebrow">Planeerimisel</p><h2 id="pending-title">Kuupäev kinnitamisel</h2></div>
         <span>{{ pendingMatches.length }} mängupaari</span>
       </div>
       <p class="schedule-pending-lead">Mängupaarid on paigas. Algusajad ja puuduvad saalid lisatakse korraldajate kinnituse järel.</p>
-
-      <div *ngIf="pendingMatches.length; else noPending" class="schedule-pending-grid">
+      <div class="schedule-pending-grid">
         <article *ngFor="let match of pendingMatches" class="schedule-pending-card">
-          <div>
-            <span>{{ match.league }}</span>
-            <small>{{ match.round }}</small>
-          </div>
+          <div><span>{{ match.league }}</span><small>{{ match.round }}</small></div>
           <p><b>{{ match.homeShort }}</b> {{ match.home }}</p>
           <p><b>{{ match.awayShort }}</b> {{ match.away }}</p>
           <footer>{{ match.venue || 'Saal kinnitamisel' }}</footer>
         </article>
       </div>
-
-      <ng-template #noPending>
-        <p class="schedule-pending-none">Valitud filtritega kuupäevata mängupaare ei ole.</p>
-      </ng-template>
     </section>
   </div>
 </section>

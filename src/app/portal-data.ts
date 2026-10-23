@@ -36,8 +36,8 @@ export interface PortalCompetition {
 }
 
 export const PORTAL_SEASON = PORTAL_PLAYER_SEASON;
-export const PORTAL_DATA_UPDATED = '2026-10-22T09:00:00+03:00';
-export const PORTAL_DATA_NOTICE = 'Arhiiviandmed · ei uuene reaalajas';
+export const PORTAL_DATA_UPDATED = '2026-10-23T12:00:00+03:00';
+export const PORTAL_DATA_NOTICE = 'Andmeväljavõte seisuga 23.10.2026';
 
 export interface PortalPartner {
   name: string;
@@ -320,6 +320,120 @@ export interface PortalStandingsTable {
 
 export const PORTAL_MATCHES: PortalMatch[] = [
   {
+    id: '2026-10-23-u10-emu-valga',
+    league: 'U10', competitionId: 'u10', round: 'Turniiripäev',
+    home: 'EMÜ SK', away: 'Valga Välk', homeShort: 'EMÜ', awayShort: 'VAL',
+    startsAt: '2026-10-23T12:00:00+03:00', venue: 'Jõgeva Virtus', status: 'upcoming'
+  },
+  {
+    id: '2026-10-23-u10-jogeva-emu',
+    league: 'U10', competitionId: 'u10', round: 'Turniiripäev',
+    home: 'Jõgeva SK Tähe/Olivia 17', away: 'EMÜ SK', homeShort: 'JÕG', awayShort: 'EMÜ',
+    startsAt: '2026-10-23T13:00:00+03:00', venue: 'Jõgeva Virtus', status: 'upcoming'
+  },
+  {
+    id: '2026-10-23-u10-valga-jogeva',
+    league: 'U10', competitionId: 'u10', round: 'Turniiripäev',
+    home: 'Valga Välk', away: 'Jõgeva SK Tähe/Olivia 17', homeShort: 'VAL', awayShort: 'JÕG',
+    startsAt: '2026-10-23T14:00:00+03:00', venue: 'Jõgeva Virtus', status: 'upcoming'
+  },
+  {
+    id: '2026-10-23-u16t-jogeva-emu',
+    league: 'U16T', competitionId: 'u16t', round: 'Põhiturniir',
+    home: 'Jõgeva SK Tähe/Olivia 11 TÜ', away: 'EMÜ SK', homeShort: 'JÕG', awayShort: 'EMÜ',
+    startsAt: '2026-10-23T16:00:00+03:00', venue: 'Jõgeva Virtus', status: 'upcoming'
+  },
+  {
+    id: '2026-10-23-m-emu-u19',
+    league: 'Meistriliiga M', competitionId: 'meeste-mv', round: 'Põhiturniir',
+    home: 'Eesti Maaülikool', away: 'Eesti U19 Koondis', homeShort: 'EMÜ', awayShort: 'U19',
+    startsAt: '2026-10-23T20:00:00+03:00', venue: 'Eesti Maaülikooli spordihoone', status: 'upcoming'
+  },
+  {
+    id: '2026-10-24-rapla-janeda-laanlased',
+    league: 'Rapla liiga', competitionId: 'rapla-liiga', round: 'Põhiturniir',
+    home: 'Jäneda SK', away: 'Läänlased', homeShort: 'JÄN', awayShort: 'LÄÄ',
+    startsAt: '2026-10-24T10:30:00+03:00', venue: 'Rapla Sadolin Spordihoone', status: 'upcoming'
+  },
+  {
+    id: '2026-10-24-rapla-hokiklubi-kaitseliit',
+    league: 'Rapla liiga', competitionId: 'rapla-liiga', round: 'Põhiturniir',
+    home: 'Rapla Hokiklubi', away: 'Kaitseliidu Rapla malev/Kehtna SK', homeShort: 'RHK', awayShort: 'KRM',
+    startsAt: '2026-10-24T12:00:00+03:00', venue: 'Rapla Sadolin Spordihoone', status: 'upcoming'
+  },
+  {
+    id: '2026-10-24-rapla-tallinn-voore',
+    league: 'Rapla liiga', competitionId: 'rapla-liiga', round: 'Põhiturniir',
+    home: 'Tallinn United', away: 'SK Voore', homeShort: 'TU', awayShort: 'VOO',
+    startsAt: '2026-10-24T13:30:00+03:00', venue: 'Rapla Sadolin Spordihoone', status: 'upcoming'
+  },
+  {
+    id: '2026-10-24-rapla-parnu-bandidos',
+    league: 'Rapla liiga', competitionId: 'rapla-liiga', round: 'Põhiturniir',
+    home: 'Pärnu Bullet / Feltcar', away: 'Bändidos', homeShort: 'PBF', awayShort: 'BÄN',
+    startsAt: '2026-10-24T15:00:00+03:00', venue: 'Rapla Sadolin Spordihoone', status: 'upcoming'
+  },
+  {
+    id: '2026-10-24-latest-talsi-ulbroka',
+    league: 'LAT-EST M', competitionId: 'est-lat-m', round: 'Põhiturniir',
+    home: 'FK Talsi/TNSS/Krauzers', away: 'Masters Ulbroka/LU', homeShort: 'TAL', awayShort: 'ULB',
+    startsAt: '2026-10-24T18:00:00+03:00', venue: 'Talsu valsts ģimnāzija', status: 'upcoming'
+  },
+  {
+    id: '2026-10-30-latest-kekava-talsi',
+    league: 'LAT-EST M', competitionId: 'est-lat-m', round: 'Põhiturniir',
+    home: 'Ķekava', away: 'FK Talsi/TNSS/Krauzers', homeShort: 'ĶEK', awayShort: 'TAL',
+    startsAt: '2026-10-30T20:00:00+02:00', venue: 'Ķekavas vsk. sporta komplekss', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-m35-kadrina-tallinn',
+    league: 'M35+ MV', competitionId: 'm35', round: 'Põhiturniir',
+    home: 'Kadrina Tabajad', away: 'Tallinn United', homeShort: 'KAD', awayShort: 'TU',
+    startsAt: '2026-10-31T10:00:00+02:00', venue: 'Kuusalu SH', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-energia-kaitseliit-jarva',
+    league: 'Energialiiga', competitionId: 'energialiiga', round: 'Põhiturniir',
+    home: 'Kaitseliidu Rapla malev', away: 'Järva-Jaani', homeShort: 'KRM', awayShort: 'JJ',
+    startsAt: '2026-10-31T11:15:00+02:00', venue: 'Kuusalu SH', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-m35-rapla-shm',
+    league: 'M35+ MV', competitionId: 'm35', round: 'Põhiturniir',
+    home: 'Rapla Kepiklubi', away: 'SH Mehed Metsast', homeShort: 'RK', awayShort: 'SHM',
+    startsAt: '2026-10-31T12:30:00+02:00', venue: 'Kuusalu SH', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-m35-drinkgeld-vhp',
+    league: 'M35+ MV', competitionId: 'm35', round: 'Põhiturniir',
+    home: 'Drinkgeld', away: 'Vana Hea Puur', homeShort: 'DRK', awayShort: 'VHP',
+    startsAt: '2026-10-31T13:45:00+02:00', venue: 'Kuusalu SH', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-energia-arenculle-voore',
+    league: 'Energialiiga', competitionId: 'energialiiga', round: 'Põhiturniir',
+    home: 'Arenculle', away: 'Voore SK', homeShort: 'ARE', awayShort: 'VOO',
+    startsAt: '2026-10-31T15:00:00+02:00', venue: 'Kuusalu SH', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-m35-lauka-prosura',
+    league: 'M35+ MV', competitionId: 'm35', round: 'Põhiturniir',
+    home: 'Lauka Kolhoos', away: 'Prosura', homeShort: 'LK', awayShort: 'PRO',
+    startsAt: '2026-10-31T16:15:00+02:00', venue: 'Kuusalu SH', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-latest-talsi-sparta',
+    league: 'LAT-EST M', competitionId: 'est-lat-m', round: 'Põhiturniir',
+    home: 'FK Talsi/TNSS/Krauzers', away: 'Sparta Team Automaailm', homeShort: 'TAL', awayShort: 'SPA',
+    startsAt: '2026-10-31T17:00:00+02:00', venue: 'Talsu valsts ģimnāzija', status: 'upcoming'
+  },
+  {
+    id: '2026-10-31-energia-kuusalu-flash',
+    league: 'Energialiiga', competitionId: 'energialiiga', round: 'Põhiturniir',
+    home: 'Kuusalu Eluterve Naine', away: 'Flash by FF', homeShort: 'KEN', awayShort: 'FFF',
+    startsAt: '2026-10-31T17:30:00+02:00', venue: 'Kuusalu SH', status: 'upcoming'
+  },
+  {
     id: 'm-lk-drk',
     league: 'M35+ MV',
     competitionId: 'm35',
@@ -564,7 +678,8 @@ export function matchState(match: PortalMatch): MatchState {
 }
 
 export function findMatch(id: string | null): PortalMatch {
-  return PORTAL_MATCHES.find((match) => match.id === id) ?? PORTAL_MATCHES[0];
+  return PORTAL_MATCHES.find((match) => match.id === id)
+    ?? PORTAL_MATCHES.find((match) => match.id === 'm-lk-drk')!;
 }
 
 export function findNews(id: string | null): PortalNewsItem {
