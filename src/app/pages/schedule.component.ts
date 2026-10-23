@@ -9,18 +9,11 @@ import {
   PORTAL_DATA_NOTICE,
   PORTAL_MATCHES,
   PORTAL_PENDING_MATCHES,
-  PORTAL_SEASON,
   PortalMatch,
   PortalPendingMatch,
   hasScore,
   matchState
 } from '../portal-data';
-
-interface MatchGroup {
-  key: string;
-  label: string;
-  matches: PortalMatch[];
-}
 
 @Component({
   selector: 'app-schedule',
@@ -29,7 +22,7 @@ interface MatchGroup {
   templateUrl: './schedule.component.html'
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
-  readonly season = PORTAL_SEASON;
+  readonly season = '2026 / 2027';
   readonly dataNotice = PORTAL_DATA_NOTICE;
   readonly allMatches = PORTAL_MATCHES;
   readonly allPendingMatches = PORTAL_PENDING_MATCHES;
@@ -77,21 +70,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       })
       .filter((match) => this.matchesFilters(match))
       .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
-  }
-
-  get matchGroups(): MatchGroup[] {
-    const groups = new Map<string, PortalMatch[]>();
-    for (const match of this.visibleMatches) {
-      const key = this.dateKey(new Date(match.startsAt));
-      const existing = groups.get(key) ?? [];
-      existing.push(match);
-      groups.set(key, existing);
-    }
-    return Array.from(groups, ([key, matches]) => ({
-      key,
-      label: this.groupLabel(new Date(matches[0].startsAt)),
-      matches
-    }));
   }
 
   get pendingMatches(): PortalPendingMatch[] {
@@ -161,6 +139,15 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return new Date(match.startsAt).toLocaleTimeString('et-EE', { hour: '2-digit', minute: '2-digit' });
   }
 
+  shortDate(match: PortalMatch): string {
+    const label = new Date(match.startsAt).toLocaleDateString('et-EE', {
+      weekday: 'short',
+      day: '2-digit',
+      month: '2-digit'
+    });
+    return label.charAt(0).toLocaleUpperCase('et') + label.slice(1);
+  }
+
   competitionRoute(match: PortalMatch): string {
     return match.competitionId === 'm35' ? '/league/m35' : '/league';
   }
@@ -201,24 +188,8 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return leagueMatches && teamMatches;
   }
 
-  private groupLabel(date: Date): string {
-    const label = date.toLocaleDateString('et-EE', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long'
-    });
-    return label.charAt(0).toLocaleUpperCase('et') + label.slice(1);
-  }
-
   private startOfMonth(value: Date): Date {
     return new Date(value.getFullYear(), value.getMonth(), 1);
-  }
-
-  private dateKey(value: Date): string {
-    const year = value.getFullYear();
-    const month = `${value.getMonth() + 1}`.padStart(2, '0');
-    const day = `${value.getDate()}`.padStart(2, '0');
-    return `${year}-${month}-${day}`;
   }
 
   private monthKey(value: Date): string {

@@ -55,10 +55,12 @@
         <li *ngFor="let event of match.events" [class.is-goal]="event.type === 'goal'" [class.is-penalty]="event.type === 'penalty'">
           <time>{{ event.time }}</time>
           <span class="match-event-symbol" aria-hidden="true">{{ event.type === 'goal' ? 'V' : '2' }}</span>
-          <div>
-            <small>{{ event.type === 'goal' ? 'Värav' : 'Karistus' }} · {{ event.team }}</small>
-            <strong>{{ event.player }}</strong>
-            <span *ngIf="event.detail">{{ event.detail }}</span>
+          <div class="match-event-copy">
+            <span class="match-event-main">
+              <strong>{{ event.type === 'goal' ? 'Värav' : 'Karistus' }} — {{ event.player }}</strong>
+              <span>({{ event.team }})</span>
+            </span>
+            <span *ngIf="event.detail" class="match-event-detail">· {{ event.detail }}</span>
           </div>
           <b *ngIf="event.score" class="match-event-score">{{ event.score }}</b>
         </li>
